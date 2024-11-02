@@ -4,25 +4,18 @@ const gameData = {
             {
                 "id": 0,
                 "name": "Main",
-                "parent": "",
+                "parent": null,
+                "pos": { "x": null, "y": null },
+                "relPos": {"x": 0, "y": 0 },
+                "size": { "w": 0, "h": 0 },
                 "children": ["Cave", "MainCamera"],
-                "components": [{
-                    "name": "AleFizikaC",
-                        "data": {
-                            "bb": {
-                                "pos": {"x": 0, "y": 0},
-                                "size": {"w": 0, "h": 0}
-                            },
-                            "vel" : {"x": 0, "y": 0},
-                            "acc" : {"x": 0, "y": 0},
-                            "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                            "collMask" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-                        }
-                    }
-                ]
+                "components": []
             },{
                 "id": 1,
                 "name": "Player1",
+                "pos": { "x": null, "y": null },
+                "relPos": {"x": 500, "y": -500 },
+                "size": { "w": 50, "h": 100 },
                 "parent": "Main",
                 "children": ["Player1Camera"],
                 "components": [
@@ -30,19 +23,18 @@ const gameData = {
                         "name": "AleFizikaC",
                         "data": {
                             "bb": {
-                                "pos": {"x": 500, "y": -500},
+                                "pos": {"x": null, "y": null},
+                                "relPos": {"x": 0, "y": 0},
                                 "size": {"w": 50, "h": 100}
                             },
                             "vel" : {"x": 0, "y": 0},
                             "acc" : {"x": 0, "y": 0},
-                            "collLayer" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                            "collMask" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                            "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                            "collMask" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
                         }
                     },{
                         "name": "AleRenderC",
                         "data": {
-                            "pos": { "x": 500, "y": -500 },
-                            "size": { "w": 50, "h": 100 },
                             "color": "Red",
                             "visible": true,
                             "zLayer": 10
@@ -71,6 +63,9 @@ const gameData = {
             },{
                 "id": 2,
                 "name": "Player1Camera",
+                "pos": {"x": null, "y": null},
+                "relPos": {"x": 0, "y": 0},
+                "size": {"w": 50, "h": 100},
                 "parent": "Player1",
                 "children": [],
                 "components": [
@@ -78,8 +73,9 @@ const gameData = {
                         "name": "AleFizikaC",
                         "data": {
                             "bb": {
-                                "pos": {"x": 0, "y": 0},
-                                "size": {"w": 1024, "h": 576}
+                                "pos": {"x": null, "y": null},
+                                "relPos": {"x": 0, "y": 0},
+                                "size": {"w": 50, "h": 100}
                             },
                             "vel" : {"x": 0, "y": 0},
                             "acc" : {"x": 0, "y": 0},
@@ -91,14 +87,18 @@ const gameData = {
             },{
                 "id": 3,
                 "name": "CaveGround",
-                "parent": "Cave",
+                "pos": {"x": null, "y": null},
+                "relPos": {"x": 0, "y": 200},
+                "size": {"w": 1000, "h": 100},
+                "parent": "Main",
                 "children": [],
                 "components": [
                     {
                         "name": "AleFizikaC",
                         "data": {
                             "bb": {
-                                "pos": {"x": 0, "y": 0},
+                                "pos": {"x": null, "y": null},
+                                "relPos": {"x": 0, "y": 0},
                                 "size": {"w": 1000, "h": 100}
                             },
                             "vel" : {"x": 0, "y": 0},
@@ -109,8 +109,6 @@ const gameData = {
                     },{
                         "name": "AleRenderC",
                         "data": {
-                            "pos": { "x": 0, "y": 0 },
-                            "size": { "w": 1000, "h": 100 },
                             "color": "Gray",
                             "visible": true,
                             "zLayer": -10 
@@ -127,10 +125,12 @@ const gameData = {
 
 // EN(TITY) COMPONENT SYSTEM
 class Entity {
-    constructor({id, name, components}){
+    constructor({id, name, pos, relPos, size, components}){
         this.id = id;
         this.name = name;
-        this.relpos = relpos;
+        this.pos = pos;
+        this.relPos = relPos;
+        this.size = size;
         this.fizikaC = null;
         this.eventC = null;
         this.renderC = null;
@@ -151,11 +151,19 @@ class Entity {
 
 class AleFizikaC {
     constructor({bb, vel, acc, collLayer, collMask}){
-        this.bb = bb;
+        this.bb = new BB(bb);
         this.vel = vel;
         this.acc = acc;
         this.collLayer = collLayer;
         this.collMask = collMask;
+    }
+}
+
+class BB {
+    constructor({pos, relPos, size}){
+        this.pos = pos;
+        this.relPos = relPos;
+        this.size = size;
     }
 }
 
@@ -166,9 +174,7 @@ class AleEventC {
 }
 
 class AleRenderC {
-    constructor({pos, size, color, visible, zLayer}){
-        this.pos = pos;
-        this.size = size;
+    constructor({color, visible, zLayer}){
         this.color = color;
         this.visible = visible;
         this.zLayer = zLayer;
