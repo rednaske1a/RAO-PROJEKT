@@ -64,8 +64,8 @@ const gameData = {
                 "id": 2,
                 "name": "Player1Camera",
                 "pos": {"x": null, "y": null},
-                "relPos": {"x": 0, "y": 0},
-                "size": {"w": 50, "h": 100},
+                "relPos": {"x": -512, "y": -288},
+                "size": {"w": 1024, "h": 576},
                 "parent": "Player1",
                 "children": [],
                 "components": [
@@ -74,13 +74,20 @@ const gameData = {
                         "data": {
                             "bb": {
                                 "pos": {"x": null, "y": null},
-                                "relPos": {"x": 0, "y": 0},
-                                "size": {"w": 50, "h": 100}
+                                "relPos": {"x": -512, "y": -288},
+                                "size": {"w": 1024, "h": 576},
                             },
                             "vel" : {"x": 0, "y": 0},
                             "acc" : {"x": 0, "y": 0},
                             "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                             "collMask" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                        }
+                    },{
+                        "name": "AleCameraC",
+                        "data": {
+                            "active": true,
+                            "sPos": {"x": 0, "y": 0},
+                            "sSize": {"w": 1024, "h": 576}
                         }
                     }
                 ]
@@ -125,12 +132,14 @@ const gameData = {
 
 // EN(TITY) COMPONENT SYSTEM
 class Entity {
-    constructor({id, name, pos, relPos, size, components}){
+    constructor({id, name, pos, relPos, size, parent, children, components}){
         this.id = id;
         this.name = name;
         this.pos = pos;
         this.relPos = relPos;
         this.size = size;
+        this.parent = parent;
+        this.children = children;
         this.fizikaC = null;
         this.eventC = null;
         this.renderC = null;
@@ -147,6 +156,30 @@ class Entity {
             }
         });
     }
+
+    setPointers(entityList){
+        entityList.forEach(entity =>{
+            if(entity.name == this.parent){
+                this.parent = entity;
+            }
+            for(let key in this.children) {
+                if(this.children[key] == entity.name){
+                    this.children[key] = entity;
+                }
+            }
+        });
+    }
+
+    updatePos(){
+        this.pos.x = this.parent.pos.x + this.relPos.x;
+        this.pos.y = this.parent.pos.y + this.relPos.y;
+
+        if(this.fizikaC != null){
+            this.fizikaC.pos.x = this.pos.x + this.fizikaC.relPos.x;
+            this.fizikaC.pos.y = this.pos.y + this.fizikaC.relPos.y;
+        }
+    }
+
 }
 
 class AleFizikaC {
@@ -181,24 +214,20 @@ class AleRenderC {
     }
 }
 
+class AleCameraC {
+    constructor({active, sPos, sSize}){
+        this.active = active;
+        this.sPos = sPos;
+        this.sSize = sSize;
+    }
+}
+
 class AleFizika {
 
     constructor() {
-        this.toSolve = [
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            []
-        ];
-        this.collMaskLen = 8;
         this.trenje = 0.80;
     }
 
-    //https://gamedev.net/tutorials/programming/general-and-gameplay-programming/swept-aabb-collision-detection-and-response-r3084/ NEDELA !!!!
     sweptAABB(b1, b2) {
         let xInvEntry, yInvEntry;
         let xInvExit, yInvExit;
@@ -290,25 +319,7 @@ class AleFizika {
     }
 
     update(spriteList) {
-        //Popredalčka vse sprite glede na collision masko
-        this.toSolve = [
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            []
-        ];
-        spriteList.forEach(element => {
-            for (let i = 0; i < this.collMaskLen; i++) {
-                if (element.collMask[i] == 1) {
-                    this.toSolve[i].push(element);
-                }
-            }
-        });
-
+        
 
         this.toSolve.forEach(maskGroup => {
             maskGroup.forEach(element1 => {
@@ -379,19 +390,6 @@ class AleFizika {
             });
         });
 
-    }
-}
-
-class AleCamera {
-    constructor({name, pos, size, cpos, csize, ar, lockedOn}){
-        this.name = name;
-        this.pos = pos;
-        this.size = size;
-        this.cpos = cpos;
-        this.csize = csize;
-
-        this.ar = ar;
-        this.lockedOn = lockedOn;
     }
 }
 
