@@ -14,11 +14,12 @@ const gameData = {
         
         "components": [{
             "name": "AleEventC",
-            "data": {
-                "w": [{"name": "Jump", "contexts": ["InGame"], "target": "Player1", "trigger": "w"}],
-                "a": [{"name": "GoLeft", "contexts": ["InGame"], "target": "Player1", "trigger": "a"}],
-                "s": [{"name": "Duck", "contexts": ["InGame"], "target": "Player1", "trigger": "s"}],
-                "d": [{"name": "GoRight", "contexts": ["InGame"], "target": "Player1", "trigger": "d"}],
+            "data": { "keys": {
+                    "w": [{"name": "Jump", "contexts": ["InGame"], "target": "Player1", "trigger": "w"}],
+                    "a": [{"name": "GoLeft", "contexts": ["InGame"], "target": "Player1", "trigger": "a"}],
+                    "s": [{"name": "Duck", "contexts": ["InGame"], "target": "Player1", "trigger": "s"}],
+                    "d": [{"name": "GoRight", "contexts": ["InGame"], "target": "Player1", "trigger": "d"}]
+                    }
                 }
             }]
         },
@@ -39,7 +40,7 @@ const gameData = {
             "name": "AleFizikaC",
             "data": {
                 "vel" : {"x": 0, "y": 0},
-                "acc" : {"x": 0, "y": 0},
+                "acc" : {"x": 0, "y": 1},
                 "trenje": 0.8,
                 "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 "collMask" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -83,12 +84,12 @@ const gameData = {
         "name": "Camera1",
         "active": 1,
 
-        "parent": "Game",
+        "parent": "Player1",
         "children": [],
 
         "pos": { "x": null, "y": null },
-        "relPos": {"x": 500, "y": -500 },
-        "size": { "w": 50, "h": 100 },
+        "relPos": {"x": 0, "y": 0 },
+        "size": { "w": 1024, "h": 576 },
         
         "components": [{
             "name": "AleCameraC",
@@ -167,6 +168,8 @@ class Entity {
         this.eventC = null;
         this.renderC = null;
         this.cameraC = null;
+        this.playerC = null;
+        this.guiC = null;
         
         this.addComponents(components);
     }
@@ -184,8 +187,9 @@ class Entity {
         });
     }
 
-    setPointers(entityList){
+    setEntityPointers(entityList){
         entityList.forEach(entity =>{
+            //console.log(entity);
             if(entity.name == this.parent){
                 this.parent = entity;
             }
@@ -309,16 +313,16 @@ class AleFizika {
             xEntry = -Infinity;
             xExit = Infinity;
         } else {
-            xEntry = xInvEntry / b1.vel.x;
-            xExit = xInvExit / b1.vel.x;
+            xEntry = xInvEntry / entity1.fizikaC.vel.x;
+            xExit = xInvExit / entity1.fizikaC.vel.x;
         }
 
         if (yInvEntry == Infinity) {
             yEntry = -Infinity
             yExit = Infinity
         } else {
-            yEntry = yInvEntry / b1.vel.y;
-            yExit = yInvExit / b1.vel.y;
+            yEntry = yInvEntry / entity1.fizikaC.vel.y;
+            yExit = yInvExit / entity1.fizikaC.vel.y;
         }
 
         let entryTime = Math.max(xEntry, yEntry);
@@ -353,32 +357,34 @@ class AleFizika {
         }
     }
 
-    recursiveMinEntry(entity, minColTime){
+    recursiveMinColTime(entity, minColTime){
         entity.children.forEach(child =>{
-            console.log(child.name);
-            minColTime = recursiveMinEntry(child, minColTime);
+           // console.log(child);
+            minColTime = this.recursiveMinColTime(child, minColTime);
         })
 
         if(entity.fizikaC != null){
-            this.collStorage[entity.id].forEach(entity2 => {
-                let collision = this.sweptAABB(entity, entity2);
-
-                let ct = collision.collisionTime;
-                let normalx = collision.normalx;
-                let normaly = collision.normaly;
-
-                if(ct < 1){
-                    if(normalx != 0 && ct < minColTime.x){
-                        minColTime.x = ct;
-                        minColTime.nx = normalx;
-                                           
+            if(this.collStorage[entity.id] != undefined){
+                this.collStorage[entity.id].forEach(entity2 => {
+                    let collision = this.sweptAABB(entity, entity2);
+    
+                    let ct = collision.collisionTime;
+                    let normalx = collision.normalx;
+                    let normaly = collision.normaly;
+    
+                    if(ct < 1){
+                        if(normalx != 0 && ct < minColTime.x){
+                            minColTime.x = ct;
+                            minColTime.nx = normalx;
+                                               
+                        }
+                        if(normaly != 0 && ct < minColTime.y){
+                            minColTime.y = ct;
+                            minColTime.ny = normaly;                     
+                        }
                     }
-                    if(normaly != 0 && ct < minColTime.y){
-                        minColTime.y = ct;
-                        minColTime.ny = normaly;                     
-                    }
-                }
-            })
+                })
+            }
         }
         
         return minColTime;
@@ -390,15 +396,20 @@ class AleFizika {
 
         entityList.forEach(entity1 =>{ // napolni te dve tabeli z pointerji na objekte
             if(entity1.fizikaC != null){
-                solveColl.push(entity1);
-                for(let i=0; i<entity1.collMask.length; i++){
+                this.solveColl.push(entity1);
+                for(let i=0; i<entity1.fizikaC.collMask.length; i++){
 
                     entityList.forEach(entity2 =>{
                         if(entity2.fizikaC != null && entity1.id != entity2.id &&
                             entity1.fizikaC.collide && entity2.fizikaC.collide){
                             
-                            if(entity1.collMask[i] == 1 && entity2.collLayer[i] == 1){
-                                collStorage[entity1.id].push(entity2);
+                            if(entity1.fizikaC.collMask[i] == 1 && entity2.fizikaC.collLayer[i] == 1){
+                                if(this.collStorage[entity1.id] == undefined) {
+                                    this.collStorage[entity1.id] = [entity2];
+                                } else {
+                                    this.collStorage[entity1.id].push(entity2);
+                                }
+                                
                             }
                         }
                     });
@@ -407,7 +418,7 @@ class AleFizika {
             }
         });
 
-        solveColl.forEach(entity =>{
+        this.solveColl.forEach(entity =>{
             let minColTime = this.recursiveMinColTime(entity, {x: 1, y: 1, nx: 0, ny: 0});
             entity.relPos.x += entity.fizikaC.vel.x * minColTime.x;
             entity.relPos.y += entity.fizikaC.vel.y * minColTime.y;
@@ -563,13 +574,13 @@ class AleRenderer {
     draw(camera, entityList){
         this.c.save();
         this.c.beginPath();
-        this.c.rect(camera.cameraC.cpos.x, camera.cameraC.cpos.y, camera.cameraC.cpos.x + camera.cameraC.csize.w, camera.cameraC.cpos.y + camera.cameraC.csize.h);
+        this.c.rect(camera.cameraC.sPos.x, camera.cameraC.sPos.y, camera.cameraC.sPos.x + camera.cameraC.sSize.w, camera.cameraC.sPos.y + camera.cameraC.sSize.h);
         
         this.c.clip();
 
 
         this.c.fillStyle = 'blue';
-        this.c.fillRect(camera.cameraC.cpos.x, camera.cameraC.cpos.y, camera.cameraC.cpos.x + camera.cameraC.csize.w, camera.cameraC.cpos.y + camera.cameraC.csize.h);
+        this.c.fillRect(camera.cameraC.sPos.x, camera.cameraC.sPos.y, camera.cameraC.sPos.x + camera.cameraC.sSize.w, camera.cameraC.sPos.y + camera.cameraC.sSize.h);
 
         let renderList = [];
         entityList.forEach(entity =>{
@@ -585,17 +596,17 @@ class AleRenderer {
 
             if(entity.type == "GUI") {
                 this.c.fillRect(
-                    element.pos.x + camera.cameraC.cpos.x,
-                    element.pos.y + camera.cameraC.cpos.y,
+                    element.pos.x + camera.cameraC.sPos.x,
+                    element.pos.y + camera.cameraC.sPos.y,
                     element.size.w,
                     element.size.h,
                 );
             } else {
                 this.c.fillRect(
-                    (entity.pos.x + (camera.size.w / 2  - camera.pos.x )) * (camera.cameraC.csize.w / camera.size.w) + camera.cameraC.cpos.x, 
-                    (entity.pos.y + (camera.size.h / 2  - camera.pos.y )) * (camera.cameraC.csize.h / camera.size.h) + camera.cameraC.cpos.y , 
-                    entity.size.w * (camera.cameraC.csize.w / camera.size.w), 
-                    entity.size.h * (camera.cameraC.csize.h / camera.size.h)
+                    (entity.pos.x + (camera.size.w / 2  - camera.pos.x )) * (camera.cameraC.sSize.w / camera.size.w) + camera.cameraC.sPos.x, 
+                    (entity.pos.y + (camera.size.h / 2  - camera.pos.y )) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y , 
+                    entity.size.w * (camera.cameraC.sSize.w / camera.size.w), 
+                    entity.size.h * (camera.cameraC.sSize.h / camera.size.h)
                  );
             }
             
@@ -608,7 +619,7 @@ class AleRenderer {
             let a = ((Math.abs(cameraDistance) - this.canvas.width/2) / 400);
 
             this.c.fillStyle = 'White';
-            this.c.fillRect(camera.cpos.x - 5 * Math.min(a,1) , camera.cpos.y, 10 * Math.min(a,1), camera.csize.h);
+            this.c.fillRect(camera.sPos.x - 5 * Math.min(a,1) , camera.sPos.y, 10 * Math.min(a,1), camera.sSize.h);
         }
             */
         
@@ -633,8 +644,11 @@ class AleEventManager{
     initKeyTracking(entityList){
         entityList.forEach(entity =>{
             if(entity.eventC != null){
+                //console.log("OKOK")
+                //console.log(entity.eventC.keys);
 
                 for(let key in entity.eventC.keys){
+                    //console.log(key);
 
                     let newEvents = [];
                     entity.eventC.keys[key].forEach(event =>{
@@ -673,7 +687,9 @@ class AleEventManager{
     }
 
     setClicked(setTo){
-        this.keys["click"].value = setTo;
+        if(this.keys.click != undefined){
+            this.keys["click"].value = setTo;
+        }
     }
 
 
@@ -684,6 +700,7 @@ class AleEventManager{
         for (let key in this.keys) {
             if(this.keys[key].value == 1){
                 this.keys[key].events.forEach(event =>{
+                    console.log(key);
                     this.validateEvent(event);
                 })
             } else {
@@ -783,7 +800,7 @@ class AleEventManager{
 
 class AleGame {
     constructor() {
-        this.entityList
+        this.entityList = [];
         this.renderer = new AleRenderer();
         this.fizika = new AleFizika();
         this.eventManager = new AleEventManager();
@@ -799,15 +816,21 @@ class AleGame {
 
         this.loadEntities();
 
-        this.eventManager.initKeyTracking(this.spriteList, this.UIList);
+        this.eventManager.initKeyTracking(this.entityList);
         this.run();
     }
 
     loadEntities(){
-        gameData.forEach(entity =>{
-            addEntity(entity);
+        for(let key in this.gameData){
+            this.addEntity(gameData[key]);
+        }
+
+        this.entityList.forEach(entity =>{
+            entity.setEntityPointers(this.entityList);
         })
     }
+
+    
 
     addEntity(entity){
         this.entityList.push(new Entity(entity));
