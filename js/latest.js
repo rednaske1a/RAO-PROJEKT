@@ -42,7 +42,8 @@ const gameData = {
                 "acc" : {"x": 0, "y": 0},
                 "trenje": 0.8,
                 "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                "collMask" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                "collMask" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                "collide": true
             }
             }]
         },
@@ -109,7 +110,8 @@ const gameData = {
                 "acc" : {"x": 0, "y": 0},
                 "trenje": 0.8,
                 "collLayer" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                "collMask" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                "collMask" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                "collide": true
             }
             }]
         },
@@ -198,12 +200,14 @@ class Entity {
 }
 
 class AleFizikaC {
-    constructor({vel, acc, trenje, collLayer, collMask}){
+    constructor({vel, acc, trenje, collLayer, collMask, mode}){
         this.vel = vel;
         this.acc = acc;
         this.trenje = trenje;
         this.collLayer = collLayer;
         this.collMask = collMask;
+
+        this.mode = mode
     }
 }
 
@@ -237,7 +241,6 @@ class AleFizika {
         let xInvExit, yInvExit;
         let normalx, normaly;
 
-        // find the distance between the objects on the near and far sides for both x and y 
         if( (b1.pos.y <= b2.pos.y) && (b1.pos.y + b1.size.h <= b2.pos.y) ||
             (b2.pos.y <= b1.pos.y) && (b2.pos.y + b2.size.h <= b1.pos.y) ||
             b1.vel.x == 0
@@ -254,7 +257,6 @@ class AleFizika {
             }
         }
        
-
         if( (b1.pos.x <= b2.pos.x) && (b1.pos.x + b1.size.w <= b2.pos.x) ||
             (b2.pos.x <= b1.pos.x) && (b2.pos.x + b2.size.w <= b1.pos.x) ||
             b1.vel.y == 0
