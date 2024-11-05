@@ -186,19 +186,19 @@ class Entity {
     }
 
     updatePos(){
-        this.pos.x = this.parent.pos.x + this.relPos.x;
-        this.pos.y = this.parent.pos.y + this.relPos.y;
-
-        if(this.fizikaC != null){
-            this.fizikaC.pos.x = this.pos.x + this.fizikaC.relPos.x;
-            this.fizikaC.pos.y = this.pos.y + this.fizikaC.relPos.y;
+        if(this.parent == null){
+            this.pos.x = this.relPos.x;
+            this.pos.y = this.relPos.y;
+        } else {
+            this.pos.x = this.parent.pos.x + this.relPos.x;
+            this.pos.y = this.parent.pos.y + this.relPos.y;
         }
     }
 
 }
 
 class AleFizikaC {
-    constructor({bb, vel, acc, collLayer, collMask}){
+    constructor({vel, acc, trenje, collLayer, collMask}){
         this.vel = vel;
         this.acc = acc;
         this.trenje = trenje;
