@@ -200,14 +200,14 @@ class Entity {
 }
 
 class AleFizikaC {
-    constructor({vel, acc, trenje, collLayer, collMask, mode}){
+    constructor({vel, acc, trenje, collLayer, collMask, collide}){
         this.vel = vel;
         this.acc = acc;
         this.trenje = trenje;
         this.collLayer = collLayer;
         this.collMask = collMask;
 
-        this.mode = mode
+        this.collide = collide;
     }
 }
 
@@ -234,7 +234,10 @@ class AleCameraC {
 
 class AleFizika {
 
-    constructor() {}
+    constructor() {
+        this.solveColl = [];
+        this.collStorage = [];
+    }
 
     sweptAABB(b1, b2) {
         let xInvEntry, yInvEntry;
@@ -324,18 +327,52 @@ class AleFizika {
         }
     }
 
-    update(entityList) {
-        let solveColl = [];
+    recursiveMinEntry(entity, minColTime){
+        entity.children.forEach(child =>{
+            console.log(child.name);
+            minColTime = recursiveMinEntry(child, minColTime);
+        })
 
-        entityList.forEach(entity1 =>{
+        if(entity.fizikaC != null){
+            this.collStorage[entity.id].forEach(entity2 => {
+                let collision = this.sweptAABB(entity, entity2);
+
+                let ct = collision.collisionTime;
+                let normalx = collision.normalx;
+                let normaly = collision.normaly;
+
+                if(ct < 1){
+                    if(normalx != 0 && ct < minColTime.x){
+                        minColTime.x = ct;
+                        minColTime.nx = normalx;
+                                           
+                    }
+                    if(normaly != 0 && ct < minColTime.y){
+                        minColTime.y = ct;
+                        minColTime.ny = normaly;                     
+                    }
+                }
+            })
+        }
+        
+        return minColTime;
+    }
+
+    update(entityList) {
+        this.solveColl = []; // tabela vseh entitijev ki se bojo premaknili
+        this.collStorage = []; // s kom se lahko vsak objekt collida za lažje premikanje childov entitija
+
+        entityList.forEach(entity1 =>{ // napolni te dve tabeli z pointerji na objekte
             if(entity1.fizikaC != null){
+                solveColl.push(entity1);
                 for(let i=0; i<entity1.collMask.length; i++){
 
                     entityList.forEach(entity2 =>{
-                        if(entity2.fizikaC != null && entity1.id != entity2.id){
+                        if(entity2.fizikaC != null && entity1.id != entity2.id &&
+                            entity1.fizikaC.collide && entity2.fizikaC.collide){
                             
                             if(entity1.collMask[i] == 1 && entity2.collLayer[i] == 1){
-                                solveColl.push({e1: entity1, e2: entity2});
+                                collStorage[entity1.id].push(entity2);
                             }
                         }
                     });
@@ -344,85 +381,38 @@ class AleFizika {
             }
         });
 
+        solveColl.forEach(entity =>{
+            let minColTime = this.recursiveMinColTime(entity, {x: 1, y: 1, nx: 0, ny: 0});
+            entity.relPos.x += entity.fizikaC.vel.x * minColTime.x;
+            entity.relPos.y += entity.fizikaC.vel.y * minColTime.y;
 
-        spriteList.forEach(element => {
-            for (let i = 0; i < this.collMaskLen; i++) {
-                if (element.collMask[i] == 1) {
-                    this.toSolve[i].push(element);
-                }
+            if(minColTime.x == 0) { //ustavi playerja da ne pospešuje v tla in strop
+                entity.fizikaC.vel.x = 0;
+            } else {
+                entity.fizikaC.vel.x += entity.fizikaC.acc.x;
+            } 
+                
+            if(minColTime.y == 0){ //ustavi playerja da ne pospešuje v zide
+                entity.fizikaC.vel.y = 0;
+                entity.fizikaC.vel.x *= 1 - entity.fizikaC.trenje;
+            } else {
+                entity.fizikaC.vel.y += entity.fizikaC.acc.y;
             }
-        });
-
-
-        this.toSolve.forEach(maskGroup => {
-            maskGroup.forEach(element1 => {
-                let minColTime = {
-                    x: 1,
-                    y: 1,
-                    nx: 0,
-                    ny: 0
-                }
-                maskGroup.forEach(element2 => {
-                    if (element1 != element2) {
-                        
-                        let collision = this.sweptAABB(element1, element2);
-                        let collisionTime = collision.collisionTime;
-                        let normalx = collision.normalx;
-                        let normaly = collision.normaly;
-
-                        minColTime.nx += normalx;
-                        minColTime.ny += normaly;
-
-                        if(collisionTime < 1){
-                            if(normalx != 0 && collisionTime < minColTime.x){
-                                minColTime.x = collisionTime;
-                                //console.log("hit x " + collisionTime + " " + normalx + " " + normaly);                              
-                            }
-                            if(normaly != 0 && collisionTime < minColTime.y){
-                                
-                                minColTime.y = collisionTime;
-                                //console.log("hit y " + collisionTime + " " + normalx + " " + normaly);                              
-                            }
-                        }
-                    }
-                });
-
-                element1.pos.x += element1.vel.x * minColTime.x;
-                element1.pos.y += element1.vel.y * minColTime.y;
-
-                spriteList.forEach(element =>{
-                    element1.children.forEach(child =>{
-                        if(element.name == child){
-                            element.pos.x += element1.vel.x * minColTime.x;
-                            element.pos.y += element1.vel.y * minColTime.y;
-                        }
-                    });
-                });
-
-                if(minColTime.x == 0){
-                    element1.vel.x = 0;
-                } else {
-                    element1.vel.x += element1.acc.x;
-                }
-
-                if(minColTime.y == 0){
-                    element1.vel.y = 0;
-                    element1.vel.x *= 1 - this.trenje;
-                } else {
-                    element1.vel.y += element1.acc.y;
-                }
-
+               
+            if(entity.playerC != null){
                 if(minColTime.ny < 0 && minColTime.y == 0){
-                    element1.isGrounded = true;
-                    element1.isDucking = false;
+                    entity.playerC.isGrounded = true;
+                    entity.playerC.isDucking = false;
                 } else {
-                    element1.isGrounded = false;
+                    entity.playerC.isGrounded = false;
                 }
-                
-                
-            });
-        });
+            }
+            
+        })
 
+        entityList.forEach(entity =>{
+            entity.updatePos();
+        })
     }
 }
 
