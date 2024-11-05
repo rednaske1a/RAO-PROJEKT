@@ -45,6 +45,14 @@ const gameData = {
                 "collMask" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 "collide": true
             }
+            },{
+            "name": "AlePlayerC",
+            "data": {
+                "jumpSpeed": 10,
+                "moveSpeed": 10,
+                "isGrounded": false,
+                "isDucking": false
+            }
             }]
         },
     3: {
@@ -170,6 +178,8 @@ class Entity {
                 case "AleEventC": this.eventC = new AleEventC(component.data); break;
                 case "AleRenderC": this.renderC = new AleRenderC(component.data); break;
                 case "AleCameraC": this.cameraC = new AleCameraC(component.data); break;
+                case "AleGUIC": this.guiC = new AleGUIC(component.data); break;
+                case "AlePlayerC": this.playerC = new AlePlayerC(component.data); break;
             }
         });
     }
@@ -229,6 +239,22 @@ class AleCameraC {
     constructor({sPos, sSize}){
         this.sPos = sPos;
         this.sSize = sSize;
+    }
+}
+
+class AlePlayerC {
+    constructor({jumpSpeed, moveSpeed, isGrounded, isDucking}){
+        this.jumpSpeed = jumpSpeed;
+        this.moveSpeed = moveSpeed;
+        this.isGrounded = isGrounded;
+        this.isDucking = isDucking;
+    }
+}
+
+class AleGUIC{
+    constructor({toggleLocked, toggleLockedBy}){
+        this.toggleLocked = toggleLocked;
+        this.toggleLockedBy = toggleLockedBy;
     }
 }
 
@@ -604,32 +630,36 @@ class AleEventManager{
         window.addEventListener('click', (event) => this.setClicked(1));
     }
 
-    initKeyTracking(spriteList, UIList){
-        spriteList.forEach(sprite =>{
-            sprite.keys.forEach(key => {
-                let createEvent = {contexts: key.event.contexts, name: key.event.name, target:sprite, trigger:key.key};
-                    if(this.keys[key.key] == undefined){
-                        let newEvents = [createEvent];
-                        this.keys[key.key] = {value: 0, events: newEvents};
+    initKeyTracking(entityList){
+        entityList.forEach(entity =>{
+            if(entity.eventC != null){
+
+                for(let key in entity.eventC.keys){
+
+                    let newEvents = [];
+                    entity.eventC.keys[key].forEach(event =>{
+
+                        let target = event.target; //prevede imena targetov v pointerje
+                        entityList.forEach(tEntity =>{
+                            if(tEntity.name == target){
+                                    target = tEntity;
+                            }
+                        })
+
+                        newEvents.push({name:event.name, contexts:event.contexts, target:target, trigger:key})
+                    })
+
+                    if(this.keys[key] == undefined){
+                        this.keys[key] = {value: 0, events: newEvents};
                     } else {
-                        let newEvents = this.keys[key.key].events;
-                        newEvents.push(createEvent);
-                        this.keys[key.key] = {value: 0, events: newEvents};
+                        combineEvents = this.keys[key].events;
+                        newEvents.forEach(event=>{
+                            combineEvents.push(event);
+                        });
+                        this.keys[key] = {value: 0, events: combineEvents};
                     }
-            });
-        });
-        UIList.forEach(UIElement =>{
-            UIElement.keys.forEach(key => {
-                let createEvent = {contexts: key.event.contexts, name: key.event.name, target:UIElement, trigger:key.key, targetGUI:key.event.targetGUI};
-                    if(this.keys[key.key] == undefined){
-                        let newEvents = [createEvent];
-                        this.keys[key.key] = {value: 0, events: newEvents};
-                    } else {
-                        let newEvents = this.keys[key.key].events;
-                        newEvents.push(createEvent);
-                        this.keys[key.key] = {value: 0, events: newEvents};
-                    }
-            });
+                }
+            }
         });
     }
 
@@ -658,8 +688,10 @@ class AleEventManager{
                 })
             } else {
                 this.keys[key].events.forEach(event=>{
-                    if(key == event.target.lockedBy){
-                        event.target.locked = 0;
+                    if(event.target.guiC != null){
+                        if(key == event.target.guiC.toggleLockedBy){
+                            event.target.guiC.toggleLocked = 0;
+                        }
                     }
                 });
                 
@@ -687,11 +719,11 @@ class AleEventManager{
         if(valid == 0) return;
 
         switch(event.name){
-            case "Jump": if (event.target.isGrounded == false) valid = 0; break;
-            case "Duck": if (event.target.isDucking == true) valid = 0; break;
-            case "GoLeft": if (event.target.isGrounded == false) valid = 0; break;
-            case "GoRight": if (event.target.isGrounded == false) valid = 0; break;
-            case "ToggleGUI": if(event.target.locked == 1){console.log("ToggleGUI locked"); valid = 0;} break;
+            case "Jump": if (event.target.playerC.isGrounded == false) valid = 0; break;
+            case "Duck": if (event.target.playerC.isDucking == true) valid = 0; break;
+            case "GoLeft": if (event.target.playerC.isGrounded == false) valid = 0; break;
+            case "GoRight": if (event.target.playerC.isGrounded == false) valid = 0; break;
+            case "ToggleGUI": if(event.target.guiC.toggleLocked == 1){console.log("ToggleGUI locked"); valid = 0;} break;
         }
 
         switch(event.trigger){
@@ -703,16 +735,16 @@ class AleEventManager{
         }
     }
 
-    solveEvents(spriteList, UIList, GUIList){
+    solveEvents(){
         this.getEvents();
         this.eventList.forEach(event => {
             switch(event.name){
-                case "Jump": event.target.vel.y += -event.target.jumpSpeed; break;
-                case "Duck": event.target.vel.y += event.target.jumpSpeed; break;
-                case "GoLeft": event.target.vel.x = -event.target.moveSpeed; break;
-                case "GoRight": event.target.vel.x = event.target.moveSpeed; break;
-                case "ToggleGUI": this.toggleGUI(event, event.targetGUI, GUIList, UIList); break;
-                case "CloseGUI": this.closeGUI(event, event.targetGUI, GUIList, UIList); break;
+                case "Jump": event.target.fizikaC.vel.y += -event.target.playerC.jumpSpeed; break;
+                case "Duck": event.target.fizikaC.vel.y += event.target.playerC.jumpSpeed; break;
+                case "GoLeft": event.target.fizikaC.vel.x = -event.target.playerC.moveSpeed; break;
+                case "GoRight": event.target.fizikaC.vel.x = event.target.playerC.moveSpeed; break;
+                case "ToggleGUI": this.toggleGUI(event); break;
+                case "CloseGUI": this.closeGUI(event); break;
             }
         });
     }
@@ -722,44 +754,30 @@ class AleEventManager{
             point.y > target.pos.y && point.y < target.pos.y + target.size.h)?1:0;
     }
 
-    toggleGUI(event, targetGUI, GUIList, UIList){
-        GUIList.forEach(GUI =>{
-            targetGUI.forEach(tGUI =>{
-                if(GUI.name == tGUI){
-                    UIList.forEach(UIElement=>{
-                        GUI.items.forEach(GUIItem =>{
-                            if(UIElement.name == GUIItem){
-                                UIElement.active = 1 - UIElement.active;
-                                if(UIElement.active == 1){
-                                    this.eventContext = "InGUI";
-                                }else{
-                                    this.eventContext = "InGame";
-                                }
-                            }
-                        })
-                    });
-                }
-            })
-        })
-        event.target.locked = 1;
-        event.target.lockedBy = event.trigger;
+    toggleGUI(event){
+        this.recursiveSetGUI(event.target, !event.target.renderC.visible);
+
+
+        event.target.toggleLocked = 1;
+        event.target.toggleLockedBy = event.trigger;
         console.log("LOCKED " + event.target.name + " BY " + event.trigger);
     }
 
-    closeGUI(event, targetGUI, GUIList, UIList){
-        GUIList.forEach(GUI =>{
-            targetGUI.forEach(tGUI =>{
-                if(GUI.name == tGUI){
-                    UIList.forEach(UIElement=>{
-                        GUI.items.forEach(GUIItem =>{
-                            if(UIElement.name == GUIItem){
-                                UIElement.active = 0;
-                            }
-                        })
-                    });
-                }
-            })
+    recursiveSetGUI(entity, setTo){
+        entity.children.forEach(child=>{
+            this.recursiveSetGUI(child, setTo);
         })
+        if(entity.renderC != null){
+            entity.renderC.visible = setTo;
+        }
+    }
+
+    closeGUI(event){
+        this.recursiveSetGUI(event.target, false);
+    }
+
+    openGUI(event){
+        this.recursiveSetGUI(event.target, true);
     }
 }
 
@@ -769,45 +787,30 @@ class AleGame {
         this.renderer = new AleRenderer();
         this.fizika = new AleFizika();
         this.eventManager = new AleEventManager();
-        this.gravity = 1;
         this.fps = 60;
         this.frameDuration = 1000 / this.fps;
         this.start = Date.now();
         this.elapsed = Date.now() - this.start;
         this.gameData = {};
-        this.player1 = {};
-        this.player2 = {};
     }
 
     init(gameData){
         this.gameData = gameData;
-        this.player1 = {
 
-        };
+        this.loadEntities();
 
-        game.load("startCave");
-        game.addSprite(this.player1);
-        console.log(this.player1);
-        game.loadUI("MainMenu");
         this.eventManager.initKeyTracking(this.spriteList, this.UIList);
         this.run();
     }
 
-    load(level){
-        this.gameData.levelData[level].forEach(sprite =>{
-            this.addSprite(sprite);
-        });
+    loadEntities(){
+        gameData.forEach(entity =>{
+            addEntity(entity);
+        })
     }
 
-    loadUI(UI){
-        this.gameData.UIData[UI].forEach(UIElement =>{
-            if(UIElement.type == "GUI"){
-                this.addGUI(UIElement);
-            } else {
-                this.addUI(UIElement);
-            }
-            
-        });
+    addEntity(entity){
+        this.entityList.push(new Entity(entity));
     }
 
     run() {
@@ -818,12 +821,12 @@ class AleGame {
     }
 
     render() {
-        this.renderer.render(this.spriteList, this.UIList);
+        this.renderer.render(this.entityList);
     }
 
     update() {
-        this.eventManager.solveEvents(this.spriteList, this.UIList, this.GUIList);
-        this.fizika.update(this.spriteList);
+        this.eventManager.solveEvents(this.entityList);
+        this.fizika.update(this.entityList);
     }
 }
 
