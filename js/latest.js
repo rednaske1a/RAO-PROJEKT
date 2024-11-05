@@ -1,129 +1,4 @@
 const gameData = {
-<<<<<<< HEAD
-    "levelData": {
-        "level1": [
-            {
-                "id": 0,
-                "name": "Main",
-                "parent": null,
-                "pos": { "x": null, "y": null },
-                "relPos": {"x": 0, "y": 0 },
-                "size": { "w": 0, "h": 0 },
-                "children": ["Cave", "MainCamera"],
-                "components": []
-            },{
-                "id": 1,
-                "name": "Player1",
-                "pos": { "x": null, "y": null },
-                "relPos": {"x": 500, "y": -500 },
-                "size": { "w": 50, "h": 100 },
-                "parent": "Main",
-                "children": ["Player1Camera"],
-                "components": [
-                    {
-                        "name": "AleFizikaC",
-                        "data": {
-                            "bb": {
-                                "pos": {"x": null, "y": null},
-                                "relPos": {"x": 0, "y": 0},
-                                "size": {"w": 50, "h": 100}
-                            },
-                            "vel" : {"x": 0, "y": 0},
-                            "acc" : {"x": 0, "y": 0},
-                            "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                            "collMask" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-                        }
-                    },{
-                        "name": "AleRenderC",
-                        "data": {
-                            "color": "Red",
-                            "visible": true,
-                            "zLayer": 10
-                        }
-                    },{
-                        "name": "AleEventC",
-                        "data": {
-                            "keys" : [
-                                {
-                                    "key": "w", 
-                                    "event": {"name": "Jump", "contexts": ["InGame"], "target": "Player1", "trigger": "w"}
-                                },{
-                                    "key": "a", 
-                                    "event": {"name": "GoLeft", "contexts": ["InGame"], "target": "Player1", "trigger": "a"}
-                                },{
-                                    "key": "s", 
-                                    "event": {"name": "Duck", "contexts": ["InGame"], "target": "Player1", "trigger": "s"}
-                                },{
-                                    "key": "d", 
-                                    "event": {"name": "GoRight", "contexts": ["InGame"], "target": "Player1", "trigger": "d"}
-                                }
-                            ]
-                        }
-                    }
-                ]
-            },{
-                "id": 2,
-                "name": "Player1Camera",
-                "pos": {"x": null, "y": null},
-                "relPos": {"x": -512, "y": -288},
-                "size": {"w": 1024, "h": 576},
-                "parent": "Player1",
-                "children": [],
-                "components": [
-                    {
-                        "name": "AleFizikaC",
-                        "data": {
-                            "bb": {
-                                "pos": {"x": null, "y": null},
-                                "relPos": {"x": -512, "y": -288},
-                                "size": {"w": 1024, "h": 576},
-                            },
-                            "vel" : {"x": 0, "y": 0},
-                            "acc" : {"x": 0, "y": 0},
-                            "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                            "collMask" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-                        }
-                    },{
-                        "name": "AleCameraC",
-                        "data": {
-                            "active": true,
-                            "sPos": {"x": 0, "y": 0},
-                            "sSize": {"w": 1024, "h": 576}
-                        }
-                    }
-                ]
-            },{
-                "id": 3,
-                "name": "CaveGround",
-                "pos": {"x": null, "y": null},
-                "relPos": {"x": 0, "y": 200},
-                "size": {"w": 1000, "h": 100},
-                "parent": "Main",
-                "children": [],
-                "components": [
-                    {
-                        "name": "AleFizikaC",
-                        "data": {
-                            "bb": {
-                                "pos": {"x": null, "y": null},
-                                "relPos": {"x": 0, "y": 0},
-                                "size": {"w": 1000, "h": 100}
-                            },
-                            "vel" : {"x": 0, "y": 0},
-                            "acc" : {"x": 0, "y": 0},
-                            "collLayer" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                            "collMask" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-                        }
-                    },{
-                        "name": "AleRenderC",
-                        "data": {
-                            "color": "Gray",
-                            "visible": true,
-                            "zLayer": -10 
-                        }
-                    }
-                ]
-=======
     0: {
         "id": 0,
         "type": "Node",
@@ -177,7 +52,6 @@ const gameData = {
                 "acc" : {"x": 0, "y": 0},
                 "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 "collMask" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
->>>>>>> 95a1e27ea3bd7002f0f805bf1eadf3f447ff8273
             }
             }]
         },
@@ -286,25 +160,19 @@ const gameData = {
 
 // EN(TITY) COMPONENT SYSTEM
 class Entity {
-<<<<<<< HEAD
-    constructor({id, name, pos, relPos, size, parent, children, components}){
-=======
     constructor({id, type, name, active, parent, children, pos, relPos, size, components}){
->>>>>>> 95a1e27ea3bd7002f0f805bf1eadf3f447ff8273
         this.id = id;
         this.type = type;
         this.name = name;
         this.active = active;
 
+        this.parent = parent;
+        this.children = children;
+
         this.pos = pos;
         this.relPos = relPos;
         this.size = size;
-<<<<<<< HEAD
-        this.parent = parent;
-        this.children = children;
-=======
 
->>>>>>> 95a1e27ea3bd7002f0f805bf1eadf3f447ff8273
         this.fizikaC = null;
         this.eventC = null;
         this.renderC = null;
@@ -383,17 +251,8 @@ class AleCameraC {
 
 class AleFizika {
 
-    constructor() {
-<<<<<<< HEAD
-        this.trenje = 0.80;
-    }
+    constructor() {}
 
-=======
-
-    }
-
-    //https://gamedev.net/tutorials/programming/general-and-gameplay-programming/swept-aabb-collision-detection-and-response-r3084/ PREDELAN KER UNI NI DELAL !!!!
->>>>>>> 95a1e27ea3bd7002f0f805bf1eadf3f447ff8273
     sweptAABB(b1, b2) {
         let xInvEntry, yInvEntry;
         let xInvExit, yInvExit;
@@ -484,10 +343,6 @@ class AleFizika {
         }
     }
 
-<<<<<<< HEAD
-    update(spriteList) {
-        
-=======
     update(entityList) {
         let solveColl = [];
 
@@ -517,7 +372,6 @@ class AleFizika {
             }
         });
 
->>>>>>> 95a1e27ea3bd7002f0f805bf1eadf3f447ff8273
 
         this.toSolve.forEach(maskGroup => {
             maskGroup.forEach(element1 => {
