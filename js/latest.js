@@ -422,37 +422,9 @@ class AleRenderer {
         this.canvas.width = 1024;
         this.canvas.height = 576;
         this.c = this.canvas.getContext('2d');
-        this.cameraMode = "SingleScreen";
-        this.lockedOn = {};
-        this.camera = new AleCamera({
-            name: 'mainCamera',
-            pos: {x: this.canvas.width/2, y:this.canvas.height/2},
-            size:{ w: this.canvas.width, h:this.canvas.height},
-            cpos: {x: 0, y:0},
-            csize:{ w: this.canvas.width, h:this.canvas.height},
-            ar: (this.canvas.width/this.canvas.height),
-            lockedOn: ['Player1', 'Player2']
-        });
-        this.cameraLeft = new AleCamera({
-            name: 'cameraLeft',
-            pos: {x: this.canvas.width/2, y:this.canvas.height/2},
-            size:{ w: this.canvas.width/2, h:this.canvas.height},
-            cpos: {x: 0, y:0},
-            csize:{ w: this.canvas.width/2, h:this.canvas.height},
-            ar: (this.canvas.width/this.canvas.height * 2),
-            lockedOn: ['Player1']
-        });
-        this.cameraRight = new AleCamera({
-            name: 'cameraRight',
-            pos: {x: this.canvas.width/2, y:this.canvas.height/2},
-            size:{ w: this.canvas.width/2, h:this.canvas.height},
-            cpos: {x: this.canvas.width/2, y:0},
-            csize:{ w: this.canvas.width/2, h:this.canvas.height},
-            ar: (this.canvas.width/this.canvas.height * 2),
-            lockedOn: ['Player2']
-        });
     }
 
+    /*
     cameraControl(spriteList){
         let minX = Infinity;
         let maxX = -Infinity;
@@ -550,47 +522,61 @@ class AleRenderer {
             this.camera.pos.y -= (this.camera.pos.y - this.lockedOn[minSpriteY].pos.y) / 10;
         }
     }
+*/
 
+    render(entityList) {
 
-    render(spriteList, UIList) {
-        
-        this.cameraControl(spriteList);
+        entityList.forEach(cEntity =>{
+            if(cEntity.cameraC != null && cEntity.active == 1){
+                this.draw(cEntity, entityList);
+            }
+        })
 
-        if(this.cameraMode == "SingleScreen"){
-            this.draw(this.camera, spriteList);
-        } else if(this.cameraMode == "SplitScreen"){
-            
-            this.draw(this.cameraLeft, spriteList);
-            this.draw(this.cameraRight, spriteList);
-        }
-
-        this.drawUI(this.camera, UIList);
     }
 
-    draw(camera, spriteList){
+    draw(camera, entityList){
         this.c.save();
         this.c.beginPath();
-        this.c.rect(camera.cpos.x, camera.cpos.y, camera.cpos.x + camera.csize.w, camera.cpos.y + camera.csize.h);
+        this.c.rect(camera.cameraC.cpos.x, camera.cameraC.cpos.y, camera.cameraC.cpos.x + camera.cameraC.csize.w, camera.cameraC.cpos.y + camera.cameraC.csize.h);
         
         this.c.clip();
 
 
         this.c.fillStyle = 'blue';
-        this.c.fillRect(camera.cpos.x, camera.cpos.y, camera.cpos.x + camera.csize.w, camera.cpos.y + camera.csize.h);
+        this.c.fillRect(camera.cameraC.cpos.x, camera.cameraC.cpos.y, camera.cameraC.cpos.x + camera.cameraC.csize.w, camera.cameraC.cpos.y + camera.cameraC.csize.h);
 
-        spriteList.sort(function(a, b){return a.z_layer - b.z_layer});
+        let renderList = [];
+        entityList.forEach(entity =>{
+            if(entity.renderC != null){
+                renderList.push(entity);
+            }
+        })
 
-        spriteList.forEach(element => {
-            this.c.fillStyle = element.color;
-            this.c.fillRect(
-               (element.pos.x + (camera.size.w / 2  - camera.pos.x )) * (camera.csize.w / camera.size.w) + camera.cpos.x, 
-               (element.pos.y + (camera.size.h / 2  - camera.pos.y )) * (camera.csize.h / camera.size.h) + camera.cpos.y , 
-                element.size.w * (camera.csize.w / camera.size.w), 
-                element.size.h * (camera.csize.h / camera.size.h)
-            );
+        renderList.sort(function(a, b){return a.renderC.z_layer - b.renderC.z_layer});
+
+        renderList.forEach(entity => {
+            this.c.fillStyle = entity.renderC.color;
+
+            if(entity.type == "GUI") {
+                this.c.fillRect(
+                    element.pos.x + camera.cameraC.cpos.x,
+                    element.pos.y + camera.cameraC.cpos.y,
+                    element.size.w,
+                    element.size.h,
+                );
+            } else {
+                this.c.fillRect(
+                    (entity.pos.x + (camera.size.w / 2  - camera.pos.x )) * (camera.cameraC.csize.w / camera.size.w) + camera.cameraC.cpos.x, 
+                    (entity.pos.y + (camera.size.h / 2  - camera.pos.y )) * (camera.cameraC.csize.h / camera.size.h) + camera.cameraC.cpos.y , 
+                    entity.size.w * (camera.cameraC.csize.w / camera.size.w), 
+                    entity.size.h * (camera.cameraC.csize.h / camera.size.h)
+                 );
+            }
+            
         });
         this.c.restore();
 
+        /*
         if(camera.name == this.cameraRight.name){
             let cameraDistance = this.cameraRight.pos.x - this.cameraLeft.pos.x;
             let a = ((Math.abs(cameraDistance) - this.canvas.width/2) / 400);
@@ -598,23 +584,8 @@ class AleRenderer {
             this.c.fillStyle = 'White';
             this.c.fillRect(camera.cpos.x - 5 * Math.min(a,1) , camera.cpos.y, 10 * Math.min(a,1), camera.csize.h);
         }
+            */
         
-    }
-
-    drawUI(camera, UIList){
-        UIList.sort(function(a, b){return a.z_layer - b.z_layer});
-
-        UIList.forEach(element => {
-            if(element.active == 1){
-                this.c.fillStyle = element.color;
-            this.c.fillRect(
-                element.pos.x + camera.cpos.x,
-                element.pos.y + camera.cpos.x,
-                element.size.w,
-                element.size.h,
-            );
-            }
-        });
     }
 }
 
