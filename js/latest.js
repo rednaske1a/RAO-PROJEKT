@@ -19,30 +19,15 @@ const gameData = {
         },
     1: {
         "id": 1,
-        "type": "Node",
+        "type": "Box2d",
         "name": "Player1",
         "active": 1,
 
         "parent": "Game",
-        "children": ["Player1Collider", "Player1Image"],
+        "children": ["Player1BodyImg"],
 
         "pos": { "x": null, "y": null },
         "relPos": {"x": 500, "y": -500 },
-        "size": { "w": 50, "h": 100 },
-        
-        "components": []
-        },
-    2: {
-        "id": 2,
-        "type": "Collider",
-        "name": "Player1Collider",
-        "active": 1,
-
-        "parent": "Player1",
-        "children": [],
-
-        "pos": { "x": null, "y": null },
-        "relPos": {"x": 0, "y": 0 },
         "size": { "w": 50, "h": 100 },
         
         "components": [{
@@ -50,6 +35,7 @@ const gameData = {
             "data": {
                 "vel" : {"x": 0, "y": 0},
                 "acc" : {"x": 0, "y": 0},
+                "trenje": 0.8,
                 "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 "collMask" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
             }
@@ -58,7 +44,7 @@ const gameData = {
     3: {
         "id": 3,
         "type": "Image",
-        "name": "Player1Image",
+        "name": "Player1BodyImg",
         "active": 1,
 
         "parent": "Player1",
@@ -79,7 +65,7 @@ const gameData = {
         },
     4: {
         "id": 4,
-        "type": "Node",
+        "type": "Box2d",
         "name": "Camera1",
         "active": 1,
 
@@ -97,30 +83,15 @@ const gameData = {
         },
     5: {
         "id": 5,
-        "type": "Node",
+        "type": "Box2d",
         "name": "Ground",
         "active": 1,
 
         "parent": "Game",
-        "children": ["GroundCollider", "GroundImage"],
+        "children": ["Ground1Img"],
 
         "pos": { "x": null, "y": null },
         "relPos": {"x": 0, "y": 1000 },
-        "size": { "w": 1000, "h": 100 },
-        
-        "components": []
-        },
-    6: {
-        "id": 6,
-        "type": "Collider",
-        "name": "GroundCollider",
-        "active": 1,
-
-        "parent": "Ground",
-        "children": [],
-
-        "pos": { "x": null, "y": null },
-        "relPos": {"x": 0, "y": 0 },
         "size": { "w": 1000, "h": 100 },
         
         "components": [{
@@ -128,6 +99,7 @@ const gameData = {
             "data": {
                 "vel" : {"x": 0, "y": 0},
                 "acc" : {"x": 0, "y": 0},
+                "trenje": 0.8,
                 "collLayer" : [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 "collMask" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
             }
@@ -136,7 +108,7 @@ const gameData = {
     7: {
         "id": 7,
         "type": "Image",
-        "name": "Player1Image",
+        "name": "Ground1Img",
         "active": 1,
 
         "parent": "Ground",
