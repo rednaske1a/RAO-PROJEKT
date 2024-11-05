@@ -239,40 +239,40 @@ class AleFizika {
         this.collStorage = [];
     }
 
-    sweptAABB(b1, b2) {
+    sweptAABB(entity1, entity2) {
         let xInvEntry, yInvEntry;
         let xInvExit, yInvExit;
         let normalx, normaly;
 
-        if( (b1.pos.y <= b2.pos.y) && (b1.pos.y + b1.size.h <= b2.pos.y) ||
-            (b2.pos.y <= b1.pos.y) && (b2.pos.y + b2.size.h <= b1.pos.y) ||
-            b1.vel.x == 0
+        if( (entity1.pos.y <= entity2.pos.y) && (entity1.pos.y + entity1.size.h <= entity2.pos.y) ||
+            (entity2.pos.y <= entity1.pos.y) && (entity2.pos.y + entity2.size.h <= entity1.pos.y) ||
+            entity1.fizikaC.vel.x == 0
         ) { 
             xInvEntry = Infinity;
             xInvExit = Infinity;
         } else {
-            if (b1.vel.x > 0) {
-                xInvEntry = b2.pos.x - (b1.pos.x + b1.size.w);
-                xInvExit = (b2.pos.x + b2.size.w) - b1.pos.x;
+            if (entity1.fizikaC.vel.x > 0) {
+                xInvEntry = entity2.pos.x - (entity1.pos.x + entity1.size.w);
+                xInvExit = (entity2.pos.x + entity2.size.w) - entity1.pos.x;
             } else {
-                xInvEntry = (b2.pos.x + b2.size.w) - b1.pos.x;
-                xInvExit = b2.pos.x - (b1.pos.x + b1.size.w);
+                xInvEntry = (entity2.pos.x + entity2.size.w) - entity1.pos.x;
+                xInvExit = entity2.pos.x - (entity1.pos.x + entity1.size.w);
             }
         }
        
-        if( (b1.pos.x <= b2.pos.x) && (b1.pos.x + b1.size.w <= b2.pos.x) ||
-            (b2.pos.x <= b1.pos.x) && (b2.pos.x + b2.size.w <= b1.pos.x) ||
-            b1.vel.y == 0
+        if( (entity1.pos.x <= entity2.pos.x) && (entity1.pos.x + entity1.size.w <= entity2.pos.x) ||
+            (entity2.pos.x <= entity1.pos.x) && (entity2.pos.x + entity2.size.w <= entity1.pos.x) ||
+            entity1.fizikaC.vel.y == 0
         ) { 
             yInvEntry = Infinity;
             yInvExit = Infinity;
         } else {
-            if (b1.vel.y > 0) {
-                yInvEntry = b2.pos.y - (b1.pos.y + b1.size.h);
-                yInvExit = (b2.pos.y + b2.size.h) - b1.pos.y;
+            if (entity1.fizikaC.vel.y > 0) {
+                yInvEntry = entity2.pos.y - (entity1.pos.y + entity1.size.h);
+                yInvExit = (entity2.pos.y + entity2.size.h) - entity1.pos.y;
             } else {
-                yInvEntry = (b2.pos.y + b2.size.h) - b1.pos.y;
-                yInvExit = b2.pos.y - (b1.pos.y + b1.size.h);
+                yInvEntry = (entity2.pos.y + entity2.size.h) - entity1.pos.y;
+                yInvExit = entity2.pos.y - (entity1.pos.y + entity1.size.h);
             }
         }
 
