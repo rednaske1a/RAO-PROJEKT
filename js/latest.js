@@ -14,7 +14,12 @@ const gameData = {
         
         "components": [{
             "name": "AleEventC",
-            "data": {}
+            "data": {
+                "w": [{"name": "Jump", "contexts": ["InGame"], "target": "Player1", "trigger": "w"}],
+                "a": [{"name": "GoLeft", "contexts": ["InGame"], "target": "Player1", "trigger": "a"}],
+                "s": [{"name": "Duck", "contexts": ["InGame"], "target": "Player1", "trigger": "s"}],
+                "d": [{"name": "GoRight", "contexts": ["InGame"], "target": "Player1", "trigger": "d"}],
+                }
             }]
         },
     1: {
@@ -78,7 +83,10 @@ const gameData = {
         
         "components": [{
             "name": "AleCameraC",
-            "data": {}
+            "data": {
+                "sPos": {"x": 0, "y": 0},
+                "sSize": {"w": 1024, "h": 576},
+            }
             }]
         },
     5: {
@@ -214,8 +222,7 @@ class AleRenderC {
 }
 
 class AleCameraC {
-    constructor({active, sPos, sSize}){
-        this.active = active;
+    constructor({sPos, sSize}){
         this.sPos = sPos;
         this.sSize = sSize;
     }
