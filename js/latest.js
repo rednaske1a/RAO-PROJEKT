@@ -99,7 +99,7 @@ const gameData = {
             }
             }]
         },
-10: {
+    10: {
         "id": 10,
         "type": "Box2d",
         "name": "Camera2",
