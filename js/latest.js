@@ -95,7 +95,28 @@ const gameData = {
             "name": "AleCameraC",
             "data": {
                 "sPos": {"x": 0, "y": 0},
-                "sSize": {"w": 1024, "h": 576},
+                "sSize": {"w": 512, "h": 576},
+            }
+            }]
+        },
+10: {
+        "id": 10,
+        "type": "Box2d",
+        "name": "Camera2",
+        "active": 1,
+
+        "parent": "Game",
+        "children": [],
+
+        "pos": { "x": null, "y": null },
+        "relPos": {"x": 0, "y": -1000 },
+        "size": { "w": 1024, "h": 576 },
+        
+        "components": [{
+            "name": "AleCameraC",
+            "data": {
+                "sPos": {"x": 512, "y": 0},
+                "sSize": {"w": 512, "h": 576},
             }
             }]
         },
