@@ -88,14 +88,84 @@ const gameData = {
         "children": [],
 
         "pos": { "x": null, "y": null },
-        "relPos": {"x": 0, "y": 0 },
+        "relPos": {"x": 200, "y": 0 },
         "size": { "w": 1024, "h": 576 },
         
         "components": [{
             "name": "AleCameraC",
             "data": {
                 "sPos": {"x": 0, "y": 0},
-                "sSize": {"w": 1024, "h": 576},
+                "sSize": {"w": 512, "h": 288},
+            }
+            },{
+                "name": "AleRenderC",
+                "data": {
+                    "color": "Yellow",
+                    "visible": true,
+                    "zLayer": -20
+                }
+                }]
+        },
+    6: {
+        "id": 6,
+        "type": "Box2d",
+        "name": "Camera2",
+        "active": 1,
+
+        "parent": "Game",
+        "children": [],
+
+        "pos": { "x": null, "y": null },
+        "relPos": {"x": 0, "y": 1000 },
+        "size": { "w": 1024, "h": 576 },
+        
+        "components": [{
+            "name": "AleCameraC",
+            "data": {
+                "sPos": {"x": 512, "y": 0},
+                "sSize": {"w": 512, "h": 288},
+            }
+            }]
+        },
+    11: {
+        "id": 11,
+        "type": "Box2d",
+        "name": "Camera3",
+        "active": 1,
+
+        "parent": "Game",
+        "children": [],
+
+        "pos": { "x": null, "y": null },
+        "relPos": {"x": 500, "y": 1000 },
+        "size": { "w": 1024, "h": 576 },
+        
+        "components": [{
+            "name": "AleCameraC",
+            "data": {
+                "sPos": {"x": 0, "y": 288},
+                "sSize": {"w": 512, "h": 288},
+            }
+            }]
+        },
+    12: {
+        "id": 12,
+        "type": "Box2d",
+        "name": "Camera4",
+        "active": 1,
+
+        "parent": "Game",
+        "children": [],
+
+        "pos": { "x": null, "y": null },
+        "relPos": {"x": 1000, "y": 1000 },
+        "size": { "w": 1024, "h": 576 },
+        
+        "components": [{
+            "name": "AleCameraC",
+            "data": {
+                "sPos": {"x": 512, "y": 288},
+                "sSize": {"w": 512, "h": 288},
             }
             }]
         },
