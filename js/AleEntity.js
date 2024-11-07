@@ -1,14 +1,14 @@
 class Entity {
-    constructor({id, type, name, active, parent, children, pos, relPos, size, components}){
+    constructor({id, type, name, active, parent, relPos, size, components}){
         this.id = id;
         this.type = type;
         this.name = name;
         this.active = active;
 
         this.parent = parent;
-        this.children = children;
+        this.children = []
 
-        this.pos = pos;
+        this.pos = {x: null, y:null};
         this.relPos = relPos;
         this.size = size;
 
@@ -37,16 +37,18 @@ class Entity {
 
     setEntityPointers(entityList){
         entityList.forEach(entity =>{
-            //console.log(entity);
             if(entity.name == this.parent){
                 this.parent = entity;
             }
-            for(let key in this.children) {
-                if(this.children[key] == entity.name){
-                    this.children[key] = entity;
-                }
-            }
         });
+
+        entityList.forEach(entityParent =>{
+            entityList.forEach(entityChild =>{
+                if(entityChild.parent.id == entityParent.id){
+                    entityParent.children.push(entityChild);
+                }
+            })
+        })
     }
 
     updatePos(){

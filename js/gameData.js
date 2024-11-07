@@ -6,9 +6,7 @@ const gameData = {
         "active": 1,
 
         "parent": null,
-        "children": ["Player", "Camera", "Ground"],
 
-        "pos": { "x": null, "y": null },
         "relPos": {"x": 0, "y": 0 },
         "size": { "w": 0, "h": 0 },
         
@@ -30,9 +28,7 @@ const gameData = {
         "active": 1,
 
         "parent": "Game",
-        "children": ["Player1BodyImg"],
 
-        "pos": { "x": null, "y": null },
         "relPos": {"x": 500, "y": -500 },
         "size": { "w": 50, "h": 100 },
         
@@ -63,9 +59,7 @@ const gameData = {
         "active": 1,
 
         "parent": "Player1",
-        "children": [],
 
-        "pos": { "x": null, "y": null },
         "relPos": {"x": 0, "y": 0 },
         "size": { "w": 50, "h": 100 },
         
@@ -85,9 +79,7 @@ const gameData = {
         "active": 1,
 
         "parent": "Player1",
-        "children": [],
 
-        "pos": { "x": null, "y": null },
         "relPos": {"x": -512 + 50, "y": -288 -100 },
         "size": { "w": 1024, "h": 576 },
         
@@ -106,9 +98,7 @@ const gameData = {
         "active": 1,
 
         "parent": "Game",
-        "children": ["Ground1Img"],
 
-        "pos": { "x": null, "y": null },
         "relPos": {"x": 0, "y": 1000 },
         "size": { "w": 10000, "h": 100 },
         
@@ -131,9 +121,7 @@ const gameData = {
         "active": 1,
 
         "parent": "Ground",
-        "children": [],
 
-        "pos": { "x": null, "y": null },
         "relPos": {"x": 0, "y": 0 },
         "size": { "w": 10000, "h": 100 },
         
@@ -153,9 +141,7 @@ const gameData = {
         "active": 1,
 
         "parent": "Game",
-        "children": ["SkillSlot1","SkillSlot2","SkillSlot3","SkillSlot4"],
 
-        "pos": { "x": null, "y": null },
         "relPos": {"x": 10, "y": 466 },
         "size": { "w": 0, "h": 0 },
         
@@ -168,9 +154,7 @@ const gameData = {
         "active": 1,
 
         "parent": "SkillSlots",
-        "children": [],
 
-        "pos": { "x": null, "y": null },
         "relPos": {"x": 0, "y": 0 },
         "size": { "w": 100, "h": 100 },
         
@@ -190,9 +174,7 @@ const gameData = {
         "active": 1,
 
         "parent": "SkillSlots",
-        "children": [],
 
-        "pos": { "x": null, "y": null },
         "relPos": {"x": 110, "y": 0 },
         "size": { "w": 100, "h": 100 },
         
@@ -212,9 +194,7 @@ const gameData = {
         "active": 1,
 
         "parent": "SkillSlots",
-        "children": [],
 
-        "pos": { "x": null, "y": null },
         "relPos": {"x": 220, "y": 0 },
         "size": { "w": 100, "h": 100 },
         
@@ -234,9 +214,7 @@ const gameData = {
         "active": 1,
 
         "parent": "SkillSlots",
-        "children": [],
 
-        "pos": { "x": null, "y": null },
         "relPos": {"x": 330, "y": 0 },
         "size": { "w": 100, "h": 100 },
         
