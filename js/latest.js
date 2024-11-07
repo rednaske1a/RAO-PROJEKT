@@ -95,7 +95,7 @@ const gameData = {
             "name": "AleCameraC",
             "data": {
                 "sPos": {"x": 0, "y": 0},
-                "sSize": {"w": 512, "h": 288},
+                "sSize": {"w": 512, "h": 288}, "follow": ["Player1"], "strength":50, "mergeWith": "P2Camera", "mergeInto": "&&??", "mergeRadius": 500
             }
             },{
                 "name": "AleRenderC",
