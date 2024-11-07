@@ -4,17 +4,18 @@ class AleEventManager{
         this.eventList = [];
         this.canvas = document.querySelector('canvas');
         this.eventContext = "InGame";
-        this.keys = {};
+        this.events = {keys: {}, mouse: {}};
         this.screenMouseXY = {x:0, y:0};
         this.gameMouseXY = {x:0, y:0};
         window.addEventListener('keydown', (event) => this.updateKeys(event, 1));
         window.addEventListener('keyup', (event) => this.updateKeys(event, 0));
         window.addEventListener('mousemove', (event) => this.updateMouseXY(event));
-        window.addEventListener('click', (event) => this.setClicked(1));
+        window.addEventListener("mousedown", (event) => this.mouseState(event, 1));
+        window.addEventListener("mouseup", (event) => this.mouseState(event, 0));
     }
 
     initKeyTracking(entityList){
-        this.keys = {};
+        this.events.keys = {};
         entityList.forEach(entity =>{
             if(entity.eventC != null){
                 //console.log("OKOK")
@@ -36,14 +37,14 @@ class AleEventManager{
                         newEvents.push({name:event.name, contexts:event.contexts, target:target, trigger:key})
                     })
 
-                    if(this.keys[key] == undefined){
-                        this.keys[key] = {value: 0, events: newEvents};
+                    if(this.events.keys[key] == undefined){
+                        this.events.keys[key] = {value: 0, events: newEvents};
                     } else {
-                        let combineEvents = this.keys[key].events;
+                        let combineEvents = this.events.keys[key].events;
                         newEvents.forEach(event=>{
                             combineEvents.push(event);
                         });
-                        this.keys[key] = {value: 0, events: combineEvents};
+                        this.events.keys[key] = {value: 0, events: combineEvents};
                     }
                 }
             }
@@ -51,7 +52,7 @@ class AleEventManager{
     }
 
     updateKeys(event, setTo){
-        if(this.keys[event.key] != undefined) this.keys[event.key].value = setTo;
+        if(this.events.keys[event.key] != undefined) this.events.keys[event.key].value = setTo;
     }
 
     updateMouseXY(event){
@@ -60,8 +61,8 @@ class AleEventManager{
     }
 
     setClicked(setTo){
-        if(this.keys.click != undefined){
-            this.keys["click"].value = setTo;
+        if(this.events.keys.click != undefined){
+            this.events.keys["click"].value = setTo;
         }
     }
 
@@ -70,14 +71,14 @@ class AleEventManager{
         this.eventList = [];
         //KEYBOARD EVENTS & UNLOCK BUTTONS
         //
-        for (let key in this.keys) {
-            if(this.keys[key].value == 1){
-                this.keys[key].events.forEach(event =>{
+        for (let key in this.events.keys) {
+            if(this.events.keys[key].value == 1){
+                this.events.keys[key].events.forEach(event =>{
                     console.log(key);
                     this.validateEvent(event);
                 })
             } else {
-                this.keys[key].events.forEach(event=>{
+                this.events.keys[key].events.forEach(event=>{
                     if(event.target.guiC != null){
                         if(key == event.target.guiC.toggleLockedBy){
                             event.target.guiC.toggleLocked = 0;

@@ -19,7 +19,7 @@ class AleGame {
 
     loadData(data){
         data.forEach(entity =>{
-            this.addEntity(entity);
+            Entity.addEntity(this.entityList, entity);
         })
         //IDJI MORAJO BITI SETANI DA SE BOJO POINTERJI PRAVILNO POSTAVILI !!!!!!
         Entity.setIDs(this.entityList);
@@ -42,9 +42,6 @@ class AleGame {
         this.eventManager.initKeyTracking(this.entityList);
     }
 
-    addEntity(entity){
-        this.entityList.push(new Entity(entity));
-    }
 
     run() {
         game.render();

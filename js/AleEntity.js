@@ -87,6 +87,10 @@ class Entity {
         return descList;
     }
 
+    static addEntity(entityList, entity){
+        entityList.push(new Entity(entity));
+    }
+
     static removeEntity(entityList, entity){
         let removeEntities = Entity.getDescendants(entity, []); //ukradel direkt iz robloxa
         let removeN = 0;
