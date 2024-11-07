@@ -14,6 +14,7 @@ class AleEventManager{
     }
 
     initKeyTracking(entityList){
+        this.keys = {};
         entityList.forEach(entity =>{
             if(entity.eventC != null){
                 //console.log("OKOK")
@@ -38,7 +39,7 @@ class AleEventManager{
                     if(this.keys[key] == undefined){
                         this.keys[key] = {value: 0, events: newEvents};
                     } else {
-                        combineEvents = this.keys[key].events;
+                        let combineEvents = this.keys[key].events;
                         newEvents.forEach(event=>{
                             combineEvents.push(event);
                         });

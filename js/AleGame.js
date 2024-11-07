@@ -4,33 +4,43 @@ class AleGame {
         this.renderer = new AleRenderer();
         this.fizika = new AleFizika();
         this.eventManager = new AleEventManager();
-        this.fps = 60;
-        this.frameDuration = 1000 / this.fps;
-        this.start = Date.now();
-        this.elapsed = Date.now() - this.start;
-        this.gameData = {};
+        this.data = {};
     }
 
-    init(gameData){
-        this.gameData = gameData;
+    init(data){
+        this.data = data;
+        this.loadData(this.data.gameData);
+        this.loadData(this.data.level1Data);
+        this.loadData(this.data.playerData);
+        //this.unloadData(this.data.level1Data);
 
-        this.loadEntities();
-
-        this.eventManager.initKeyTracking(this.entityList);
         this.run();
     }
 
-    loadEntities(){
-        for(let key in this.gameData){
-            this.addEntity(gameData[key]);
-        }
-
-        this.entityList.forEach(entity =>{
-            entity.setEntityPointers(this.entityList);
+    loadData(data){
+        data.forEach(entity =>{
+            this.addEntity(entity);
         })
+        //IDJI MORAJO BITI SETANI DA SE BOJO POINTERJI PRAVILNO POSTAVILI !!!!!!
+        Entity.setIDs(this.entityList);
+        Entity.setPointers(this.entityList);
+    
+        this.eventManager.initKeyTracking(this.entityList);
     }
 
-    
+    unloadData(data){
+        console.log(data);
+        this.entityList.forEach(entity =>{
+            if(entity.name == data[0].name){
+                Entity.removeEntity(this.entityList, entity);
+            }
+        })
+        
+        Entity.setIDs(this.entityList);
+        Entity.setPointers(this.entityList);
+
+        this.eventManager.initKeyTracking(this.entityList);
+    }
 
     addEntity(entity){
         this.entityList.push(new Entity(entity));

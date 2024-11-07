@@ -1,12 +1,13 @@
 class Entity {
-    constructor({id, type, name, active, parent, relPos, size, components}){
-        this.id = id;
-        this.type = type;
-        this.name = name;
-        this.active = active;
+    constructor({name, type, parent, active, relPos, size, components}){
+        this.id = null;
 
+        this.name = name;
+        this.type = type;
         this.parent = parent;
         this.children = []
+        
+        this.active = active;
 
         this.pos = {x: null, y:null};
         this.relPos = relPos;
@@ -35,19 +36,63 @@ class Entity {
         });
     }
 
-    setEntityPointers(entityList){
-        entityList.forEach(entity =>{
-            if(entity.name == this.parent){
-                this.parent = entity;
-            }
-        });
+    static setParentPointers(entityList){
+        entityList.forEach(entityChild =>{
+            entityList.forEach(entityParent =>{
+                if(entityChild.parent != null && entityParent.name == entityChild.parent){
+                    entityChild.parent = entityParent;
+                }
+            })
+        })
+    }
 
+    static setChildrenPointers(entityList){
         entityList.forEach(entityParent =>{
+            entityParent.children = [];
             entityList.forEach(entityChild =>{
-                if(entityChild.parent.id == entityParent.id){
+                if(entityChild.parent != null && entityChild.parent.id == entityParent.id){
+                    //console.log("Parent: " + entityParent.name + " ID: " + entityParent.id);
+                    //console.log("Child: " + entityChild.name + " ID: " + entityChild.id);
                     entityParent.children.push(entityChild);
                 }
             })
+        })
+        //console.log("/////////////////////////////////////////////")
+    }
+
+    static setPointers(entityList){
+        Entity.setParentPointers(entityList);
+        Entity.setChildrenPointers(entityList);
+    }
+
+    static setIDs(entityList){
+        let id = 0;
+        entityList.forEach(entity =>{
+            entity.id = id;
+            id++;
+        });
+    }
+
+    static updatePosAll(entityList){
+        entityList.forEach(entity =>{
+            entity.updatePos();
+        })
+    }
+
+    static getDescendants(entity, descList){
+        descList.push(entity);
+        entity.children.forEach(child =>{
+            Entity.getDescendants(child, descList);
+        })
+        return descList;
+    }
+
+    static removeEntity(entityList, entity){
+        let removeEntities = Entity.getDescendants(entity, []); //ukradel direkt iz robloxa
+        let removeN = 0;
+        removeEntities.forEach(rEntity =>{
+            entityList.splice(rEntity.id - removeN, 1);
+            removeN++;
         })
     }
 
