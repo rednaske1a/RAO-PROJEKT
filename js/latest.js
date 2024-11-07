@@ -88,84 +88,14 @@ const gameData = {
         "children": [],
 
         "pos": { "x": null, "y": null },
-        "relPos": {"x": 200, "y": 0 },
+        "relPos": {"x": -512 + 50, "y": -288 -100 },
         "size": { "w": 1024, "h": 576 },
         
         "components": [{
             "name": "AleCameraC",
             "data": {
                 "sPos": {"x": 0, "y": 0},
-                "sSize": {"w": 512, "h": 288}, "follow": ["Player1"], "strength":50, "mergeWith": "P2Camera", "mergeInto": "&&??", "mergeRadius": 500
-            }
-            },{
-                "name": "AleRenderC",
-                "data": {
-                    "color": "Yellow",
-                    "visible": true,
-                    "zLayer": -20
-                }
-                }]
-        },
-    6: {
-        "id": 6,
-        "type": "Box2d",
-        "name": "Camera2",
-        "active": 1,
-
-        "parent": "Game",
-        "children": [],
-
-        "pos": { "x": null, "y": null },
-        "relPos": {"x": 0, "y": 1000 },
-        "size": { "w": 1024, "h": 576 },
-        
-        "components": [{
-            "name": "AleCameraC",
-            "data": {
-                "sPos": {"x": 512, "y": 0},
-                "sSize": {"w": 512, "h": 288},
-            }
-            }]
-        },
-    11: {
-        "id": 11,
-        "type": "Box2d",
-        "name": "Camera3",
-        "active": 1,
-
-        "parent": "Game",
-        "children": [],
-
-        "pos": { "x": null, "y": null },
-        "relPos": {"x": 500, "y": 1000 },
-        "size": { "w": 1024, "h": 576 },
-        
-        "components": [{
-            "name": "AleCameraC",
-            "data": {
-                "sPos": {"x": 0, "y": 288},
-                "sSize": {"w": 512, "h": 288},
-            }
-            }]
-        },
-    12: {
-        "id": 12,
-        "type": "Box2d",
-        "name": "Camera4",
-        "active": 1,
-
-        "parent": "Game",
-        "children": [],
-
-        "pos": { "x": null, "y": null },
-        "relPos": {"x": 1000, "y": 1000 },
-        "size": { "w": 1024, "h": 576 },
-        
-        "components": [{
-            "name": "AleCameraC",
-            "data": {
-                "sPos": {"x": 512, "y": 288},
-                "sSize": {"w": 512, "h": 288},
+                "sSize": {"w": 1024, "h": 576},
             }
             }]
         },
@@ -180,7 +110,7 @@ const gameData = {
 
         "pos": { "x": null, "y": null },
         "relPos": {"x": 0, "y": 1000 },
-        "size": { "w": 1000, "h": 100 },
+        "size": { "w": 10000, "h": 100 },
         
         "components": [{
             "name": "AleFizikaC",
@@ -205,12 +135,115 @@ const gameData = {
 
         "pos": { "x": null, "y": null },
         "relPos": {"x": 0, "y": 0 },
-        "size": { "w": 1000, "h": 100 },
+        "size": { "w": 10000, "h": 100 },
         
         "components": [{
             "name": "AleRenderC",
             "data": {
                 "color": "Green",
+                "visible": true,
+                "zLayer": 10
+            }
+            }]
+        },
+    8: {
+        "id": 8,
+        "type": "GUI",
+        "name": "SkillSlots",
+        "active": 1,
+
+        "parent": "Game",
+        "children": ["SkillSlot1","SkillSlot2","SkillSlot3","SkillSlot4"],
+
+        "pos": { "x": null, "y": null },
+        "relPos": {"x": 10, "y": 466 },
+        "size": { "w": 0, "h": 0 },
+        
+        "components": []
+        },
+    9: {
+        "id": 9,
+        "type": "GUI",
+        "name": "SkillSlot1",
+        "active": 1,
+
+        "parent": "SkillSlots",
+        "children": [],
+
+        "pos": { "x": null, "y": null },
+        "relPos": {"x": 0, "y": 0 },
+        "size": { "w": 100, "h": 100 },
+        
+        "components": [{
+            "name": "AleRenderC",
+            "data": {
+                "color": "#005f73",
+                "visible": true,
+                "zLayer": 10
+            }
+            }]
+        },
+    10: {
+        "id": 10,
+        "type": "GUI",
+        "name": "SkillSlot2",
+        "active": 1,
+
+        "parent": "SkillSlots",
+        "children": [],
+
+        "pos": { "x": null, "y": null },
+        "relPos": {"x": 110, "y": 0 },
+        "size": { "w": 100, "h": 100 },
+        
+        "components": [{
+            "name": "AleRenderC",
+            "data": {
+                "color": "#005f73",
+                "visible": true,
+                "zLayer": 10
+            }
+            }]
+        },
+    11: {
+        "id": 11,
+        "type": "GUI",
+        "name": "SkillSlot3",
+        "active": 1,
+
+        "parent": "SkillSlots",
+        "children": [],
+
+        "pos": { "x": null, "y": null },
+        "relPos": {"x": 220, "y": 0 },
+        "size": { "w": 100, "h": 100 },
+        
+        "components": [{
+            "name": "AleRenderC",
+            "data": {
+                "color": "#005f73",
+                "visible": true,
+                "zLayer": 10
+            }
+            }]
+        },
+    12: {
+        "id": 12,
+        "type": "GUI",
+        "name": "SkillSlot4",
+        "active": 1,
+
+        "parent": "SkillSlots",
+        "children": [],
+
+        "pos": { "x": null, "y": null },
+        "relPos": {"x": 330, "y": 0 },
+        "size": { "w": 100, "h": 100 },
+        
+        "components": [{
+            "name": "AleRenderC",
+            "data": {
+                "color": "#005f73",
                 "visible": true,
                 "zLayer": 10
             }
@@ -310,9 +343,11 @@ class AleRenderC {
 }
 
 class AleCameraC {
-    constructor({sPos, sSize}){
+    constructor({sPos, sSize, follow, followStrength}){
         this.sPos = sPos;
         this.sSize = sSize;
+        this.follow = follow;
+        this.followStrength = followStrength;
     }
 }
 
@@ -666,15 +701,15 @@ class AleRenderer {
 
             if(entity.type == "GUI") {
                 this.c.fillRect(
-                    element.pos.x + camera.cameraC.sPos.x,
-                    element.pos.y + camera.cameraC.sPos.y,
-                    element.size.w,
-                    element.size.h,
+                    entity.pos.x + camera.cameraC.sPos.x,
+                    entity.pos.y + camera.cameraC.sPos.y,
+                    entity.size.w,
+                    entity.size.h,
                 );
             } else {
                 this.c.fillRect(
-                    (entity.pos.x + (camera.size.w / 2  - camera.pos.x )) * (camera.cameraC.sSize.w / camera.size.w) + camera.cameraC.sPos.x, 
-                    (entity.pos.y + (camera.size.h / 2  - camera.pos.y )) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y , 
+                    (entity.pos.x + (-camera.pos.x )) * (camera.cameraC.sSize.w / camera.size.w) + camera.cameraC.sPos.x, 
+                    (entity.pos.y + (-camera.pos.y )) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y , 
                     entity.size.w * (camera.cameraC.sSize.w / camera.size.w), 
                     entity.size.h * (camera.cameraC.sSize.h / camera.size.h)
                  );
