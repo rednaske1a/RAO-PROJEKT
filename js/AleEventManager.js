@@ -4,7 +4,7 @@ class AleEventManager{
         this.eventList = [];
         this.canvas = document.querySelector('canvas');
         this.eventContext = "InGame";
-        this.events = {keys: {}, mouse: {}};
+        this.events = {keys: {}, mouse: {state: 0, pressed: 0, released: 0}};
         this.screenMouseXY = {x:0, y:0};
         this.gameMouseXY = {x:0, y:0};
         window.addEventListener('keydown', (event) => this.updateKeys(event, 1));
