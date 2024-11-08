@@ -12,7 +12,7 @@ class AleGame {
         this.loadData(this.data.gameData);
         this.loadData(this.data.level1Data);
         this.loadData(this.data.playerData);
-        //this.unloadData(this.data.level1Data);
+        this.loadData(this.data.guiData);
 
         this.run();
     }
