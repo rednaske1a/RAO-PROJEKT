@@ -185,6 +185,7 @@ class AleFizika {
         })
 
         entityList.forEach(entity =>{
+           // console.log(entity);
             entity.updatePos();
         })
     }

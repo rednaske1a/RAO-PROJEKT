@@ -1,61 +1,33 @@
 class AleGame {
     constructor() {
-        this.entityList = [];
+        this.sManager = new AleSceneManager();
+        this.eManager = new AleEventManager();
         this.renderer = new AleRenderer();
         this.fizika = new AleFizika();
-        this.eventManager = new AleEventManager();
-        this.data = {};
     }
 
-    init(data){
-        this.data = data;
-        this.loadData(this.data.gameData);
-        this.loadData(this.data.level1Data);
-        this.loadData(this.data.playerData);
-        //this.unloadData(this.data.level1Data);
-
-        this.run();
+    init(scenes){
+        console.log(scenes);
+        this.sManager.setScenes(scenes);
+        this.sManager.loadScene("gameScene", this.eManager);
+        this.sManager.loadScene("level1Scene", this.eManager);
+        this.sManager.loadScene("playerScene", this.eManager);
+        this.sManager.loadScene("guiScene", this.eManager);
     }
-
-    loadData(data){
-        data.forEach(entity =>{
-            Entity.addEntity(this.entityList, entity);
-        })
-        //IDJI MORAJO BITI SETANI DA SE BOJO POINTERJI PRAVILNO POSTAVILI !!!!!!
-        Entity.setIDs(this.entityList);
-        Entity.setPointers(this.entityList);
-    
-        this.eventManager.initKeyTracking(this.entityList);
-    }
-
-    unloadData(data){
-        console.log(data);
-        this.entityList.forEach(entity =>{
-            if(entity.name == data[0].name){
-                Entity.removeEntity(this.entityList, entity);
-            }
-        })
-        
-        Entity.setIDs(this.entityList);
-        Entity.setPointers(this.entityList);
-
-        this.eventManager.initKeyTracking(this.entityList);
-    }
-
 
     run() {
         game.render();
         game.update();
-
         window.requestAnimationFrame(game.run);
     }
 
     render() {
-        this.renderer.render(this.entityList);
+        //console.log("render");
+        this.renderer.render(this.sManager.entityList);
     }
 
     update() {
-        this.eventManager.solveEvents(this.entityList);
-        this.fizika.update(this.entityList);
+        this.eManager.solveEvents(this.sManager.entityList);
+        this.fizika.update(this.sManager.entityList);
     }
 }

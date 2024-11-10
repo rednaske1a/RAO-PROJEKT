@@ -1,8 +1,8 @@
-const guiData = [
+const guiScene = [
     {
-    "name": "guiData",
+    "name": "guiScene",
     "type": "Node",
-    "parent": "Game",
+    "parent": "gameScene",
 
     "active": 1,
 
@@ -15,7 +15,7 @@ const guiData = [
     {
     "name": "SkillSlots",
     "type": "Node",
-    "parent": "guiData",
+    "parent": "guiScene",
 
     "active": 1,
 
@@ -42,7 +42,16 @@ const guiData = [
             "visible": true,
             "zLayer": 10
         }
-        }]
+        },
+        {
+            "name": "AleEventC",
+            "data": { "keys": {},
+                    "mouse": {
+                        "down": [{"name": "Jump", "contexts": ["InGame"], "target": "playerScene", "trigger": "down"}],
+                    }
+                }
+            }
+    ]
     },
     
     {

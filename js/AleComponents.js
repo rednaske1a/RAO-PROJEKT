@@ -6,14 +6,14 @@ class AleFizikaC {
         this.trenje = trenje;
         this.collLayer = collLayer;
         this.collMask = collMask;
-
         this.collide = collide;
     }
 }
 
 class AleEventC {
-    constructor({keys}){
+    constructor({keys, mouse}){
         this.keys = keys;
+        this.mouse = mouse;
     }
 }
 

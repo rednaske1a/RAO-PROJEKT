@@ -1,8 +1,8 @@
-const level1Data = [
+const level1Scene = [
     {
-        "name": "level1Data",
+        "name": "level1Scene",
         "type": "Node",
-        "parent": "Game",
+        "parent": "gameScene",
 
         "active": 1,
 
@@ -21,7 +21,7 @@ const level1Data = [
     {
         "name": "Ground",
         "type": "Body",
-        "parent": "level1Data",
+        "parent": "level1Scene",
 
         "active": 1,
 

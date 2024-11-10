@@ -5,17 +5,19 @@ class AleEventManager{
         this.canvas = document.querySelector('canvas');
         this.eventContext = "InGame";
         this.events = {keys: {}, mouse: {}};
+        this.mouse = {down: false, up: true, wentDown: false, wentUp: false};
         this.screenMouseXY = {x:0, y:0};
         this.gameMouseXY = {x:0, y:0};
         window.addEventListener('keydown', (event) => this.updateKeys(event, 1));
         window.addEventListener('keyup', (event) => this.updateKeys(event, 0));
         window.addEventListener('mousemove', (event) => this.updateMouseXY(event));
-        window.addEventListener("mousedown", (event) => this.mouseState(event, 1));
-        window.addEventListener("mouseup", (event) => this.mouseState(event, 0));
+        window.addEventListener("mousedown", (event) => this.mouseDown(event, 1));
+        window.addEventListener("mouseup", (event) => this.mouseUp(event, 0));
     }
 
     initKeyTracking(entityList){
         this.events.keys = {};
+        this.events.mouse = {};
         entityList.forEach(entity =>{
             if(entity.eventC != null){
                 //console.log("OKOK")
@@ -34,7 +36,7 @@ class AleEventManager{
                             }
                         })
 
-                        newEvents.push({name:event.name, contexts:event.contexts, target:target, trigger:key})
+                        newEvents.push({name:event.name, contexts:event.contexts, trigger: entity, target:target, triggerKey:key})
                     })
 
                     if(this.events.keys[key] == undefined){
@@ -47,7 +49,36 @@ class AleEventManager{
                         this.events.keys[key] = {value: 0, events: combineEvents};
                     }
                 }
+
+                for(let mouseMode in entity.eventC.mouse){
+                    console.log(mouseMode);
+
+                    let newEvents = [];
+                    entity.eventC.mouse[mouseMode].forEach(event =>{
+
+                        let target = event.target; //prevede imena targetov v pointerje
+                        entityList.forEach(tEntity =>{
+                            if(tEntity.name == target){
+                                    target = tEntity;
+                            }
+                        })
+
+                        newEvents.push({name:event.name, contexts:event.contexts, trigger: entity, target:target, triggerKey:mouseMode})
+                    })
+
+                    if(this.events.mouse[mouseMode] == undefined){
+                        this.events.mouse[mouseMode] = {value: 0, events: newEvents};
+                    } else {
+                        let combineEvents = this.events.mouse[mouseMode].events;
+                        newEvents.forEach(event=>{
+                            combineEvents.push(event);
+                        });
+                        this.events.mouse[mouseMode] = {value: 0, events: combineEvents};
+                    }
+                }
             }
+
+            console.log(this.events);
         });
     }
 
@@ -60,12 +91,27 @@ class AleEventManager{
         this.screenMouseXY.y = event.clientY - this.canvas.offsetTop;
     }
 
-    setClicked(setTo){
-        if(this.events.keys.click != undefined){
-            this.events.keys["click"].value = setTo;
-        }
+    mouseState(setTo){
+        this.mouse.down = setTo;
+        this.mouse.up = !setTo;
     }
 
+    mouseUp(event){
+        this.mouse.wentUp = true;
+        this.mouseState(false);
+    }
+
+    mouseDown(event){
+        this.mouse.wentDown = true;
+        
+        this.mouseState(true);
+        console.log(this.mouse);
+    }
+
+    resetMouse(){
+        this.mouse.wentDown = false;
+        this.mouse.wentUp = false;
+    }
 
     getEvents(){
         this.eventList = [];
@@ -91,7 +137,17 @@ class AleEventManager{
         //UI BUTTON EVENTS
         //
 
-        this.setClicked(0);
+        for(let mouseMode in this.events.mouse){
+            console.log(mouseMode + " " + this.mouse[mouseMode]);
+            if(this.mouse[mouseMode] == true){
+                this.events.mouse[mouseMode].events.forEach(event =>{
+                    console.log(event);
+                    this.validateEvent(event);
+                })
+            }
+        }
+
+        this.resetMouse();
     }
 
     addEvent(event){
@@ -117,8 +173,8 @@ class AleEventManager{
             case "ToggleGUI": if(event.target.guiC.toggleLocked == 1){console.log("ToggleGUI locked"); valid = 0;} break;
         }
 
-        switch(event.trigger){
-            case "click": valid = this.AABBPoint(event.target, this.screenMouseXY); break;
+        switch(event.triggerKey){
+            case "down": valid = this.AABBPoint(event.trigger, this.screenMouseXY) * valid; break;
         }
 
         if(valid == 1) {

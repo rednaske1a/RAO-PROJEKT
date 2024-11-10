@@ -40,6 +40,7 @@ class Entity {
         entityList.forEach(entityChild =>{
             entityList.forEach(entityParent =>{
                 if(entityChild.parent != null && entityParent.name == entityChild.parent){
+                    console.log("setparent for: " + entityChild.name)
                     entityChild.parent = entityParent;
                 }
             })

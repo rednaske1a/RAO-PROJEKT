@@ -1,8 +1,8 @@
-const playerData = [
+const playerScene = [
     {
-    "name": "Player1",
+    "name": "playerScene",
     "type": "Body",
-    "parent": "Game",
+    "parent": "gameScene",
 
     "active": 1,
 
@@ -33,7 +33,7 @@ const playerData = [
     {
     "name": "Player1BodyImg",
     "type": "Image",
-    "parent": "Player1",
+    "parent": "playerScene",
     
     "active": 1,
 
@@ -53,7 +53,7 @@ const playerData = [
     {
         "name": "Camera1",
         "type": "Camera",
-        "parent": "Player1",
+        "parent": "playerScene",
 
         "active": 1,
 
