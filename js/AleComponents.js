@@ -26,11 +26,12 @@ class AleRenderC {
 }
 
 class AleCameraC {
-    constructor({sPos, sSize, follow, followStrength}){
+    constructor({sPos, sSize, follow, followStrength, followOffset}){
         this.sPos = sPos;
         this.sSize = sSize;
         this.follow = follow;
         this.followStrength = followStrength;
+        this.followOffset = followOffset;
     }
 }
 

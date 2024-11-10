@@ -117,6 +117,7 @@ class AleRenderer {
     }
 
     draw(camera, entityList){
+        //console.log(camera)
         this.c.save();
         this.c.beginPath();
         this.c.rect(camera.cameraC.sPos.x, camera.cameraC.sPos.y, camera.cameraC.sPos.x + camera.cameraC.sSize.w, camera.cameraC.sPos.y + camera.cameraC.sSize.h);

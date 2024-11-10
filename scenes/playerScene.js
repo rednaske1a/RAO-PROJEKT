@@ -6,7 +6,7 @@ const playerScene = [
 
     "active": 1,
 
-    "relPos": {"x": 500, "y": -1000 },
+    "relPos": {"x": 200, "y": -100 },
     "size": { "w": 50, "h": 100 },
     
     "components": [{
@@ -48,24 +48,5 @@ const playerScene = [
             "zLayer": 10
         }
         }]
-    },
-
-    {
-        "name": "Camera1",
-        "type": "Camera",
-        "parent": "playerScene",
-
-        "active": 1,
-
-        "relPos": {"x": -512 + 50, "y": -288 -100 },
-        "size": { "w": 1024, "h": 576 },
-        
-        "components": [{
-            "name": "AleCameraC",
-            "data": {
-                "sPos": {"x": 0, "y": 0},
-                "sSize": {"w": 1024, "h": 576},
-            }
-            }]
     }
 ];

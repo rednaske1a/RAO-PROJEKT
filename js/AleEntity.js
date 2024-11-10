@@ -47,6 +47,20 @@ class Entity {
         })
     }
 
+    static setCameraCPointers(entityList){
+        entityList.forEach(cameraCEntity =>{
+            if(cameraCEntity.cameraC != null){
+                entityList.forEach(followTarget =>{
+                    console.log(cameraCEntity);
+                    if(cameraCEntity.cameraC.follow != null && cameraCEntity.cameraC.follow == followTarget.name){
+                        console.log("setTarget for: " + cameraCEntity.name)
+                        cameraCEntity.cameraC.follow = followTarget;
+                    }
+                })
+            }
+        })
+    }
+
     static setChildrenPointers(entityList){
         entityList.forEach(entityParent =>{
             entityParent.children = [];
@@ -64,6 +78,7 @@ class Entity {
     static setPointers(entityList){
         Entity.setParentPointers(entityList);
         Entity.setChildrenPointers(entityList);
+        Entity.setCameraCPointers(entityList);
     }
 
     static setIDs(entityList){
