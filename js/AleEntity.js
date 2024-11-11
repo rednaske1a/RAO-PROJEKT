@@ -19,6 +19,7 @@ class Entity {
         this.cameraC = null;
         this.playerC = null;
         this.guiC = null;
+        this.enemyAIC = null;
         
         this.addComponents(components);
     }
@@ -32,6 +33,7 @@ class Entity {
                 case "AleCameraC": this.cameraC = new AleCameraC(component.data); break;
                 case "AleGUIC": this.guiC = new AleGUIC(component.data); break;
                 case "AlePlayerC": this.playerC = new AlePlayerC(component.data); break;
+                case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC(component.data); break;
             }
         });
     }
@@ -40,7 +42,7 @@ class Entity {
         entityList.forEach(entityChild =>{
             entityList.forEach(entityParent =>{
                 if(entityChild.parent != null && entityParent.name == entityChild.parent){
-                    console.log("setparent for: " + entityChild.name)
+                    //console.log("setparent for: " + entityChild.name)
                     entityChild.parent = entityParent;
                 }
             })
@@ -51,9 +53,9 @@ class Entity {
         entityList.forEach(cameraCEntity =>{
             if(cameraCEntity.cameraC != null){
                 entityList.forEach(followTarget =>{
-                    console.log(cameraCEntity);
+                    //console.log(cameraCEntity);
                     if(cameraCEntity.cameraC.follow != null && cameraCEntity.cameraC.follow == followTarget.name){
-                        console.log("setTarget for: " + cameraCEntity.name)
+                        //console.log("setTarget for: " + cameraCEntity.name)
                         cameraCEntity.cameraC.follow = followTarget;
                     }
                 })
@@ -76,9 +78,15 @@ class Entity {
     }
 
     static setPointers(entityList){
+        Entity.setIDs(entityList);
         Entity.setParentPointers(entityList);
         Entity.setChildrenPointers(entityList);
         Entity.setCameraCPointers(entityList);
+        AleAIManager.createActions(entityList);
+    }
+
+    static duplicateEntity(entityList, entity){
+        let newEntity = new Entity(entity)
     }
 
     static setIDs(entityList){

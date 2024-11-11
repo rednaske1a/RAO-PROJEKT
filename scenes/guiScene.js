@@ -158,7 +158,15 @@ const guiScene = [
                 "visible": true,
                 "zLayer": 10
             }
-        }]
+        },{
+            "name": "AleEventC",
+            "data": { "keys": {},
+                    "mouse": {
+                        "wentDown": [{"name": "UseRecept", "contexts": ["InGame"], "target": "slimeScene", "trigger": "wentDown"}],
+                    
+                    }
+                }
+            }]
     },
     {
         "name": "SkillSlot2",

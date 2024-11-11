@@ -27,7 +27,7 @@ class AleGame {
     }
 
     update() {
-        this.eManager.solveEvents(this.sManager.entityList);
+        this.eManager.solveEvents(this.sManager);
         this.fizika.update(this.sManager.entityList);
     }
 }

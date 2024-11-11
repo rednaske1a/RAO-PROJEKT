@@ -3,6 +3,9 @@ class AleEventManager{
     constructor(){
         this.eventList = [];
         this.canvas = document.querySelector('canvas');
+
+        this.aiManager = new AleAIManager();
+
         this.eventContext = "InGame";
         this.events = {keys: {}, mouse: {}};
         this.mouse = {down: false, up: true, wentDown: false, wentUp: false};
@@ -51,7 +54,7 @@ class AleEventManager{
                 }
 
                 for(let mouseMode in entity.eventC.mouse){
-                    console.log(mouseMode);
+                    //console.log(mouseMode);
 
                     let newEvents = [];
                     entity.eventC.mouse[mouseMode].forEach(event =>{
@@ -78,7 +81,7 @@ class AleEventManager{
                 }
             }
 
-            console.log(this.events);
+            //console.log(this.events);
         });
     }
 
@@ -105,7 +108,7 @@ class AleEventManager{
         this.mouse.wentDown = true;
         
         this.mouseState(true);
-        console.log(this.mouse);
+        //console.log(this.mouse);
     }
 
     resetMouse(){
@@ -113,14 +116,18 @@ class AleEventManager{
         this.mouse.wentUp = false;
     }
 
-    getEvents(){
+    getEvents(entityList){
         this.eventList = [];
+        let aiEvents = AleAIManager.think(entityList);
+        aiEvents.forEach(event =>{
+            this.validateEvent(event);
+        })
         //KEYBOARD EVENTS & UNLOCK BUTTONS
         //
         for (let key in this.events.keys) {
             if(this.events.keys[key].value == 1){
                 this.events.keys[key].events.forEach(event =>{
-                    console.log(key);
+                    //console.log(key);
                     this.validateEvent(event);
                 })
             } else {
@@ -138,10 +145,10 @@ class AleEventManager{
         //
 
         for(let mouseMode in this.events.mouse){
-            console.log(mouseMode + " " + this.mouse[mouseMode]);
+            //console.log(mouseMode + " " + this.mouse[mouseMode]);
             if(this.mouse[mouseMode] == true){
                 this.events.mouse[mouseMode].events.forEach(event =>{
-                    console.log(event);
+                    //console.log(event);
                     this.validateEvent(event);
                 })
             }
@@ -174,6 +181,7 @@ class AleEventManager{
         }
 
         switch(event.triggerKey){
+            case "wentDown":
             case "down": valid = this.AABBPoint(event.trigger, this.screenMouseXY) * valid; break;
         }
 
@@ -182,8 +190,8 @@ class AleEventManager{
         }
     }
 
-    solveEvents(){
-        this.getEvents();
+    solveEvents(sceneManager){
+        this.getEvents(sceneManager.entityList);
         this.eventList.forEach(event => {
             switch(event.name){
                 case "Jump": event.target.fizikaC.vel.y += -event.target.playerC.jumpSpeed; break;
@@ -192,6 +200,7 @@ class AleEventManager{
                 case "GoRight": event.target.fizikaC.vel.x = event.target.playerC.moveSpeed; break;
                 case "ToggleGUI": this.toggleGUI(event); break;
                 case "CloseGUI": this.closeGUI(event); break;
+                case "UseRecept": this.createScene(sceneManager, event); break;
             }
         });
     }
@@ -225,5 +234,15 @@ class AleEventManager{
 
     openGUI(event){
         this.recursiveSetGUI(event.target, true);
+    }
+
+    createScene(sceneManager, event){
+        let newScene = sceneManager.createScene(event.target, event.target+ Math.floor(Math.random() * (1001)));
+        console.log(newScene);
+        newScene[0].relPos.x += Math.floor(Math.random() * (200 + 200 + 1) - 200);
+        newScene.forEach(entity =>{
+            sceneManager.entityList.push(entity);
+        })
+        Entity.setPointers(sceneManager.entityList);
     }
 }

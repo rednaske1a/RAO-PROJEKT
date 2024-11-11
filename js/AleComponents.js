@@ -50,3 +50,9 @@ class AleGUIC{
         this.toggleLockedBy = toggleLockedBy;
     }
 }
+
+class AleEnemyAIC {
+    constructor({actions}){
+        this.actions = actions;
+    }
+}

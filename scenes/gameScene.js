@@ -27,8 +27,8 @@ const gameScene = [{
 
         "active": 1,
 
-        "relPos": {"x": 200, "y": -300 },
-        "size": { "w": 1024, "h": 576 },
+        "relPos": {"x": 900, "y": -900 },
+        "size": { "w": 2048, "h": 1152 },
         
         "components": [{
             "name": "AleCameraC",
@@ -37,7 +37,7 @@ const gameScene = [{
                 "sSize": {"w": 1024, "h": 576},
                 "follow": "playerScene",
                 "followStrength": 20,
-                "followOffset": {"x": -512 + 50, "y": -300 }
+                "followOffset": {"x": -900, "y": -700 }
             }
             }]
     }
