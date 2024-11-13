@@ -1,28 +1,92 @@
 class AleSceneManager {
-    constructor(){
-        this.sceneList = []; //NAREDI OBJEKTE ZATO DA SE SHRANIJO PODATKI V STALNIH OBJEKTIH
-        this.entityList = [];
-        this.recepti = []; //SE UPORABI ZA DINAMIČNO KREIRAJE OBJEKTOV NA PRIMER POŠASTI()
+    constructor(scenes){
+        this.loadedEntities = [];
+        this.storedEntities = [];
+        this.scenes = scenes;
+        console.log(scenes);
+        this.lastID = 0;
     }
 
-    setScenes(scenes){
-        scenes.forEach(scene =>{
-            this.recepti.push(scene);
-            console.log(scene);
-            let newScene = [];
-            scene.forEach(entity =>{
-                Entity.addEntity(newScene, entity);
-            })
-            //Entity.setPointers(newScene); PUSTI ZAKOMENTIRANO
-            //console.log("Added scene: " + newScene[0].name);
-            this.sceneList.push(newScene);
+    createEntity(name, parentName, eventManager){
+        let newEntityList = [];
+        this.scenes.forEach(scene =>{
+            //console.log(scene[0].name);
+            if(scene[0].name == name){
+                
+                scene.forEach(sEntity =>{
+                    newEntityList.push(new Entity(sEntity));
+                })
+            }
         })
+        
+        let newName = name;
+        if(parentName != null){
+            let parent = null;
+            this.storedEntities.forEach(fParent =>{
+                if(fParent.name == parentName){
+                    parent = fParent;
+                }
+            })
+
+            if(parent == null){
+                this.scenes.forEach(scene=>{
+                    if(scene[0].name == parentName){
+                        this.createEntity(scene[0].name, scene[0].parent, eventManager);
+                    }
+                })
+            }
+
+            newName = name + parent.children.length;
+        }
+        
+        
+        //console.log(newEntityList);
+        newEntityList.forEach(entity =>{  
+            this.storedEntities.push(entity)
+            this.storedEntities.forEach(sEntity =>{
+                this.renameEntity(sEntity, name, newName);
+            })
+        })
+
+        Entity.setPointers(this.storedEntities);
+        this.loadEntity(newEntityList[0].name, eventManager);
+        console.log("created entity: " + name);
+        console.log(newEntityList);
     }
 
-    renameScene(entity, oldName, newName) { //pomagal AI
+    killEntity(){ // >:)
+
+    }
+
+    loadEntity(name, eventManager){
+        this.storedEntities.forEach(entity =>{
+            if(entity.name == name){
+                Entity.getDescendants(entity, []).forEach(desc=>{
+                    this.loadedEntities.push(desc);
+                })
+            }
+        })
+
+        eventManager.initKeyTracking(this.loadedEntities);
+    }
+
+    unloadEntity(name, eventManager){
+        this.loadedEntities.forEach(entity=>{
+            if(entity.name == name){
+                Entity.removeEntity(this.loadedEntities, entity);
+            }
+        })
+
+        eventManager.initKeyTracking(this.loadedEntities);
+    }
+
+    renameEntity(entity, oldName, newName) { //pomagal AI ampak samo malo
+        console.log(entity)
         if (typeof entity === 'object' && entity !== null) {
             for (let key in entity) {
-                this.renameScene(entity[key], oldName, newName);
+                if(entity[key] != null && entity[key].id == undefined){
+                    this.renameEntity(entity[key], oldName, newName);
+                }
                 if (entity[key] === oldName) {
                     entity[key] = newName;
                 }
@@ -30,62 +94,4 @@ class AleSceneManager {
         }
     }
 
-    createScene(sceneName, newName){
-        let newScene = [];
-        this.recepti.forEach(recept =>{
-            if(recept[0].name == sceneName){
-                recept.forEach(entity =>{
-                    newScene.push(new Entity(entity));
-                })
-            }
-        })
-
-        newScene.forEach(entity =>{
-            this.renameScene(entity, sceneName, newName);
-        });
-
-        return newScene;
-    }
-
-    loadScene(sceneName, eventManager){
-        //NAJDE SCENE GLEDE NA IME
-        let sceneToLoad = [];
-        this.sceneList.forEach(scene =>{
-            //console.log(scene[0].name + " & " + sceneName);
-            if(scene[0].name == sceneName){
-                
-                sceneToLoad = scene;
-            }
-        })
-
-        //DODA SCENE V ENTITYLIST
-        sceneToLoad.forEach(entity =>{
-            //console.log("pushed: " + entity.name)
-            this.entityList.push(entity);
-        })
-
-        //IDJI MORAJO BITI SETANI DA SE BOJO POINTERJI PRAVILNO POSTAVILI !!!!!!
-        Entity.setPointers(this.entityList);
-    
-        eventManager.initKeyTracking(this.entityList);
-    }
-
-    unloadScene(sceneName, eventManager){
-        let sceneToLoad = [];
-        this.sceneList.forEach(scene =>{
-            if(scene[0].name == sceneName){
-                sceneToLoad = scene;
-            }
-        })
-
-        sceneToLoad.forEach(entity =>{
-            if(entity.name == data[0].name){
-                Entity.removeEntity(this.entityList, entity);
-            }
-        })
-        
-        Entity.setPointers(this.entityList);
-
-        eventManager.initKeyTracking(this.entityList);
-    }
 }

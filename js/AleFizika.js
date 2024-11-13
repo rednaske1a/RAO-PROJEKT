@@ -191,6 +191,7 @@ class AleFizika {
 
         //cameraFollow
         entityList.forEach(entity =>{
+            //console.log(entity);
             if(entity.cameraC != null && entity.cameraC.follow != null){
                 entity.relPos.x -= (entity.pos.x - entity.cameraC.follow.pos.x - entity.cameraC.followOffset.x) / entity.cameraC.followStrength;
                 entity.relPos.y -= (entity.pos.y - entity.cameraC.follow.pos.y - entity.cameraC.followOffset.y) / entity.cameraC.followStrength;

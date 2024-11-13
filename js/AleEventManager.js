@@ -191,7 +191,7 @@ class AleEventManager{
     }
 
     solveEvents(sceneManager){
-        this.getEvents(sceneManager.entityList);
+        this.getEvents(sceneManager.loadedEntities);
         this.eventList.forEach(event => {
             switch(event.name){
                 case "Jump": event.target.fizikaC.vel.y += -event.target.playerC.jumpSpeed; break;
@@ -241,8 +241,8 @@ class AleEventManager{
         console.log(newScene);
         newScene[0].relPos.x += Math.floor(Math.random() * (200 + 200 + 1) - 200);
         newScene.forEach(entity =>{
-            sceneManager.entityList.push(entity);
+            sceneManager.loadedEntities.push(entity);
         })
-        Entity.setPointers(sceneManager.entityList);
+        Entity.setPointers(sceneManager.loadedEntities);
     }
 }

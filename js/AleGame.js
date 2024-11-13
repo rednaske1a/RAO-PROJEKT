@@ -1,18 +1,18 @@
 class AleGame {
     constructor() {
-        this.sManager = new AleSceneManager();
+        this.sManager = {};
         this.eManager = new AleEventManager();
         this.renderer = new AleRenderer();
         this.fizika = new AleFizika();
     }
 
     init(scenes){
-        console.log(scenes);
-        this.sManager.setScenes(scenes);
-        this.sManager.loadScene("gameScene", this.eManager);
-        this.sManager.loadScene("level1Scene", this.eManager);
-        this.sManager.loadScene("playerScene", this.eManager);
-        this.sManager.loadScene("guiScene", this.eManager);
+        this.sManager = new AleSceneManager(scenes);
+        this.sManager.createEntity("gameScene", null, this.eManager);
+        this.sManager.createEntity("level1Scene", "gameScene", this.eManager);
+        this.sManager.createEntity("level1Scene", "gameScene", this.eManager);
+        this.sManager.createEntity("playerScene", "gameScene", this.eManager);
+        this.sManager.createEntity("guiScene", "gameScene", this.eManager);
     }
 
     run() {
@@ -23,11 +23,11 @@ class AleGame {
 
     render() {
         //console.log("render");
-        this.renderer.render(this.sManager.entityList);
+        this.renderer.render(this.sManager.loadedEntities);
     }
 
     update() {
         this.eManager.solveEvents(this.sManager);
-        this.fizika.update(this.sManager.entityList);
+        this.fizika.update(this.sManager.loadedEntities);
     }
 }
