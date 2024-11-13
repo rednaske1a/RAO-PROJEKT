@@ -35,7 +35,7 @@ const gameScene = [{
             "data": {
                 "sPos": {"x": 0, "y": 0},
                 "sSize": {"w": 1024, "h": 576},
-                "follow": "gameScene",
+                "follow": "playerScene",
                 "followStrength": 20,
                 "followOffset": {"x": -900, "y": -700 }
             }
