@@ -32,6 +32,7 @@ class AleCameraC {
         this.follow = follow;
         this.followStrength = followStrength;
         this.followOffset = followOffset;
+        this.active = active;
     }
 }
 
@@ -48,6 +49,7 @@ class AleGUIC{
     constructor({toggleLocked, toggleLockedBy}){
         this.toggleLocked = toggleLocked;
         this.toggleLockedBy = toggleLockedBy;
+        this.active = active;
     }
 }
 

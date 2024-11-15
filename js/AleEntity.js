@@ -4,10 +4,8 @@ class Entity {
 
         this.name = name;
         this.type = type;
-        this.parent = parent;
-        this.children = []
-        
-        this.active = active;
+        this.parent = null;
+        this.children = [];
 
         this.pos = {x: null, y:null};
         this.relPos = relPos;
@@ -36,53 +34,6 @@ class Entity {
                 case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC(component.data); break;
             }
         });
-    }
-
-    static setParentPointers(entityList){
-        entityList.forEach(entityChild =>{
-            entityList.forEach(entityParent =>{
-                if(entityChild.parent != null && entityParent.name == entityChild.parent){
-                    //console.log("setparent for: " + entityChild.name)
-                    entityChild.parent = entityParent;
-                }
-            })
-        })
-    }
-
-    static setCameraCPointers(entityList){
-        entityList.forEach(cameraCEntity =>{
-            if(cameraCEntity.cameraC != null){
-                entityList.forEach(followTarget =>{
-                    //console.log(cameraCEntity);
-                    if(cameraCEntity.cameraC.follow != null && cameraCEntity.cameraC.follow == followTarget.name){
-                        //console.log("setTarget for: " + cameraCEntity.name)
-                        cameraCEntity.cameraC.follow = followTarget;
-                    }
-                })
-            }
-        })
-    }
-
-    static setChildrenPointers(entityList){
-        entityList.forEach(entityParent =>{
-            entityParent.children = [];
-            entityList.forEach(entityChild =>{
-                if(entityChild.parent != null && entityChild.parent.id == entityParent.id){
-                    //console.log("Parent: " + entityParent.name + " ID: " + entityParent.id);
-                    //console.log("Child: " + entityChild.name + " ID: " + entityChild.id);
-                    entityParent.children.push(entityChild);
-                }
-            })
-        })
-        //console.log("/////////////////////////////////////////////")
-    }
-
-    static setPointers(entityList){
-        Entity.setIDs(entityList);
-        Entity.setParentPointers(entityList);
-        Entity.setChildrenPointers(entityList);
-        Entity.setCameraCPointers(entityList);
-        AleAIManager.createActions(entityList);
     }
 
     static duplicateEntity(entityList, entity){
