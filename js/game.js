@@ -3,15 +3,15 @@
 
 const game = new AleGame();
 
-let scenes = [];
+let templatePacks = [];
 
-scenes.push(gameScene);
-scenes.push(guiScene);
-scenes.push(level1Scene);
-scenes.push(playerScene);
-scenes.push(slimeScene);
+templatePacks.push(gameTemplatePack);
+templatePacks.push(guiTemplatePack);
+templatePacks.push(L001TemplatePack);
+templatePacks.push(monsterTemplatePack);
+templatePacks.push(playerTemplatePack);
 
-console.log(scenes);
-game.init(scenes);
+console.log(templatePacks);
+game.init(templatePacks);
 game.run();
 

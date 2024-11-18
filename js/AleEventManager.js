@@ -18,6 +18,46 @@ class AleEventManager{
         window.addEventListener("mouseup", (event) => this.mouseUp(event, 0));
     }
 
+    bindEvents(entity, sManager){
+        if(entity.eventC == null){
+            return;
+        }
+        //console.log("binding events for " + entity.name);
+        //console.log(entity.eventC);
+        for(let key in entity.eventC.keys){
+            //console.log("Key " + key);
+            entity.eventC.keys[key].forEach(event=>{
+                //console.log("Event " + event);
+                //console.log()
+                let eventTarget = sManager.getEntityByTemplate(event.target);
+                //console.log("EventTARGET:")
+                //console.log(eventTarget);
+                let newEvent = {name:event.name, contexts:event.contexts, trigger:entity, target:eventTarget, triggerKey:key};
+                if(this.events.keys[key] == undefined){
+                    this.events.keys[key] = {events: [], value:0};
+                }
+                this.events.keys[key].events.push(newEvent)
+            });
+        }
+
+        for(let mouseMode in entity.eventC.mouse){
+            //console.log("Mouse " + mouseMode);
+            entity.eventC.mouse[mouseMode].forEach(event=>{
+                //console.log("Event " + event);
+                //console.log()
+                let eventTarget = sManager.getEntityByTemplate(event.target);
+                //console.log("EventTARGET:")
+                //console.log(eventTarget);
+                let newEvent = {name:event.name, contexts:event.contexts, trigger:entity, target:eventTarget, triggerKey:mouseMode};
+                if(this.events.mouse[mouseMode] == undefined){
+                    this.events.mouse[mouseMode] = {events: [], value:0};
+                }
+                this.events.mouse[mouseMode].events.push(newEvent)
+            });
+        }
+        console.log(this.events);
+    }
+/*
     initKeyTracking(entityList){
         this.events.keys = {};
         this.events.mouse = {};
@@ -84,7 +124,7 @@ class AleEventManager{
             //console.log(this.events);
         });
     }
-
+*/
     updateKeys(event, setTo){
         if(this.events.keys[event.key] != undefined) this.events.keys[event.key].value = setTo;
     }
@@ -119,7 +159,11 @@ class AleEventManager{
     getEvents(entityList){
         this.eventList = [];
         let aiEvents = AleAIManager.think(entityList);
+        //console.log(aiEvents);
         aiEvents.forEach(event =>{
+            //console.log("AI EVENT");           
+            //console.log(entityList);
+            //console.log(event);
             this.validateEvent(event);
         })
         //KEYBOARD EVENTS & UNLOCK BUTTONS
@@ -190,8 +234,8 @@ class AleEventManager{
         }
     }
 
-    solveEvents(sceneManager){
-        this.getEvents(sceneManager.loadedEntities);
+    solveEvents(sManager){
+        this.getEvents(sManager.eLoaded);
         this.eventList.forEach(event => {
             switch(event.name){
                 case "Jump": event.target.fizikaC.vel.y += -event.target.playerC.jumpSpeed; break;
@@ -200,7 +244,7 @@ class AleEventManager{
                 case "GoRight": event.target.fizikaC.vel.x = event.target.playerC.moveSpeed; break;
                 case "ToggleGUI": this.toggleGUI(event); break;
                 case "CloseGUI": this.closeGUI(event); break;
-                case "UseRecept": this.createScene(sceneManager, event); break;
+                case "CreateSlime": this.createSlime(sManager, event); break;
             }
         });
     }
@@ -236,13 +280,8 @@ class AleEventManager{
         this.recursiveSetGUI(event.target, true);
     }
 
-    createScene(sceneManager, event){
-        let newScene = sceneManager.createScene(event.target, event.target+ Math.floor(Math.random() * (1001)));
-        console.log(newScene);
-        newScene[0].relPos.x += Math.floor(Math.random() * (200 + 200 + 1) - 200);
-        newScene.forEach(entity =>{
-            sceneManager.loadedEntities.push(entity);
-        })
-        Entity.setPointers(sceneManager.loadedEntities);
+    createSlime(sManager, event){
+        let newEntity = sManager.createEntity("Slime", sManager.getEntityByTemplate("Game"), this);
+        newEntity.relPos.x += Math.floor(Math.random() * (200 + 200 + 1) - 200);
     }
 }

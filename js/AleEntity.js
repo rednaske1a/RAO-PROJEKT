@@ -1,51 +1,49 @@
 class Entity {
-    constructor({name, type, parent, active, relPos, size, components}){
+    constructor({name, type, children, relPos, size, components}, sManager){
+       
         this.id = null;
-
         this.name = name;
+        this.templateName = name;
         this.type = type;
+
         this.parent = null;
-        this.children = [];
+        this.children = Entity.copyObjectNoRef(children);
 
         this.pos = {x: null, y:null};
-        this.relPos = relPos;
-        this.size = size;
+
+        this.relPos = {x:relPos.x, y:relPos.y};
+        this.size = {w:size.w, h:size.h};
 
         this.fizikaC = null;
         this.eventC = null;
         this.renderC = null;
         this.cameraC = null;
+        this.followC = null;
         this.playerC = null;
         this.guiC = null;
         this.enemyAIC = null;
         
-        this.addComponents(components);
+        //console.log(sManager);
+        this.addComponents(components, sManager);
     }
 
-    addComponents(components){
+    addComponents(components, sManager){-
         components.forEach(component =>{
             switch(component.name){
                 case "AleFizikaC": this.fizikaC = new AleFizikaC(component.data); break;
                 case "AleEventC": this.eventC = new AleEventC(component.data); break;
                 case "AleRenderC": this.renderC = new AleRenderC(component.data); break;
                 case "AleCameraC": this.cameraC = new AleCameraC(component.data); break;
+                case "AleFollowC": this.followC = new AleFollowC(component.data, sManager); break;
                 case "AleGUIC": this.guiC = new AleGUIC(component.data); break;
                 case "AlePlayerC": this.playerC = new AlePlayerC(component.data); break;
-                case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC(component.data); break;
+                case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC({actions:component.data, entity:this}); break;
             }
         });
     }
 
     static duplicateEntity(entityList, entity){
         let newEntity = new Entity(entity)
-    }
-
-    static setIDs(entityList){
-        let id = 0;
-        entityList.forEach(entity =>{
-            entity.id = id;
-            id++;
-        });
     }
 
     static updatePosAll(entityList){
@@ -67,7 +65,7 @@ class Entity {
     }
 
     static removeEntity(entityList, entity){
-        let removeEntities = Entity.getDescendants(entity, []); //ukradel direkt iz robloxa
+        let removeEntities = Entity.getDescendants(entity, []);
         let removeN = 0;
         removeEntities.forEach(rEntity =>{
             entityList.splice(rEntity.id - removeN, 1);
@@ -75,8 +73,39 @@ class Entity {
         })
     }
 
+    //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    static copyObjectNoRef(object) {
+        return Entity.copyObjectNoRefRecursive({}, object);
+    }
+
+        //UPAM DA UNI KI SI JE ZMISLIL JS UMRE
+    static copyObjectNoRefRecursive(newObject, object) {
+        if (Array.isArray(object)) {
+            newObject = [];
+            for (let i = 0; i < object.length; i++) {
+                const value = object[i];
+                if (typeof value === 'object' && value !== null) {
+                    newObject[i] = Entity.copyObjectNoRefRecursive({}, value);
+                } else {
+                    newObject[i] = value;
+                }
+            }
+        } else {
+            for (let key in object) {
+                const value = object[key];
+                if (typeof value === 'object' && value !== null) {
+                    newObject[key] = Entity.copyObjectNoRefRecursive({}, value);
+                } else {
+                    newObject[key] = value;
+                }
+            }
+        }
+        return newObject;
+    }    
+    
+    
     updatePos(){
-        if(this.parent == null){
+        if(this.parent == null || this.followC != null){
             this.pos.x = this.relPos.x;
             this.pos.y = this.relPos.y;
         } else {

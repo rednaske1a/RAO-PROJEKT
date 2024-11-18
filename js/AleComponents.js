@@ -1,19 +1,19 @@
 
 class AleFizikaC {
     constructor({vel, acc, trenje, collLayer, collMask, collide}){
-        this.vel = vel;
-        this.acc = acc;
+        this.vel = Entity.copyObjectNoRef(vel);
+        this.acc = Entity.copyObjectNoRef(acc);
         this.trenje = trenje;
-        this.collLayer = collLayer;
-        this.collMask = collMask;
+        this.collLayer = Entity.copyObjectNoRef(collLayer);;
+        this.collMask = Entity.copyObjectNoRef(collMask);;
         this.collide = collide;
     }
 }
 
 class AleEventC {
     constructor({keys, mouse}){
-        this.keys = keys;
-        this.mouse = mouse;
+        this.keys = Entity.copyObjectNoRef(keys);;
+        this.mouse = Entity.copyObjectNoRef(mouse);;
     }
 }
 
@@ -26,15 +26,21 @@ class AleRenderC {
 }
 
 class AleCameraC {
-    constructor({sPos, sSize, follow, followStrength, followOffset}){
-        this.sPos = sPos;
-        this.sSize = sSize;
-        this.follow = follow;
-        this.followStrength = followStrength;
-        this.followOffset = followOffset;
-        this.active = active;
+    constructor({sPos, sSize}, sManager){
+        this.sPos = Entity.copyObjectNoRef(sPos);
+        this.sSize = Entity.copyObjectNoRef(sSize);
+        
     }
 }
+
+class AleFollowC {
+    constructor({follow, followStrength, followOffset}, sManager){
+        this.follow = sManager.getEntityByTemplate(follow);
+        this.followStrength = followStrength;
+        this.followOffset = followOffset;
+    }
+}
+
 
 class AlePlayerC {
     constructor({jumpSpeed, moveSpeed, isGrounded, isDucking}){
@@ -49,12 +55,22 @@ class AleGUIC{
     constructor({toggleLocked, toggleLockedBy}){
         this.toggleLocked = toggleLocked;
         this.toggleLockedBy = toggleLockedBy;
-        this.active = active;
     }
 }
 
 class AleEnemyAIC {
-    constructor({actions}){
-        this.actions = actions;
+    constructor({actions,entity}){
+        this.actions = Entity.copyObjectNoRef(actions.actions);
+        //console.log("ACTIONS");
+        //console.log(this.actions);
+        
+        for(let action in this.actions){
+            this.actions[action].trigger = entity;
+            this.actions[action].target = entity;
+            this.actions[action].triggerKey = "ai";
+        }
+        //console.log("ACTIONS2");
+        //console.log(this.actions);
+        
     }
 }

@@ -109,7 +109,9 @@ class AleRenderer {
     render(entityList) {
 
         entityList.forEach(cEntity =>{
-            if(cEntity.cameraC != null && cEntity.active == 1){
+            if(cEntity.cameraC != null //&& cEntity.active == 1
+
+            ){
                 this.draw(cEntity, entityList);
             }
         })
