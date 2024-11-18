@@ -11,7 +11,6 @@ class AleGame {
         let game = this.sManager.createEntity("Game", null, this.eManager);
         this.sManager.createEntity("L001", game, this.eManager);
         this.sManager.createEntity("Player", game, this.eManager);
-        this.sManager.createEntity("Camera", game, this.eManager);
         this.sManager.createEntity("Gui", game, this.eManager);
     }
 
