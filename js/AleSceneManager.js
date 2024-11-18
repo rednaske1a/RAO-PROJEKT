@@ -2,6 +2,7 @@ class AleSceneManager {
     constructor(templatePacks){
         this.eLoaded = [];
         this.eStorage = [];
+        this.treeHTML = document.querySelector("#tree");
 
         this.nextID = 0;
 
@@ -24,16 +25,20 @@ class AleSceneManager {
     }
 
     createEntity(templateName, parent, eManager){
-        console.log("Creating " + templateName);
+        //console.log("Creating " + templateName);
         //console.log(parent)
         //console.log(eManager)
         let template = this.getTemplate(templateName);
-        console.log(template);
+        //console.log(template);
         let entity = new Entity(template.data, this);
-        console.log(template);
+        //console.log(template);
         //console.log(entity.children);
-        entity.name = template.data.name + template.count;
+        entity.name = template.data.name + "_" +template.count;
         entity.parent = parent;
+        if(parent != null && parent.parent == null){
+            parent.children.push(entity);
+        }
+        
         entity.updatePos();
         entity.id = this.nextID;
         this.nextID++;
@@ -42,7 +47,7 @@ class AleSceneManager {
         this.eStorage.push(entity);
         this.eLoaded.push(entity);
 
-        console.log(entity.children);
+        //console.log(entity.children);
         for(let child in entity.children){
             //console.log(template.children);
             entity.children[child] = this.createEntity(
@@ -64,10 +69,40 @@ class AleSceneManager {
 
         eManager.bindEvents(entity, this);
 
-        //console.log("Finish Creating " + templateName);
-        console.log(entity);
+        console.log("Finish Creating " + templateName);
+       console.log(entity);
+        this.createTree();
         return entity;
     }
+
+
+    createTree(){
+        let data = this.getEntityByTemplate("Game");
+        let tree = document.createElement('ul');
+        tree.appendChild(this.createTreeRecursive(data));
+        this.treeHTML.innerHTML = "";
+        this.treeHTML.appendChild(tree);
+    }
+
+    createTreeRecursive(data) {
+        let li = document.createElement('li');
+        li.textContent = data.name;
+
+        console.log("DATA")
+        console.log(data);
+        if (data.children && data.children.length > 0) {
+            let ul = document.createElement('ul');
+            data.children.forEach(child => {
+                ul.appendChild(this.createTreeRecursive(child));
+            });
+            li.appendChild(ul);
+        }
+
+        return li;
+    }
+
+    
+
 
     killEntity(){ // >:)
 

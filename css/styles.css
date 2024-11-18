@@ -19,8 +19,39 @@ canvas {
 .manuel {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .manuel div {
     padding: 20px;
+}
+
+li{
+    background-color: none;
+    transition: 0.3s;
+}
+
+li:hover{
+    background-color: red;
+}
+
+li li:hover{
+    background-color: orange;
+}
+
+li li li:hover{
+    background-color: yellow;
+}
+
+li li li li:hover{
+    background-color: greenyellow;
+}
+
+li li li li li:hover{
+    background-color: lightblue;
+}
+
+li li li li li li:hover{
+    background-color: rgb(214, 106, 205);
 }
