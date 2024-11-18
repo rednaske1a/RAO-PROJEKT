@@ -22,12 +22,14 @@ class Entity {
         this.playerC = null;
         this.guiC = null;
         this.enemyAIC = null;
+        this.HPC = null;
+        this.HitC = null
         
         //console.log(sManager);
         this.addComponents(components, sManager);
     }
 
-    addComponents(components, sManager){-
+    addComponents(components, sManager){
         components.forEach(component =>{
             switch(component.name){
                 case "AleFizikaC": this.fizikaC = new AleFizikaC(component.data); break;
@@ -38,6 +40,8 @@ class Entity {
                 case "AleGUIC": this.guiC = new AleGUIC(component.data); break;
                 case "AlePlayerC": this.playerC = new AlePlayerC(component.data); break;
                 case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC({actions:component.data, entity:this}); break;
+                case "AleHPC": this.HPC = new AleHPC(component.data); break;
+                case "AleHitC": this.HitC = new AleHitC(component.data); break;
             }
         });
     }

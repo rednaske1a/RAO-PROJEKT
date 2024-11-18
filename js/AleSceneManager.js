@@ -71,7 +71,7 @@ class AleSceneManager {
 
         console.log("Finish Creating " + templateName);
        console.log(entity);
-        this.createTree();
+        //this.createTree();
         return entity;
     }
 

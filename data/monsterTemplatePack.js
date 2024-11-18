@@ -5,7 +5,7 @@ const monsterTemplatePack = [
     "children": ["SlimeImage","SlimeHPBar"],
 
     "relPos": {"x": 1000, "y": -1000 },
-    "size": { "w": 200, "h": 200 },
+    "size": { "w": 25, "h": 25 },
     
     "components": [{
         "name": "AleFizikaC",
@@ -20,8 +20,8 @@ const monsterTemplatePack = [
         },{
         "name": "AlePlayerC",
         "data": {
-            "jumpSpeed": 30,
-            "moveSpeed": 10,
+            "jumpSpeed": 10,
+            "moveSpeed": 30,
             "isGrounded": false,
             "isDucking": false
         }
@@ -52,7 +52,7 @@ const monsterTemplatePack = [
     "children": [],
 
     "relPos": {"x": 0, "y": 0 },
-    "size": { "w": 200, "h": 200 },
+    "size": { "w": 25, "h": 25 },
     
     "components": [{
         "name": "AleRenderC",
@@ -69,8 +69,8 @@ const monsterTemplatePack = [
         "type": "Image",
         "children": [],
     
-        "relPos": {"x": 0, "y": 50 },
-        "size": { "w": 200, "h": 50 },
+        "relPos": {"x": 0, "y": 10 },
+        "size": { "w": 25, "h": 5 },
         
         "components": [{
             "name": "AleRenderC",
@@ -83,10 +83,9 @@ const monsterTemplatePack = [
             "name": "AleFollowC",
             "data": {
                 "follow": "Slime",
-                "followStrength": 5,
-                "followOffset": {"x": 0, "y": -75 }
+                "followStrength": 2,
+                "followOffset": {"x": 0, "y": -10 }
                 }
             }]
         }
 ];
-

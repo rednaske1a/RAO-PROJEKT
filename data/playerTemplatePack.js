@@ -31,7 +31,8 @@ const playerTemplatePack = [
                 "w": [{"name": "Jump", "contexts": ["InGame"], "target": "Player"}],
                 "a": [{"name": "GoLeft", "contexts": ["InGame"], "target": "Player"}],
                 "s": [{"name": "Duck", "contexts": ["InGame"], "target": "Player"}],
-                "d": [{"name": "GoRight", "contexts": ["InGame"], "target": "Player"}]
+                "d": [{"name": "GoRight", "contexts": ["InGame"], "target": "Player"}],
+                "x": [{"name": "Attack", "contexts": ["InGame"], "target": "Player"}]
                 },
                 "mouse": {}
             }

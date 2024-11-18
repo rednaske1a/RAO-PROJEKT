@@ -245,6 +245,7 @@ class AleEventManager{
                 case "ToggleGUI": this.toggleGUI(event); break;
                 case "CloseGUI": this.closeGUI(event); break;
                 case "CreateSlime": this.createSlime(sManager, event); break;
+                case "Attack": this.attack(sManager, event); break;
             }
         });
     }
@@ -284,4 +285,12 @@ class AleEventManager{
         let newEntity = sManager.createEntity("Slime", sManager.getEntityByTemplate("Game"), this);
         newEntity.relPos.x += Math.floor(Math.random() * (200 + 200 + 1) - 200);
     }
+
+    attack(sManager, event){
+        let newEntity = sManager.createEntity("DamageBox", sManager.getEntityByTemplate("Player"), this);
+        newEntity.relPos.x = 200;
+        newEntity.relPos.y = 0;
+        let timeout = setTimeout(Entity.removeEntity(sManager.eLoaded, newEntity), 1);
+    }
 }
+

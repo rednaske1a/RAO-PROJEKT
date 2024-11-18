@@ -74,3 +74,16 @@ class AleEnemyAIC {
         
     }
 }
+
+class AleHPC {
+    constructor(data){
+        this.maxHP = data.maxHP;
+        this.currHP = data.currHP;
+    }
+}
+
+class AleHitC {
+    constructor(data){
+       this.damage = data.damage;
+    }
+}

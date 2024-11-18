@@ -5,6 +5,16 @@ class AleFizika {
         this.collStorage = [];
     }
 
+    AABB(entity1, entity2) {
+        return !(
+            entity1.pos.x + entity1.size.w <= entity2.pos.x ||
+            entity1.pos.x >= entity2.pos.x + entity2.size.w ||
+            entity1.pos.y + entity1.size.h <= entity2.pos.y ||
+            entity1.pos.y >= entity2.pos.y + entity2.size.h
+        );
+    }
+    
+
     sweptAABB(entity1, entity2) {
         let xInvEntry, yInvEntry;
         let xInvExit, yInvExit;
@@ -129,6 +139,7 @@ class AleFizika {
     update(entityList) {
         this.solveColl = []; // tabela vseh entitijev ki se bojo premaknili
         this.collStorage = []; // s kom se lahko vsak objekt collida za lažje premikanje childov entitija
+        //console.log(this.collStorage);
 
         entityList.forEach(entity1 =>{ // napolni te dve tabeli z pointerji na objekte
             if(entity1.fizikaC != null){

@@ -10,6 +10,7 @@ templatePacks.push(guiTemplatePack);
 templatePacks.push(L001TemplatePack);
 templatePacks.push(monsterTemplatePack);
 templatePacks.push(playerTemplatePack);
+templatePacks.push(combatTemplatePack);
 
 console.log(templatePacks);
 game.init(templatePacks);
