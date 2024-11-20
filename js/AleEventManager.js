@@ -268,8 +268,10 @@ class AleEventManager{
                 case "ToggleGUI": this.toggleGUI(event); break;
                 case "CloseGUI": this.closeGUI(event); break;
                 case "CreateSlime": this.createSlime(sManager, event); break;
-                case "Attack": this.attack(sManager, event); break;
-                case "KYS": Entity.removeEntity(event.target, sManager.eLoaded); break;
+                case "UseSkill1": this.useSkill1(sManager, event); break;
+                case "UseSkill2": this.useSkill2(sManager, event); break;
+                case "UseSkill3": this.useSkill3(sManager, event); break;
+                case "KYS": Entity.removeEntity(event.target, sManager); break;
             }
         });
     }
@@ -310,10 +312,35 @@ class AleEventManager{
         newEntity.relPos.x += Math.floor(Math.random() * (200 + 200 + 1) - 200);
     }
 
-    attack(sManager, event){
+    useSkill1(sManager, event){
         let newEntity = sManager.createEntity("DamageBox", sManager.getEntityByTemplate("Player"), this);
-        newEntity.relPos.x = 200;
+        newEntity.relPos.x = newEntity.parent.size.w;
         newEntity.relPos.y = 0;
+        newEntity.size.w = 200
+        newEntity.size.h = 50;
+        newEntity.timedEventC.delay = 100;
+    }
+
+    useSkill2(sManager, event){
+        let player = sManager.getEntityByTemplate("Player");
+        player.fizikaC.vel.x = 20;
+        player.fizikaC.vel.y = -20;
+        let newEntity = sManager.createEntity("DamageBox", player, this);
+        newEntity.relPos.x = -newEntity.parent.size.w;
+        newEntity.relPos.y = newEntity.parent.size.h/2;
+        newEntity.size.w = newEntity.parent.size.w * 3
+        newEntity.size.h = newEntity.parent.size.h/2;
+        newEntity.timedEventC.delay = 1000;
+    }
+
+    useSkill3(sManager, event){
+        let newEntity = sManager.createEntity("DamageBox", sManager.getEntityByTemplate("Player"), this);
+        newEntity.relPos.x = newEntity.parent.size.w;
+        newEntity.relPos.y = -400;
+        newEntity.size.w = 500
+        newEntity.size.h = 500;
+        newEntity.timedEventC.delay = 200;
+        newEntity.fizikaC.vel.x = 100;
     }
 }
 

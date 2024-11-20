@@ -31,7 +31,7 @@ const combatTemplatePack = [{
     },{
     "name": "AleTimedEventC",
     "data": {
-        "delay": 3000,
+        "delay": 250,
         "events": [
             {"name": "KYS", "contexts": ["InGame"], "target": "SELF"}
         ]

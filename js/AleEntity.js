@@ -70,14 +70,27 @@ class Entity {
         entityList.push(new Entity(entity));
     }
 
-    static removeEntity(entity, entityList){
+    static removeEntity(entity, sManager){
         console.log("removing");
         console.log(entity)
         let removeEntities = Entity.getDescendants(entity, []);
         let removeN = 0;
         removeEntities.forEach(rEntity =>{
-            entityList.splice(rEntity.id - removeN, 1);
-            removeN++;
+            sManager.eLoaded.forEach((fEntity,index) =>{
+                if(rEntity.name == fEntity.name){
+                    sManager.eLoaded.splice(index,1);
+                }
+            })
+            sManager.eStorage.forEach((fEntity,index) =>{
+                if(rEntity.name == fEntity.name){
+                    sManager.eLoaded.splice(index,1);
+                }
+            })
+            rEntity.parent.children.forEach((rChild, index) =>{
+                if(rChild.name == rEntity.name){
+                    rEntity.parent.children.splice(index,1);
+                }
+            })
         })
     }
 

@@ -32,7 +32,9 @@ const playerTemplatePack = [
                 "a": [{"name": "GoLeft", "contexts": ["InGame"], "target": "Player"}],
                 "s": [{"name": "Duck", "contexts": ["InGame"], "target": "Player"}],
                 "d": [{"name": "GoRight", "contexts": ["InGame"], "target": "Player"}],
-                "x": [{"name": "Attack", "contexts": ["InGame"], "target": "Player"}]
+                "y": [{"name": "UseSkill1", "contexts": ["InGame"], "target": "Player"}],
+                "x": [{"name": "UseSkill2", "contexts": ["InGame"], "target": "Player"}],
+                "c": [{"name": "UseSkill3", "contexts": ["InGame"], "target": "Player"}]
                 },
                 "mouse": {}
             }
@@ -62,7 +64,7 @@ const playerTemplatePack = [
     "children": [],
 
     "relPos": {"x": 900, "y": -900 },
-    "size": { "w": 2048, "h": 1152 },
+    "size": { "w": 4096, "h": 2304 },
         
     "components": [{
         "name": "AleCameraC",
@@ -78,7 +80,7 @@ const playerTemplatePack = [
         "data": {
             "follow": "Player",
             "followStrength": 20,
-            "followOffset": {"x": -900, "y": -700 }
+            "followOffset": {"x": -900, "y": -1400 }
             }
         }]
     }
