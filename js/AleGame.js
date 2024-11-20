@@ -4,6 +4,8 @@ class AleGame {
         this.eManager = new AleEventManager();
         this.renderer = new AleRenderer();
         this.fizika = new AleFizika();
+        this.deltaTime = 0;
+        this.prevTime = 1000;
     }
 
     init(scenes){
@@ -14,7 +16,10 @@ class AleGame {
         this.sManager.createEntity("Gui", game, this.eManager);
     }
 
-    run() {
+    run(time) {
+        game.deltaTime = Number((time - game.prevTime) / 1000);
+        game.prevTime = time;
+        //console.log(game.deltaTime);
         game.render();
         game.update();
         window.requestAnimationFrame(game.run);
@@ -27,6 +32,6 @@ class AleGame {
 
     update() {
         this.eManager.solveEvents(this.sManager);
-        this.fizika.update(this.sManager.eLoaded);
+        this.fizika.update(this.sManager.eLoaded, this.deltaTime);
     }
 }

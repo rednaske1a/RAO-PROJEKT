@@ -144,7 +144,7 @@ const guiTemplatePack = [
         "name": "AleEventC",
         "data": { "keys": {},
                 "mouse": {
-                    "wentDown": [{"name": "CreateSlime", "contexts": ["InGame"], "target": "Slime"}],
+                    "down": [{"name": "CreateSlime", "contexts": ["InGame"], "target": "Slime"}],
                 
                 }
             }

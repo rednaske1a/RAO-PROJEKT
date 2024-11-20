@@ -28,6 +28,15 @@ const combatTemplatePack = [{
     "data": {
         "damage": 30
         }
-    }]
+    },{
+    "name": "AleTimedEventC",
+    "data": {
+        "delay": 3000,
+        "events": [
+            {"name": "KYS", "contexts": ["InGame"], "target": "SELF"}
+        ]
+        }
+    }
+]
     }
 ];

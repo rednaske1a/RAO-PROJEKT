@@ -24,6 +24,7 @@ class Entity {
         this.enemyAIC = null;
         this.HPC = null;
         this.HitC = null
+        this.timedEventC = null;
         
         //console.log(sManager);
         this.addComponents(components, sManager);
@@ -39,9 +40,10 @@ class Entity {
                 case "AleFollowC": this.followC = new AleFollowC(component.data, sManager); break;
                 case "AleGUIC": this.guiC = new AleGUIC(component.data); break;
                 case "AlePlayerC": this.playerC = new AlePlayerC(component.data); break;
-                case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC({actions:component.data, entity:this}); break;
+                case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC({actions:component.data, entity:this, sManager:sManager}); break;
                 case "AleHPC": this.HPC = new AleHPC(component.data); break;
                 case "AleHitC": this.HitC = new AleHitC(component.data); break;
+                case "AleTimedEventC": this.timedEventC = new AleTimedEventC(component.data, this, sManager); break;
             }
         });
     }
@@ -68,7 +70,7 @@ class Entity {
         entityList.push(new Entity(entity));
     }
 
-    static removeEntity(entityList, entity){
+    static removeEntity(entity, entityList){
         let removeEntities = Entity.getDescendants(entity, []);
         let removeN = 0;
         removeEntities.forEach(rEntity =>{

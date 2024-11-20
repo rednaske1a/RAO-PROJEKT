@@ -59,16 +59,19 @@ class AleGUIC{
 }
 
 class AleEnemyAIC {
-    constructor({actions,entity}){
+    constructor({actions,entity,sManager}){
         this.actions = Entity.copyObjectNoRef(actions.actions);
         //console.log("ACTIONS");
         //console.log(this.actions);
-        
+        /*
         for(let action in this.actions){
             this.actions[action].trigger = entity;
             this.actions[action].target = entity;
             this.actions[action].triggerKey = "ai";
-        }
+        }*/
+        this.actions.forEach((action, index) => {
+            this.actions[index] = AleEventManager.formatEvent(action, entity, "ai", null, sManager);
+        });
         //console.log("ACTIONS2");
         //console.log(this.actions);
         
@@ -85,5 +88,16 @@ class AleHPC {
 class AleHitC {
     constructor(data){
        this.damage = data.damage;
+    }
+}
+
+class AleTimedEventC{
+    constructor(data, entity, sManager){
+        this.start = Date.now();
+        this.delay = data.delay;
+        this.events = Entity.copyObjectNoRef(data.events);
+        this.events.forEach((event, index) => {
+            this.events[index] = AleEventManager.formatEvent(event, entity, "timer", null, sManager);
+        });
     }
 }

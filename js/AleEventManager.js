@@ -29,10 +29,9 @@ class AleEventManager{
             entity.eventC.keys[key].forEach(event=>{
                 //console.log("Event " + event);
                 //console.log()
-                let eventTarget = sManager.getEntityByTemplate(event.target);
                 //console.log("EventTARGET:")
                 //console.log(eventTarget);
-                let newEvent = {name:event.name, contexts:event.contexts, trigger:entity, target:eventTarget, triggerKey:key};
+                let newEvent = AleEventManager.formatEvent(event, entity, key, null, sManager);
                 if(this.events.keys[key] == undefined){
                     this.events.keys[key] = {events: [], value:0};
                 }
@@ -45,10 +44,9 @@ class AleEventManager{
             entity.eventC.mouse[mouseMode].forEach(event=>{
                 //console.log("Event " + event);
                 //console.log()
-                let eventTarget = sManager.getEntityByTemplate(event.target);
                 //console.log("EventTARGET:")
                 //console.log(eventTarget);
-                let newEvent = {name:event.name, contexts:event.contexts, trigger:entity, target:eventTarget, triggerKey:mouseMode};
+                let newEvent = AleEventManager.formatEvent(event, entity, null, mouseMode, sManager);
                 if(this.events.mouse[mouseMode] == undefined){
                     this.events.mouse[mouseMode] = {events: [], value:0};
                 }
@@ -56,6 +54,18 @@ class AleEventManager{
             });
         }
         console.log(this.events);
+    }
+
+    static formatEvent(event, entity, key, mouseMode, sManager){
+        let TK = key || mouseMode;
+
+        let eventTarget = entity;
+        if(event.target != "SELF"){
+            eventTarget = sManager.getEntityByTemplate(event.target);
+        } 
+
+        let goodEvent = {name:event.name, contexts:event.contexts, trigger:entity, target:eventTarget, triggerKey:TK};
+        return goodEvent;
     }
 /*
     initKeyTracking(entityList){
@@ -166,6 +176,18 @@ class AleEventManager{
             //console.log(event);
             this.validateEvent(event);
         })
+
+        entityList.forEach(entity =>{
+            if(entity.timedEventC != null){
+                let now = Date.now();
+                console.log(now);
+                if(now >= entity.timedEventC.start + entity.timedEventC.delay){
+                    entity.timedEventC.events.forEach(event =>{
+                        this.validateEvent(event);
+                    })
+                }
+            }
+        })
         //KEYBOARD EVENTS & UNLOCK BUTTONS
         //
         for (let key in this.events.keys) {
@@ -206,6 +228,7 @@ class AleEventManager{
     }
 
     validateEvent(event){
+        console.log(event)
         let valid = 0;
         
         event.contexts.forEach(context =>{
@@ -246,6 +269,7 @@ class AleEventManager{
                 case "CloseGUI": this.closeGUI(event); break;
                 case "CreateSlime": this.createSlime(sManager, event); break;
                 case "Attack": this.attack(sManager, event); break;
+                case "KYS": Entity.removeEntity(event.target, sManager.eLoaded); break;
             }
         });
     }

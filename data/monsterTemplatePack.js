@@ -20,8 +20,8 @@ const monsterTemplatePack = [
         },{
         "name": "AlePlayerC",
         "data": {
-            "jumpSpeed": 10,
-            "moveSpeed": 30,
+            "jumpSpeed": 30,
+            "moveSpeed": 10,
             "isGrounded": false,
             "isDucking": false
         }
@@ -29,17 +29,17 @@ const monsterTemplatePack = [
         "name": "AleEnemyAIC",
         "data": {
             "actions": [
-                {"name": "Jump", "contexts": ["InGame"], "target": "Slime"},
-                {"name": "GoLeft", "contexts": ["InGame"], "target": "Slime"},
-                {"name": "GoLeft", "contexts": ["InGame"], "target": "Slime"},
-                {"name": "GoLeft", "contexts": ["InGame"], "target": "Slime"},
+                {"name": "Jump", "contexts": ["InGame"], "target": "SELF"},
+                {"name": "GoLeft", "contexts": ["InGame"], "target": "SELF"},
+                {"name": "GoLeft", "contexts": ["InGame"], "target": "SELF"},
+                {"name": "GoLeft", "contexts": ["InGame"], "target": "SELF"},
                 //{"name": "Duck", "contexts": ["InGame"], "target": "Slime"},
-                {"name": "GoRight", "contexts": ["InGame"], "target": "Slime"},
-                {"name": "GoRight", "contexts": ["InGame"], "target": "Slime"},
-                {"name": "GoRight", "contexts": ["InGame"], "target": "Slime"},
-                {"name": "Wait", "contexts": ["InGame"], "target": "Slime"},
-                {"name": "Wait", "contexts": ["InGame"], "target": "Slime"},
-                {"name": "Wait", "contexts": ["InGame"], "target": "Slime"}
+                {"name": "GoRight", "contexts": ["InGame"], "target": "SELF"},
+                {"name": "GoRight", "contexts": ["InGame"], "target": "SELF"},
+                {"name": "GoRight", "contexts": ["InGame"], "target": "SELF"},
+                {"name": "Wait", "contexts": ["InGame"], "target": "SELF"},
+                {"name": "Wait", "contexts": ["InGame"], "target": "SELF"},
+                {"name": "Wait", "contexts": ["InGame"], "target": "SELF"}
 
             ]
         }

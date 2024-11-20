@@ -136,7 +136,7 @@ class AleFizika {
         return minColTime;
     }
 
-    update(entityList) {
+    update(entityList, deltaTime) {
         this.solveColl = []; // tabela vseh entitijev ki se bojo premaknili
         this.collStorage = []; // s kom se lahko vsak objekt collida za lažje premikanje childov entitija
         //console.log(this.collStorage);
@@ -167,9 +167,10 @@ class AleFizika {
 
         this.solveColl.forEach(entity =>{
             let minColTime = this.recursiveMinColTime(entity, {x: 1, y: 1, nx: 0, ny: 0});
-            
+
             entity.relPos.x += entity.fizikaC.vel.x * minColTime.x;
             entity.relPos.y += entity.fizikaC.vel.y * minColTime.y;
+            //console.log(entity.name + " " + entity.relPos.x + " " + entity.relPos.y);
 
             if(minColTime.x == 0) { //ustavi playerja da ne pospešuje v tla in strop
                 entity.fizikaC.vel.x = 0;
@@ -179,7 +180,7 @@ class AleFizika {
                 
             if(minColTime.y == 0){ //ustavi playerja da ne pospešuje v zide
                 entity.fizikaC.vel.y = 0;
-                entity.fizikaC.vel.x *= 1 - entity.fizikaC.trenje;
+                entity.fizikaC.vel.x *= 1 - (entity.fizikaC.trenje);
             } else {
                 entity.fizikaC.vel.y += entity.fizikaC.acc.y;
             }
