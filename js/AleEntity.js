@@ -71,6 +71,8 @@ class Entity {
     }
 
     static removeEntity(entity, entityList){
+        console.log("removing");
+        console.log(entity)
         let removeEntities = Entity.getDescendants(entity, []);
         let removeN = 0;
         removeEntities.forEach(rEntity =>{

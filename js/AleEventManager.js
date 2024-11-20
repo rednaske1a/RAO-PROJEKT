@@ -314,7 +314,6 @@ class AleEventManager{
         let newEntity = sManager.createEntity("DamageBox", sManager.getEntityByTemplate("Player"), this);
         newEntity.relPos.x = 200;
         newEntity.relPos.y = 0;
-        let timeout = setTimeout(Entity.removeEntity(sManager.eLoaded, newEntity), 1);
     }
 }
 
