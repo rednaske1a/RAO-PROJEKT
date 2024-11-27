@@ -46,64 +46,101 @@ class AleEventManager{
             keyboardState: new Map()
         }
 
+        this.triggerCollector.mouseState.set("LMB", {state: false, down: false, up: !false, pressed: false, released: false})
+        this.triggerCollector.mouseState.set("RMB", {state: false, down: false, up: !false, pressed: false, released: false})
+        this.triggerCollector.mouseState.set("MMB", {state: false, down: false, up: !false, pressed: false, released: false})
+
         this.screenMouseXY = {x:0, y:0};
         this.gameMouseXY = {x:0, y:0};
-        window.addEventListener('keydown', (event) => this.updateKeyboardState(event, 1));
-        window.addEventListener('keyup', (event) => this.updateKeyboardState(event, 0));
+        window.addEventListener('keydown', (event) => this.setKeyboardState(event, 1));
+        window.addEventListener('keyup', (event) => this.setKeyboardState(event, 0));
         window.addEventListener('mousemove', (event) => this.updateMouseXY(event));
-        window.addEventListener("mousedown", (event) => this.updateMouseState(event));
-        window.addEventListener("mouseup", (event) => this.updateMouseState(event));
+        window.addEventListener("mousedown", (event) => this.setMouseState(event));
+        window.addEventListener("mouseup", (event) => this.setMouseState(event));
     }
 
-    updateKeyboardState(event, value){
-        this.triggerCollector.keyboardState.set(event.key, value);
-        console.log(this.triggerCollector.keyboardState);
+    setKeyboardState(event, value){
+        let prevKey = false;
+        if(this.triggerCollector.mouseState.has(event.key)){
+            prevKey = this.triggerCollector.mouseState.get(event.key).state
+        }
+
+        let newKey = value;
+
+        let pressedKey = ((prevKey == false) && (newKey == true))? true : false;
+        let releasedKey = ((prevKey == true) && (newKey == false))? true : false;
+
+
+        this.triggerCollector.keyboardState.set(event.key, {state: newKey, down: newKey, up: !newKey, pressed: pressedKey, released: releasedKey});
     }
 
-    updateMouseState(event){///FIXXXXXX
+    updateKeyboardState(){
+        this.triggerCollector.keyboardState.forEach((key,index) =>{
+            if(this.triggerCollector.keyboardState.has(key)){
+            let newState = this.triggerCollector.keyboardState.get(key);
+            newState.pressed = false;
+            newState.released = false;
+            }
+            let newState = {state: false, down: false, up: !false, pressed: false, released: false};
+            this.triggerCollector.keyboardState.set(key, newState);
+        })
+    }
+
+    updateMouseState(){
+        let newStateLMB = this.triggerCollector.mouseState.get("LMB");
+        //console.log(newStateLMB);
+        newStateLMB.pressed = false;
+        newStateLMB.released = false;
+        this.triggerCollector.mouseState.set("LMB", newStateLMB);
+        let newStateRMB = this.triggerCollector.mouseState.get("RMB");
+        newStateRMB.pressed = false;
+        newStateRMB.released = false;
+        this.triggerCollector.mouseState.set("RMB", newStateRMB);
+        let newStateMMB = this.triggerCollector.mouseState.get("MMB");
+        newStateMMB.pressed = false;
+        newStateMMB.released = false;
+        this.triggerCollector.mouseState.set("MMB", newStateMMB);
+    }
+
+    setMouseState(event){///FIXXXXXX
+        let prevLMB = false;
+        let prevRMB = false;
+        let prevMMB = false;
         if(this.triggerCollector.mouseState.has("LMB")){
-            let prevRMB = this.triggerCollector.mouseState.get("RMB").state
-        } else {
-            let prevRMB = 0
-        }
+            prevLMB = this.triggerCollector.mouseState.get("LMB").state
+        } 
         if(this.triggerCollector.mouseState.has("RMB")){
-            let prevRMB = this.triggerCollector.mouseState.get("RMB").state
-        } else {
-            let prevRMB = 0
+            prevRMB = this.triggerCollector.mouseState.get("RMB").state
         }
-        if(this.triggerCollector.mouseState.has("RMB")){
-            let prevRMB = this.triggerCollector.mouseState.get("RMB").state
-        } else {
-            let prevRMB = 0
+        if(this.triggerCollector.mouseState.has("MMB")){
+            prevMMB = this.triggerCollector.mouseState.get("MMB").state
         }
 
-        let LMB = 0;
-        let RMB = 0;
-        let MMB = 0;
+        let LMB = false;
+        let RMB = false;
+        let MMB = false;
         switch(event.buttons){
-            case 0: LMB = 0; RMB = 0; MMB = 0; break;
-            case 1: LMB = 1; RMB = 0; MMB = 0; break;
-            case 2: LMB = 0; RMB = 1; MMB = 0; break;
-            case 3: LMB = 1; RMB = 1; MMB = 0; break;
-            case 4: LMB = 0; RMB = 0; MMB = 1; break;
-            case 5: LMB = 1; RMB = 0; MMB = 1; break;
-            case 6: LMB = 0; RMB = 1; MMB = 1; break;
-            case 7: LMB = 1; RMB = 1; MMB = 1; break;
+            case 0: LMB = false; RMB = false; MMB = false; break;
+            case 1: LMB = true; RMB = false; MMB = false; break;
+            case 2: LMB = false; RMB = true; MMB = false; break;
+            case 3: LMB = true; RMB = true; MMB = false; break;
+            case 4: LMB = false; RMB = false; MMB = true; break;
+            case 5: LMB = true; RMB = false; MMB = true; break;
+            case 6: LMB = false; RMB = true; MMB = true; break;
+            case 7: LMB = true; RMB = true; MMB = true; break;
         }
 
-        let pressedLMB = ((prevLMB == 0) && (LMB == 1))? 1 : 0;
-        let pressedRMB = ((prevRMB == 0) && (LMB == 1))? 1 : 0;
-        let pressedMMB = ((prevMMB == 0) && (LMB == 1))? 1 : 0;
+        let pressedLMB = ((prevLMB == false) && (LMB == true))? true : false;
+        let pressedRMB = ((prevRMB == false) && (RMB == true))? true : false;
+        let pressedMMB = ((prevMMB == false) && (MMB == true))? true : false;
 
-        let releasedLMB = ((prevLMB == 1) && (LMB == 0))? 1 : 0;
-        let releasedRMB = ((prevRMB == 1) && (LMB == 0))? 1 : 0;
-        let releasedMMB = ((prevMMB == 1) && (LMB == 0))? 1 : 0;
+        let releasedLMB = ((prevLMB == true) && (LMB == false))? true : false;
+        let releasedRMB = ((prevRMB == true) && (RMB == false))? true : false;
+        let releasedMMB = ((prevMMB == true) && (MMB == false))? true : false;
 
-        this.triggerCollector.mouseState.set("LMB", {state: LMB, down: LMB, up: LMB, pressed: pressedLMB, released: releasedLMB});
-        this.triggerCollector.mouseState.set("RMB", {state: RMB, down: RMB, up: RMB, pressed: pressedRMB, released: releasedRMB});
-        this.triggerCollector.mouseState.set("MMB", {state: MMB, down: MMB, up: MMB, pressed: pressedMMB, released: releasedMMB});
-
-        console.log(this.triggerCollector.mouseState);
+        this.triggerCollector.mouseState.set("LMB", {state: LMB, down: LMB, up: !LMB, pressed: pressedLMB, released: releasedLMB});
+        this.triggerCollector.mouseState.set("RMB", {state: RMB, down: RMB, up: !RMB, pressed: pressedRMB, released: releasedRMB});
+        this.triggerCollector.mouseState.set("MMB", {state: MMB, down: MMB, up: !MMB, pressed: pressedMMB, released: releasedMMB});
     }
     
     updateTriggerStates(){
@@ -314,7 +351,21 @@ class AleEventManager{
             }
         }
         	*/
-        this.updateTriggerStates();
+        if (this.triggerCollector.mouseState.get("LMB").pressed == true){
+            console.log("Pressed LMB");
+        }
+        if (this.triggerCollector.mouseState.get("LMB").released == true){
+            console.log("Released LMB");
+        }
+        if(this.triggerCollector.keyboardState.has("a")){
+            if(this.triggerCollector.keyboardState.get("a").pressed == true){
+                console.log("Pressed a");
+            }
+        }
+        
+
+        this.updateMouseState();
+        this.updateKeyboardState();
         //console.log(this.triggerStates);
 
     }
