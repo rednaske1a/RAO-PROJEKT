@@ -67,7 +67,7 @@ class AleSceneManager {
             //console.log(template.children);
         }
 
-        eManager.bindEvents(entity, this);
+        //eManager.bindEvents(entity, this);
 
         console.log("Finish Creating " + templateName);
        console.log(entity);
