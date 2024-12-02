@@ -1,18 +1,16 @@
 class AleEvent{
-    constructor({name, type, trigger, tContext, tEntity, target, eContexts}){
+    constructor({name, type, trigger, tContext, tEntity, target, eContexts}, sManager){
         this.name = name;       //Jump, UseSkill1, RunLeft
 
         this.type = type;       //COLLISION, KEYBOARD, MOUSE
         this.trigger = trigger; //Player, W, A, S, D, RMB, LMB
-        this.context = tContext; //EnterBody, LeaveBody, Click, Release, Down, Up
+        this.context = tContext; //EnterBody, LeaveBody, Pressed, Release, Down, Up
 
         this.event = {
             trigger: tEntity,
             target: sManager.getEntityByName(target),
             contexts: eContexts
         }
-        console.log("Created Event");
-        console.log(this);
     }
 }
 
@@ -20,10 +18,9 @@ class AleEvent{
 //KEYBOARD //W //CLICK
 //MOUSE //RMB //RELEASE
 
-
 //MAP PO triggerju
-    //MAP po contextu
-        //CE ZE OBSTAJA, DODA
+//MAP po contextu
+//CE ZE OBSTAJA, DODA
 
 class AleEventManager{
     constructor(){
@@ -54,12 +51,17 @@ class AleEventManager{
         this.gameMouseXY = {x:0, y:0};
         window.addEventListener('keydown', (event) => this.setKeyboardState(event, 1));
         window.addEventListener('keyup', (event) => this.setKeyboardState(event, 0));
+
         window.addEventListener('mousemove', (event) => this.updateMouseXY(event));
+
         window.addEventListener("mousedown", (event) => this.setMouseState(event));
         window.addEventListener("mouseup", (event) => this.setMouseState(event));
     }
 
+    
+
     setKeyboardState(event, value){
+        console.log(event.key);
         let prevKey = false;
         if(this.triggerCollector.mouseState.has(event.key)){
             prevKey = this.triggerCollector.mouseState.get(event.key).state
@@ -75,7 +77,11 @@ class AleEventManager{
     }
 
     updateKeyboardState(){
-        this.triggerCollector.keyboardState.forEach((key,index) =>{
+        //console.log("abcv")
+        for (let [key, value] of this.triggerCollector.keyboardState) {
+            //console.log(key + " is " + value);
+
+           // console.log("ab32cv")
             if(this.triggerCollector.keyboardState.has(key)){
             let newState = this.triggerCollector.keyboardState.get(key);
             newState.pressed = false;
@@ -83,7 +89,7 @@ class AleEventManager{
             }
             let newState = {state: false, down: false, up: !false, pressed: false, released: false};
             this.triggerCollector.keyboardState.set(key, newState);
-        })
+        }
     }
 
     updateMouseState(){
@@ -142,131 +148,12 @@ class AleEventManager{
         this.triggerCollector.mouseState.set("RMB", {state: RMB, down: RMB, up: !RMB, pressed: pressedRMB, released: releasedRMB});
         this.triggerCollector.mouseState.set("MMB", {state: MMB, down: MMB, up: !MMB, pressed: pressedMMB, released: releasedMMB});
     }
-    
-    updateTriggerStates(){
 
-    }
-
-    /*
-    bindEvents(entity, sManager){
-        if(entity.eventC == null){
-            return;
-        }
-        //console.log("binding events for " + entity.name);
-        //console.log(entity.eventC);
-        for(let key in entity.eventC.keys){
-            //console.log("Key " + key);
-            entity.eventC.keys[key].forEach(event=>{
-                //console.log("Event " + event);
-                //console.log()
-                //console.log("EventTARGET:")
-                //console.log(eventTarget);
-                let newEvent = AleEventManager.formatEvent(event, entity, key, null, sManager);
-                if(this.events.keys[key] == undefined){
-                    this.events.keys[key] = {events: [], value:0};
-                }
-                this.events.keys[key].events.push(newEvent)
-            });
-        }
-
-        for(let mouseMode in entity.eventC.mouse){
-            //console.log("Mouse " + mouseMode);
-            entity.eventC.mouse[mouseMode].forEach(event=>{
-                //console.log("Event " + event);
-                //console.log()
-                //console.log("EventTARGET:")
-                //console.log(eventTarget);
-                let newEvent = AleEventManager.formatEvent(event, entity, null, mouseMode, sManager);
-                if(this.events.mouse[mouseMode] == undefined){
-                    this.events.mouse[mouseMode] = {events: [], value:0};
-                }
-                this.events.mouse[mouseMode].events.push(newEvent)
-            });
-        }
-        console.log(this.events);
-    }
-*/
-    static formatEvent(event, entity, key, mouseMode, sManager){
-        let TK = key || mouseMode;
-
-        let eventTarget = entity;
-        if(event.target != "SELF"){
-            eventTarget = sManager.getEntityByTemplate(event.target);
-        } 
-
-        let goodEvent = {name:event.name, contexts:event.contexts, trigger:entity, target:eventTarget, triggerKey:TK};
-        return goodEvent;
-    }
-/*
-    initKeyTracking(entityList){
-        this.events.keys = {};
-        this.events.mouse = {};
-        entityList.forEach(entity =>{
-            if(entity.eventC != null){
-                //console.log("OKOK")
-                //console.log(entity.eventC.keys);
-
-                for(let key in entity.eventC.keys){
-                    //console.log(key);
-
-                    let newEvents = [];
-                    entity.eventC.keys[key].forEach(event =>{
-
-                        let target = event.target; //prevede imena targetov v pointerje
-                        entityList.forEach(tEntity =>{
-                            if(tEntity.name == target){
-                                    target = tEntity;
-                            }
-                        })
-
-                        newEvents.push({name:event.name, contexts:event.contexts, trigger: entity, target:target, triggerKey:key})
-                    })
-
-                    if(this.events.keys[key] == undefined){
-                        this.events.keys[key] = {value: 0, events: newEvents};
-                    } else {
-                        let combineEvents = this.events.keys[key].events;
-                        newEvents.forEach(event=>{
-                            combineEvents.push(event);
-                        });
-                        this.events.keys[key] = {value: 0, events: combineEvents};
-                    }
-                }
-
-                for(let mouseMode in entity.eventC.mouse){
-                    //console.log(mouseMode);
-
-                    let newEvents = [];
-                    entity.eventC.mouse[mouseMode].forEach(event =>{
-
-                        let target = event.target; //prevede imena targetov v pointerje
-                        entityList.forEach(tEntity =>{
-                            if(tEntity.name == target){
-                                    target = tEntity;
-                            }
-                        })
-
-                        newEvents.push({name:event.name, contexts:event.contexts, trigger: entity, target:target, triggerKey:mouseMode})
-                    })
-
-                    if(this.events.mouse[mouseMode] == undefined){
-                        this.events.mouse[mouseMode] = {value: 0, events: newEvents};
-                    } else {
-                        let combineEvents = this.events.mouse[mouseMode].events;
-                        newEvents.forEach(event=>{
-                            combineEvents.push(event);
-                        });
-                        this.events.mouse[mouseMode] = {value: 0, events: combineEvents};
-                    }
-                }
-            }
-
-            //console.log(this.events);
+    bindEvents(entity){
+        entity.eventC.events.forEach(event =>{
+            let newEvent = new AleEvent(event, sManager);
+            this.events.push(newEvent)
         });
-    }
-*/
-    updateKeys(event, setTo){
-        if(this.events.keys[event.key] != undefined) this.events.keys[event.key].value = setTo;
     }
 
     updateMouseXY(event){
@@ -274,31 +161,30 @@ class AleEventManager{
         this.screenMouseXY.y = event.clientY - this.canvas.offsetTop;
     }
 
-    mouseState(setTo){
-        this.mouse.down = setTo;
-        this.mouse.up = !setTo;
+    getKeyboardEvents(eList){
+        this.events.forEach(event =>{
+            if(event.type == "Keyboard"){
+                if(this.triggerCollector.get(event.trigger)[event.context]){
+
+                }
+            }
+        });
     }
 
-    mouseUp(event){
-        this.mouse.wentUp = true;
-        this.mouseState(false);
+    getMouseEvents(eList){
+
     }
 
-    mouseDown(event){
-        this.mouse.wentDown = true;
-        
-        this.mouseState(true);
-        //console.log(this.mouse);
+    getCollisionEvents(eList){
+
     }
 
-    resetMouse(){
-        this.mouse.wentDown = false;
-        this.mouse.wentUp = false;
-    }
 
     getEvents(entityList){
         this.eventList = [];
-        //let aiEvents = AleAIManager.think(entityList);
+
+
+        let aiEvents = AleAIManager.think(entityList);
         //console.log(aiEvents);
         /*
         aiEvents.forEach(event =>{
@@ -319,38 +205,10 @@ class AleEventManager{
                 }
             }
         })
-        //KEYBOARD EVENTS & UNLOCK BUTTONS
-        //
-        for (let key in this.events.keys) {
-            if(this.events.keys[key].value == 1){
-                this.events.keys[key].events.forEach(event =>{
-                    //console.log(key);
-                    this.validateEvent(event);
-                })
-            } else {
-                this.events.keys[key].events.forEach(event=>{
-                    if(event.target.guiC != null){
-                        if(key == event.target.guiC.toggleLockedBy){
-                            event.target.guiC.toggleLocked = 0;
-                        }
-                    }
-                });
-                
-            }
-        }
-        //UI BUTTON EVENTS
-        //
+        */
 
-        for(let mouseMode in this.events.mouse){
-            //console.log(mouseMode + " " + this.mouse[mouseMode]);
-            if(this.mouse[mouseMode] == true){
-                this.events.mouse[mouseMode].events.forEach(event =>{
-                    //console.log(event);
-                    this.validateEvent(event);
-                })
-            }
-        }
-        	*/
+
+
         if (this.triggerCollector.mouseState.get("LMB").pressed == true){
             console.log("Pressed LMB");
         }
@@ -362,8 +220,6 @@ class AleEventManager{
                 console.log("Pressed a");
             }
         }
-        
-
         this.updateMouseState();
         this.updateKeyboardState();
         //console.log(this.triggerStates);

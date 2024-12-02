@@ -5,7 +5,7 @@ class AleFizika {
         this.collStorage = [];
     }
 
-    AABB(entity1, entity2) {
+    static AABB(entity1, entity2) {
         return !(
             entity1.pos.x + entity1.size.w <= entity2.pos.x ||
             entity1.pos.x >= entity2.pos.x + entity2.size.w ||
