@@ -6,7 +6,7 @@ class AleEvent{
         this.trigger = trigger; //Player, W, A, S, D, RMB, LMB
         this.context = tContext; //EnterBody, LeaveBody, Pressed, Release, Down, Up
 
-        this.event = {
+        this.data = {
             trigger: tEntity,
             target: sManager.getEntityByName(target),
             contexts: eContexts
@@ -18,9 +18,6 @@ class AleEvent{
 //KEYBOARD //W //CLICK
 //MOUSE //RMB //RELEASE
 
-//MAP PO triggerju
-//MAP po contextu
-//CE ZE OBSTAJA, DODA
 
 class AleEventManager{
     constructor(){
@@ -29,31 +26,24 @@ class AleEventManager{
         this.aiManager = new AleAIManager();
 
         this.eventContext = "InGame";
-        this.events = {}
+        this.events = [];
 
-        this.triggerStates = {
-            pressed: new Set(),
-            released: new Set(),
-            up: new Set(),
-            down: new Set(),
-        }
+        this.tStates = new Map();
 
-        this.triggerCollector = {
-            mouseState: new Map(),
-            keyboardState: new Map()
-        }
+        this.tStates.set("MOUSE", new Map());
+        this.tStates.set("KEYBOARD", new Map());
+        this.tStates.set("COLLISION", new Map());
 
-        this.triggerCollector.mouseState.set("LMB", {state: false, down: false, up: !false, pressed: false, released: false})
-        this.triggerCollector.mouseState.set("RMB", {state: false, down: false, up: !false, pressed: false, released: false})
-        this.triggerCollector.mouseState.set("MMB", {state: false, down: false, up: !false, pressed: false, released: false})
+        this.tStates.get("MOUSE").set("LMB", {state: false, down: false, up: !false, pressed: false, released: false})
+        this.tStates.get("MOUSE").set("RMB", {state: false, down: false, up: !false, pressed: false, released: false})
+        this.tStates.get("MOUSE").set("MMB", {state: false, down: false, up: !false, pressed: false, released: false})
 
         this.screenMouseXY = {x:0, y:0};
         this.gameMouseXY = {x:0, y:0};
+
         window.addEventListener('keydown', (event) => this.setKeyboardState(event, 1));
         window.addEventListener('keyup', (event) => this.setKeyboardState(event, 0));
-
         window.addEventListener('mousemove', (event) => this.updateMouseXY(event));
-
         window.addEventListener("mousedown", (event) => this.setMouseState(event));
         window.addEventListener("mouseup", (event) => this.setMouseState(event));
     }
@@ -61,65 +51,60 @@ class AleEventManager{
     
 
     setKeyboardState(event, value){
-        console.log(event.key);
+        //console.log(event.key);
         let prevKey = false;
-        if(this.triggerCollector.mouseState.has(event.key)){
-            prevKey = this.triggerCollector.mouseState.get(event.key).state
+        if(this.tStates.get("KEYBOARD").has(event.key)){
+            prevKey = this.tStates.get("KEYBOARD").get(event.key).state
         }
 
         let newKey = value;
-
+        //console.log(prevKey + "prev, new" + newKey);
         let pressedKey = ((prevKey == false) && (newKey == true))? true : false;
+        //console.log(pressedKey);
         let releasedKey = ((prevKey == true) && (newKey == false))? true : false;
 
 
-        this.triggerCollector.keyboardState.set(event.key, {state: newKey, down: newKey, up: !newKey, pressed: pressedKey, released: releasedKey});
+        this.tStates.get("KEYBOARD").set(event.key, {state: newKey, down: newKey, up: !newKey, pressed: pressedKey, released: releasedKey});
     }
 
     updateKeyboardState(){
         //console.log("abcv")
-        for (let [key, value] of this.triggerCollector.keyboardState) {
-            //console.log(key + " is " + value);
-
-           // console.log("ab32cv")
-            if(this.triggerCollector.keyboardState.has(key)){
-            let newState = this.triggerCollector.keyboardState.get(key);
+        for (let [key, value] of this.tStates.get("KEYBOARD")) {
+            let newState = this.tStates.get("KEYBOARD").get(key);
             newState.pressed = false;
             newState.released = false;
-            }
-            let newState = {state: false, down: false, up: !false, pressed: false, released: false};
-            this.triggerCollector.keyboardState.set(key, newState);
+            this.tStates.get("KEYBOARD").set(key, newState);
         }
     }
 
     updateMouseState(){
-        let newStateLMB = this.triggerCollector.mouseState.get("LMB");
+        let newStateLMB = this.tStates.get("MOUSE").get("LMB");
         //console.log(newStateLMB);
         newStateLMB.pressed = false;
         newStateLMB.released = false;
-        this.triggerCollector.mouseState.set("LMB", newStateLMB);
-        let newStateRMB = this.triggerCollector.mouseState.get("RMB");
+        this.tStates.get("MOUSE").set("LMB", newStateLMB);
+        let newStateRMB = this.tStates.get("MOUSE").get("RMB");
         newStateRMB.pressed = false;
         newStateRMB.released = false;
-        this.triggerCollector.mouseState.set("RMB", newStateRMB);
-        let newStateMMB = this.triggerCollector.mouseState.get("MMB");
+        this.tStates.get("MOUSE").set("RMB", newStateRMB);
+        let newStateMMB = this.tStates.get("MOUSE").get("MMB");
         newStateMMB.pressed = false;
         newStateMMB.released = false;
-        this.triggerCollector.mouseState.set("MMB", newStateMMB);
+        this.tStates.get("MOUSE").set("MMB", newStateMMB);
     }
 
     setMouseState(event){///FIXXXXXX
         let prevLMB = false;
         let prevRMB = false;
         let prevMMB = false;
-        if(this.triggerCollector.mouseState.has("LMB")){
-            prevLMB = this.triggerCollector.mouseState.get("LMB").state
+        if(this.tStates.get("MOUSE").has("LMB")){
+            prevLMB = this.tStates.get("MOUSE").get("LMB").state
         } 
-        if(this.triggerCollector.mouseState.has("RMB")){
-            prevRMB = this.triggerCollector.mouseState.get("RMB").state
+        if(this.tStates.get("MOUSE").has("RMB")){
+            prevRMB = this.tStates.get("MOUSE").get("RMB").state
         }
-        if(this.triggerCollector.mouseState.has("MMB")){
-            prevMMB = this.triggerCollector.mouseState.get("MMB").state
+        if(this.tStates.get("MOUSE").has("MMB")){
+            prevMMB = this.tStates.get("MOUSE").get("MMB").state
         }
 
         let LMB = false;
@@ -144,9 +129,9 @@ class AleEventManager{
         let releasedRMB = ((prevRMB == true) && (RMB == false))? true : false;
         let releasedMMB = ((prevMMB == true) && (MMB == false))? true : false;
 
-        this.triggerCollector.mouseState.set("LMB", {state: LMB, down: LMB, up: !LMB, pressed: pressedLMB, released: releasedLMB});
-        this.triggerCollector.mouseState.set("RMB", {state: RMB, down: RMB, up: !RMB, pressed: pressedRMB, released: releasedRMB});
-        this.triggerCollector.mouseState.set("MMB", {state: MMB, down: MMB, up: !MMB, pressed: pressedMMB, released: releasedMMB});
+        this.tStates.get("MOUSE").set("LMB", {state: LMB, down: LMB, up: !LMB, pressed: pressedLMB, released: releasedLMB});
+        this.tStates.get("MOUSE").set("RMB", {state: RMB, down: RMB, up: !RMB, pressed: pressedRMB, released: releasedRMB});
+        this.tStates.get("MOUSE").set("MMB", {state: MMB, down: MMB, up: !MMB, pressed: pressedMMB, released: releasedMMB});
     }
 
     bindEvents(entity){
@@ -161,27 +146,17 @@ class AleEventManager{
         this.screenMouseXY.y = event.clientY - this.canvas.offsetTop;
     }
 
-    getKeyboardEvents(eList){
+    getNewEvents(){
         this.events.forEach(event =>{
-            if(event.type == "Keyboard"){
-                if(this.triggerCollector.get(event.trigger)[event.context]){
-
-                }
+            if(this.tStates.get(event.type).get(event.trigger)[event.context] == true){
+                this.eventList.push(event.data);
             }
         });
     }
 
-    getMouseEvents(eList){
-
-    }
-
-    getCollisionEvents(eList){
-
-    }
-
-
     getEvents(entityList){
         this.eventList = [];
+        this.getNewEvents();
 
 
         let aiEvents = AleAIManager.think(entityList);
@@ -209,20 +184,21 @@ class AleEventManager{
 
 
 
-        if (this.triggerCollector.mouseState.get("LMB").pressed == true){
+        if (this.tStates.get("MOUSE").get("LMB").pressed == true){
             console.log("Pressed LMB");
         }
-        if (this.triggerCollector.mouseState.get("LMB").released == true){
+        if (this.tStates.get("MOUSE").get("LMB").released == true){
             console.log("Released LMB");
         }
-        if(this.triggerCollector.keyboardState.has("a")){
-            if(this.triggerCollector.keyboardState.get("a").pressed == true){
+        if(this.tStates.get("KEYBOARD").has("a")){
+            if(this.tStates.get("KEYBOARD").get("a").pressed == true){
                 console.log("Pressed a");
             }
         }
+        
         this.updateMouseState();
         this.updateKeyboardState();
-        //console.log(this.triggerStates);
+        //console.log(this.tStates);
 
     }
 
