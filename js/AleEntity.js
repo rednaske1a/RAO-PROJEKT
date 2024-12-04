@@ -7,7 +7,7 @@ class Entity {
         this.type = type;
 
         this.parent = null;
-        this.children = Entity.copyObjectNoRef(children);
+        this.children = Entity.copy(children);
 
         this.pos = {x: null, y:null};
 
@@ -34,7 +34,7 @@ class Entity {
         components.forEach(component =>{
             switch(component.name){
                 case "AleFizikaC": this.fizikaC = new AleFizikaC(component.data); break;
-                case "AleEventC": this.eventC = new AleEventC(component.data); break;
+                case "AleEventC": this.eventC = new AleEventC(component.data, sManager); break;
                 case "AleRenderC": this.renderC = new AleRenderC(component.data); break;
                 case "AleCameraC": this.cameraC = new AleCameraC(component.data); break;
                 case "AleFollowC": this.followC = new AleFollowC(component.data, sManager); break;
@@ -95,7 +95,7 @@ class Entity {
     }
 
     //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    static copyObjectNoRef(object) {
+    static copy(object) {
         return Entity.copyObjectNoRefRecursive({}, object);
     }
 

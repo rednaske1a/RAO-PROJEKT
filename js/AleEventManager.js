@@ -1,15 +1,26 @@
 class AleEvent{
-    constructor({name, type, trigger, tContext, tEntity, target, eContexts}, sManager){
-        this.name = name;       //Jump, UseSkill1, RunLeft
+    constructor({type, trigger, context, eName, eTrigger, eTarget, eContexts}, sManager, eParent){
+        this.type = type;       //COLLISION, KEYBOARD, MOUSE, AI
+        this.trigger = trigger; //Player, W, A, S, D, RMB, LMB, AI
+        this.context = context; //EnterBody, LeaveBody, Pressed, Release, Down, Up, AI
 
-        this.type = type;       //COLLISION, KEYBOARD, MOUSE
-        this.trigger = trigger; //Player, W, A, S, D, RMB, LMB
-        this.context = tContext; //EnterBody, LeaveBody, Pressed, Release, Down, Up
+        if(eTrigger == "SELF"){
+            eTrigger = eParent;
+        } else {
+            eTrigger == sManager.getEntityByName(eTrigger);
+        }
+
+        if(eTarget == "SELF"){
+            eTarget = eParent;
+        } else {
+            eTarget = sManager.getEntityByName(eTarget);
+        }
 
         this.data = {
-            trigger: tEntity,
-            target: sManager.getEntityByName(target),
-            contexts: eContexts
+            eName: eName,
+            eTrigger: eTrigger,
+            eTarget: eTarget,
+            eContexts: Entity.copy(eContexts)
         }
     }
 }
@@ -25,7 +36,7 @@ class AleEventManager{
         this.canvas = document.querySelector('canvas');
         this.aiManager = new AleAIManager();
 
-        this.eventContext = "InGame";
+        this.eventContext = "INGAME";
         this.events = [];
 
         this.tStates = new Map();
@@ -34,9 +45,9 @@ class AleEventManager{
         this.tStates.set("KEYBOARD", new Map());
         this.tStates.set("COLLISION", new Map());
 
-        this.tStates.get("MOUSE").set("LMB", {state: false, down: false, up: !false, pressed: false, released: false})
-        this.tStates.get("MOUSE").set("RMB", {state: false, down: false, up: !false, pressed: false, released: false})
-        this.tStates.get("MOUSE").set("MMB", {state: false, down: false, up: !false, pressed: false, released: false})
+        this.tStates.get("MOUSE").set("LMB", {STATE: false, DOWN: false, UP: !false, PRESSED: false, RELEASED: false})
+        this.tStates.get("MOUSE").set("RMB", {STATE: false, DOWN: false, UP: !false, PRESSED: false, RELEASED: false})
+        this.tStates.get("MOUSE").set("MMB", {STATE: false, DOWN: false, UP: !false, PRESSED: false, RELEASED: false})
 
         this.screenMouseXY = {x:0, y:0};
         this.gameMouseXY = {x:0, y:0};
@@ -54,7 +65,7 @@ class AleEventManager{
         //console.log(event.key);
         let prevKey = false;
         if(this.tStates.get("KEYBOARD").has(event.key)){
-            prevKey = this.tStates.get("KEYBOARD").get(event.key).state
+            prevKey = this.tStates.get("KEYBOARD").get(event.key).STATE
         }
 
         let newKey = value;
@@ -64,15 +75,15 @@ class AleEventManager{
         let releasedKey = ((prevKey == true) && (newKey == false))? true : false;
 
 
-        this.tStates.get("KEYBOARD").set(event.key, {state: newKey, down: newKey, up: !newKey, pressed: pressedKey, released: releasedKey});
+        this.tStates.get("KEYBOARD").set(event.key, {STATE: newKey, DOWN: newKey, UP: !newKey, PRESSED: pressedKey, RELEASED: releasedKey});
     }
 
     updateKeyboardState(){
         //console.log("abcv")
         for (let [key, value] of this.tStates.get("KEYBOARD")) {
             let newState = this.tStates.get("KEYBOARD").get(key);
-            newState.pressed = false;
-            newState.released = false;
+            newState.PRESSED = false;
+            newState.RELEASED = false;
             this.tStates.get("KEYBOARD").set(key, newState);
         }
     }
@@ -80,16 +91,16 @@ class AleEventManager{
     updateMouseState(){
         let newStateLMB = this.tStates.get("MOUSE").get("LMB");
         //console.log(newStateLMB);
-        newStateLMB.pressed = false;
-        newStateLMB.released = false;
+        newStateLMB.PRESSED = false;
+        newStateLMB.RELEASED = false;
         this.tStates.get("MOUSE").set("LMB", newStateLMB);
         let newStateRMB = this.tStates.get("MOUSE").get("RMB");
-        newStateRMB.pressed = false;
-        newStateRMB.released = false;
+        newStateRMB.PRESSED = false;
+        newStateRMB.RELEASED = false;
         this.tStates.get("MOUSE").set("RMB", newStateRMB);
         let newStateMMB = this.tStates.get("MOUSE").get("MMB");
-        newStateMMB.pressed = false;
-        newStateMMB.released = false;
+        newStateMMB.PRESSED = false;
+        newStateMMB.RELEASED = false;
         this.tStates.get("MOUSE").set("MMB", newStateMMB);
     }
 
@@ -98,13 +109,13 @@ class AleEventManager{
         let prevRMB = false;
         let prevMMB = false;
         if(this.tStates.get("MOUSE").has("LMB")){
-            prevLMB = this.tStates.get("MOUSE").get("LMB").state
+            prevLMB = this.tStates.get("MOUSE").get("LMB").STATE
         } 
         if(this.tStates.get("MOUSE").has("RMB")){
-            prevRMB = this.tStates.get("MOUSE").get("RMB").state
+            prevRMB = this.tStates.get("MOUSE").get("RMB").STATE
         }
         if(this.tStates.get("MOUSE").has("MMB")){
-            prevMMB = this.tStates.get("MOUSE").get("MMB").state
+            prevMMB = this.tStates.get("MOUSE").get("MMB").STATE
         }
 
         let LMB = false;
@@ -129,16 +140,22 @@ class AleEventManager{
         let releasedRMB = ((prevRMB == true) && (RMB == false))? true : false;
         let releasedMMB = ((prevMMB == true) && (MMB == false))? true : false;
 
-        this.tStates.get("MOUSE").set("LMB", {state: LMB, down: LMB, up: !LMB, pressed: pressedLMB, released: releasedLMB});
-        this.tStates.get("MOUSE").set("RMB", {state: RMB, down: RMB, up: !RMB, pressed: pressedRMB, released: releasedRMB});
-        this.tStates.get("MOUSE").set("MMB", {state: MMB, down: MMB, up: !MMB, pressed: pressedMMB, released: releasedMMB});
+        this.tStates.get("MOUSE").set("LMB", {STATE: LMB, DOWN: LMB, UP: !LMB, PRESSED: pressedLMB, RELEASED: releasedLMB});
+        this.tStates.get("MOUSE").set("RMB", {STATE: RMB, DOWN: RMB, UP: !RMB, PRESSED: pressedRMB, RELEASED: releasedRMB});
+        this.tStates.get("MOUSE").set("MMB", {STATE: MMB, DOWN: MMB, UP: !MMB, PRESSED: pressedMMB, RELEASED: releasedMMB});
     }
 
-    bindEvents(entity){
-        entity.eventC.events.forEach(event =>{
-            let newEvent = new AleEvent(event, sManager);
-            this.events.push(newEvent)
-        });
+    bindEvents(entity, sManager){
+        if(entity.eventC != null){
+
+            entity.eventC.events.forEach(event =>{
+
+                let newEvent = new AleEvent(event, sManager, entity);
+                //console.log(newEvent);
+                entity.eventC.events.push(newEvent);
+                this.events.push(newEvent);
+            })
+        }
     }
 
     updateMouseXY(event){
@@ -148,8 +165,17 @@ class AleEventManager{
 
     getNewEvents(){
         this.events.forEach(event =>{
-            if(this.tStates.get(event.type).get(event.trigger)[event.context] == true){
-                this.eventList.push(event.data);
+            
+            if(this.tStates.has(event.type)){
+                if(this.tStates.get(event.type).has(event.trigger)){
+                   //console.log(event)
+                    if(this.tStates.get(event.type).get(event.trigger)[event.context] == true){
+                        //console.log("type: " + event.type)
+                        //console.log("trigger: " + event.trigger)
+                        //console.log("context: " + event.context)
+                        this.validateEvent(event.data);
+                    }
+                }
             }
         });
     }
@@ -159,7 +185,7 @@ class AleEventManager{
         this.getNewEvents();
 
 
-        let aiEvents = AleAIManager.think(entityList);
+        //let aiEvents = AleAIManager.think(entityList);
         //console.log(aiEvents);
         /*
         aiEvents.forEach(event =>{
@@ -184,15 +210,21 @@ class AleEventManager{
 
 
 
-        if (this.tStates.get("MOUSE").get("LMB").pressed == true){
+        if (this.tStates.get("MOUSE").get("LMB").PRESSED == true){
             console.log("Pressed LMB");
         }
-        if (this.tStates.get("MOUSE").get("LMB").released == true){
+        if (this.tStates.get("MOUSE").get("LMB").RELEASED == true){
             console.log("Released LMB");
         }
+
         if(this.tStates.get("KEYBOARD").has("a")){
-            if(this.tStates.get("KEYBOARD").get("a").pressed == true){
-                console.log("Pressed a");
+            if(this.tStates.get("KEYBOARD").get("a").RELEASED == true){
+                console.log("RELEASED a");
+            }
+        }
+        if(this.tStates.get("KEYBOARD").has("a")){
+            if(this.tStates.get("KEYBOARD").get("a").PRESSED == true){
+                console.log("PRESSED a");
             }
         }
         
@@ -207,10 +239,10 @@ class AleEventManager{
     }
 
     validateEvent(event){
-        console.log(event)
+        //console.log(event)
         let valid = 0;
         
-        event.contexts.forEach(context =>{
+        event.eContexts.forEach(context =>{
             if(context == this.eventContext){
                 valid = 1;
             }
@@ -218,17 +250,12 @@ class AleEventManager{
 
         if(valid == 0) return;
 
-        switch(event.name){
-            case "Jump": if (event.target.playerC.isGrounded == false) valid = 0; break;
-            case "Duck": if (event.target.playerC.isDucking == true) valid = 0; break;
-            case "GoLeft": if (event.target.playerC.isGrounded == false) valid = 0; break;
-            case "GoRight": if (event.target.playerC.isGrounded == false) valid = 0; break;
-            case "ToggleGUI": if(event.target.guiC.toggleLocked == 1){console.log("ToggleGUI locked"); valid = 0;} break;
-        }
-
-        switch(event.triggerKey){
-            case "wentDown":
-            case "down": valid = this.AABBPoint(event.trigger, this.screenMouseXY) * valid; break;
+        switch(event.eName){
+            case "Jump": if (event.eTarget.playerC.isGrounded == false) valid = 0; break;
+            case "Duck": if (event.eTarget.playerC.isDucking == true) valid = 0; break;
+            case "GoLeft": if (event.eTarget.playerC.isGrounded == false) valid = 0; break;
+            case "GoRight": if (event.eTarget.playerC.isGrounded == false) valid = 0; break;
+            case "ToggleGUI": if(event.eTarget.guiC.toggleLocked == 1){console.log("ToggleGUI locked"); valid = 0;} break;
         }
 
         if(valid == 1) {
@@ -239,18 +266,18 @@ class AleEventManager{
     solveEvents(sManager){
         this.getEvents(sManager.eLoaded);
         this.eventList.forEach(event => {
-            switch(event.name){
-                case "Jump": event.target.fizikaC.vel.y += -event.target.playerC.jumpSpeed; break;
-                case "Duck": event.target.fizikaC.vel.y += event.target.playerC.jumpSpeed; break;
-                case "GoLeft": event.target.fizikaC.vel.x = -event.target.playerC.moveSpeed; break;
-                case "GoRight": event.target.fizikaC.vel.x = event.target.playerC.moveSpeed; break;
+            switch(event.eName){
+                case "Jump": event.eTarget.fizikaC.vel.y += -event.eTarget.playerC.jumpSpeed; break;
+                case "Duck": event.eTarget.fizikaC.vel.y += event.eTarget.playerC.jumpSpeed; break;
+                case "GoLeft": {event.eTarget.fizikaC.vel.x = -event.eTarget.playerC.moveSpeed; console.log("GOLEFT")}; break;
+                case "GoRight": event.eTarget.fizikaC.vel.x = event.eTarget.playerC.moveSpeed; break;
                 case "ToggleGUI": this.toggleGUI(event); break;
                 case "CloseGUI": this.closeGUI(event); break;
                 case "CreateSlime": this.createSlime(sManager, event); break;
                 case "UseSkill1": this.useSkill1(sManager, event); break;
                 case "UseSkill2": this.useSkill2(sManager, event); break;
                 case "UseSkill3": this.useSkill3(sManager, event); break;
-                case "KYS": Entity.removeEntity(event.target, sManager); break;
+                case "KYS": Entity.removeEntity(event.eTarget, sManager); break;
             }
         });
     }

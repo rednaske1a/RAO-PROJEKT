@@ -26,24 +26,19 @@ const monsterTemplatePack = [
             "isDucking": false
         }
         },{
-        "name": "AleEnemyAIC",
-        "data": {
-            "actions": [
-                {"name": "Jump", "contexts": ["InGame"], "target": "SELF"},
-                {"name": "GoLeft", "contexts": ["InGame"], "target": "SELF"},
-                {"name": "GoLeft", "contexts": ["InGame"], "target": "SELF"},
-                {"name": "GoLeft", "contexts": ["InGame"], "target": "SELF"},
-                //{"name": "Duck", "contexts": ["InGame"], "target": "Slime"},
-                {"name": "GoRight", "contexts": ["InGame"], "target": "SELF"},
-                {"name": "GoRight", "contexts": ["InGame"], "target": "SELF"},
-                {"name": "GoRight", "contexts": ["InGame"], "target": "SELF"},
-                {"name": "Wait", "contexts": ["InGame"], "target": "SELF"},
-                {"name": "Wait", "contexts": ["InGame"], "target": "SELF"},
-                {"name": "Wait", "contexts": ["InGame"], "target": "SELF"}
-
-            ]
-        }
-        }]
+            "name": "AleEnemyAIC",
+            "data": {
+                "events":[
+                    {"type":"KEYBOARD","trigger":"W","context":"DOWN","eName":"Jump","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
+                    {"type":"KEYBOARD","trigger":"A","context":"DOWN","eName":"GoLeft","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
+                    {"type":"KEYBOARD","trigger":"S","context":"DOWN","eName":"Duck","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
+                    {"type":"KEYBOARD","trigger":"D","context":"DOWN","eName":"GoRight","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
+                    {"type":"KEYBOARD","trigger":"1","context":"PRESSED","eName":"UseSkill1","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
+                    {"type":"KEYBOARD","trigger":"2","context":"PRESSED","eName":"UseSkill2","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
+                    {"type":"KEYBOARD","trigger":"3","context":"PRESSED","eName":"UseSkill3","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"}
+                ]
+                }
+            }]
     },
 
     {

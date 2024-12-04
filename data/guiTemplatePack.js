@@ -140,7 +140,7 @@ const guiTemplatePack = [
             "visible": true,
             "zLayer": 10
         }
-    },{
+    }/*,{
         "name": "AleEventC",
         "data": { "keys": {},
                 "mouse": {
@@ -148,7 +148,7 @@ const guiTemplatePack = [
                 
                 }
             }
-        }]
+        }*/]
     },
     {
     "name": "SkillSlot2",

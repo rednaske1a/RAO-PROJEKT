@@ -1,19 +1,21 @@
 
 class AleFizikaC {
     constructor({vel, acc, trenje, collLayer, collMask, collide}){
-        this.vel = Entity.copyObjectNoRef(vel);
-        this.acc = Entity.copyObjectNoRef(acc);
+        this.vel = Entity.copy(vel);
+        this.acc = Entity.copy(acc);
         this.trenje = trenje;
-        this.collLayer = Entity.copyObjectNoRef(collLayer);;
-        this.collMask = Entity.copyObjectNoRef(collMask);;
+        this.collLayer = Entity.copy(collLayer);;
+        this.collMask = Entity.copy(collMask);;
         this.collide = collide;
     }
 }
 
 class AleEventC {
-    constructor({keys, mouse}){
-        this.keys = Entity.copyObjectNoRef(keys);;
-        this.mouse = Entity.copyObjectNoRef(mouse);;
+    constructor(data, sManager){
+        this.events = [];
+        data.events.forEach(event =>{
+            this.events.push(event);
+        });
     }
 }
 
@@ -27,8 +29,8 @@ class AleRenderC {
 
 class AleCameraC {
     constructor({sPos, sSize}, sManager){
-        this.sPos = Entity.copyObjectNoRef(sPos);
-        this.sSize = Entity.copyObjectNoRef(sSize);
+        this.sPos = Entity.copy(sPos);
+        this.sSize = Entity.copy(sSize);
         
     }
 }
@@ -60,7 +62,7 @@ class AleGUIC{
 
 class AleEnemyAIC {
     constructor({actions,entity,sManager}){
-        this.actions = Entity.copyObjectNoRef(actions.actions);
+        this.actions = Entity.copy(actions.actions);
         //console.log("ACTIONS");
         //console.log(this.actions);
         /*
@@ -95,7 +97,7 @@ class AleTimedEventC{
     constructor(data, entity, sManager){
         this.start = Date.now();
         this.delay = data.delay;
-        this.events = Entity.copyObjectNoRef(data.events);
+        this.events = Entity.copy(data.events);
         this.events.forEach((event, index) => {
             this.events[index] = AleEventManager.formatEvent(event, entity, "timer", null, sManager);
         });
