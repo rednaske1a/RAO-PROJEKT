@@ -14,7 +14,6 @@ class AleFizika {
         );
     }
     
-
     sweptAABB(entity1, entity2) {
         let xInvEntry, yInvEntry;
         let xInvExit, yInvExit;

@@ -140,15 +140,14 @@ const guiTemplatePack = [
             "visible": true,
             "zLayer": 10
         }
-    }/*,{
+    },{
         "name": "AleEventC",
-        "data": { "keys": {},
-                "mouse": {
-                    "down": [{"name": "CreateSlime", "contexts": ["InGame"], "target": "Slime"}],
-                
-                }
+        "data": {
+            "events":[
+                {"type":"MOUSE","trigger":"LMB","context":"PRESSED","eName":"CreateSlime","eTrigger":"SELF","eTarget":"Slime","eContexts":["INGAME"]}
+                ]
             }
-        }*/]
+        }]
     },
     {
     "name": "SkillSlot2",

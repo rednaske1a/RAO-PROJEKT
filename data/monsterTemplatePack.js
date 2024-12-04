@@ -13,7 +13,7 @@ const monsterTemplatePack = [
             "vel" : {"x": 0, "y": 0},
             "acc" : {"x": 0, "y": 1},
             "trenje": 0.8,
-            "collLayer" : [0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            "collLayer" : [0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
             "collMask" : [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
             "collide": true
         }
@@ -25,7 +25,7 @@ const monsterTemplatePack = [
             "isGrounded": false,
             "isDucking": false
         }
-        },{
+        }/*,{
             "name": "AleEnemyAIC",
             "data": {
                 "events":[
@@ -38,7 +38,7 @@ const monsterTemplatePack = [
                     {"type":"KEYBOARD","trigger":"3","context":"PRESSED","eName":"UseSkill3","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"}
                 ]
                 }
-            }]
+            }*/]
     },
 
     {

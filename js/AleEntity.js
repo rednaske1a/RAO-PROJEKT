@@ -34,7 +34,7 @@ class Entity {
         components.forEach(component =>{
             switch(component.name){
                 case "AleFizikaC": this.fizikaC = new AleFizikaC(component.data); break;
-                case "AleEventC": this.eventC = new AleEventC(component.data, sManager); break;
+                case "AleEventC": this.eventC = new AleEventC(component.data); break;
                 case "AleRenderC": this.renderC = new AleRenderC(component.data); break;
                 case "AleCameraC": this.cameraC = new AleCameraC(component.data); break;
                 case "AleFollowC": this.followC = new AleFollowC(component.data, sManager); break;
@@ -43,7 +43,7 @@ class Entity {
                 case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC({actions:component.data, entity:this, sManager:sManager}); break;
                 case "AleHPC": this.HPC = new AleHPC(component.data); break;
                 case "AleHitC": this.HitC = new AleHitC(component.data); break;
-                case "AleTimedEventC": this.timedEventC = new AleTimedEventC(component.data, this, sManager); break;
+                case "AleTimedEventC": this.timedEventC = new AleTimedEventC(component.data); break;
             }
         });
     }

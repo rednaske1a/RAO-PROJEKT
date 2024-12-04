@@ -11,7 +11,7 @@ class AleFizikaC {
 }
 
 class AleEventC {
-    constructor(data, sManager){
+    constructor(data){
         this.events = [];
         data.events.forEach(event =>{
             this.events.push(event);
@@ -94,12 +94,14 @@ class AleHitC {
 }
 
 class AleTimedEventC{
-    constructor(data, entity, sManager){
+    constructor(data){
         this.start = Date.now();
+
         this.delay = data.delay;
-        this.events = Entity.copy(data.events);
-        this.events.forEach((event, index) => {
-            this.events[index] = AleEventManager.formatEvent(event, entity, "timer", null, sManager);
+
+        this.events = [];
+        data.events.forEach(event =>{
+            this.events.push(event);
         });
     }
 }

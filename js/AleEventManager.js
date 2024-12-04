@@ -62,8 +62,9 @@ class AleEventManager{
     
 
     setKeyboardState(event, value){
-        //console.log(event.key);
+        console.log(event.key);
         let prevKey = false;
+
         if(this.tStates.get("KEYBOARD").has(event.key)){
             prevKey = this.tStates.get("KEYBOARD").get(event.key).STATE
         }
@@ -148,14 +149,28 @@ class AleEventManager{
     bindEvents(entity, sManager){
         if(entity.eventC != null){
 
-            entity.eventC.events.forEach(event =>{
+            entity.eventC.events.forEach((event, index) =>{
 
                 let newEvent = new AleEvent(event, sManager, entity);
-                //console.log(newEvent);
-                entity.eventC.events.push(newEvent);
+                console.log("NORMAL EVENT")
+                console.log(newEvent);
+                entity.eventC.events[index] = newEvent;
                 this.events.push(newEvent);
             })
         }
+
+        if(entity.timedEventC != null){
+
+            entity.timedEventC.events.forEach((event, index) =>{
+
+                let newEvent = new AleEvent(event, sManager, entity);
+                console.log("TIMEDEVEMT")
+                console.log(newEvent);
+                entity.timedEventC.events[index] = newEvent;
+                this.events.push(newEvent);
+            })
+        }
+
     }
 
     updateMouseXY(event){
@@ -165,7 +180,7 @@ class AleEventManager{
 
     getNewEvents(){
         this.events.forEach(event =>{
-            
+           // console.log("Checking Event" + event.data.eName);
             if(this.tStates.has(event.type)){
                 if(this.tStates.get(event.type).has(event.trigger)){
                    //console.log(event)
@@ -194,6 +209,7 @@ class AleEventManager{
             //console.log(event);
             this.validateEvent(event);
         })
+        */
 
         entityList.forEach(entity =>{
             if(entity.timedEventC != null){
@@ -201,12 +217,43 @@ class AleEventManager{
                 console.log(now);
                 if(now >= entity.timedEventC.start + entity.timedEventC.delay){
                     entity.timedEventC.events.forEach(event =>{
-                        this.validateEvent(event);
+                        console.log("EVENTASDDA")
+                        console.log(event);
+                        this.validateEvent(event.data);
+                        
                     })
                 }
             }
         })
-        */
+
+        entityList.forEach(entity =>{
+            if(entity.eventC != null){
+                if(entity.eventC.type == "COLLISION"){
+                    entityList.forEach(entity2 =>{
+                        if(entity2.fizikaC != null){
+                            entity.fizikaC.collLayer.forEach((bit,index) =>{
+                                console.log("COLLISIONI HDNAS")
+                                    console.log(entity);
+                                    console.log("--------")
+                                    console.log(entity2);
+                                if(entity.collMask[index] == 1 && entity2.collLayer[index] == 1){
+                                    
+                                    
+                                    entity.eventC.events.forEach(event =>{
+                                        
+                                        event.trigger = entity.name;
+                                        event.data.eTarget = entity2;
+                                        event.data.eTrigger = entity;
+                                        this.validateEvent(event.data);
+                                    })
+                                }
+                            })
+                        }    
+                    })
+                }
+            }
+        })
+        
 
 
 
