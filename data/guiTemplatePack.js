@@ -91,7 +91,7 @@ const guiTemplatePack = [
     "components": [{
         "name": "AleRenderC",
         "data": {
-            "color": "005f73",
+            "color": "#005f73",
             "visible": true,
             "zLayer": 10
         }

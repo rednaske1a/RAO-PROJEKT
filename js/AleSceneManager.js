@@ -133,7 +133,7 @@ class AleSceneManager {
     getTemplate(templateName){
         let template = null;
         this.templates.forEach(fTemplate =>{
-            console.log(templateName + " == " + fTemplate.data.name)
+            //console.log(templateName + " == " + fTemplate.data.name)
             if(fTemplate.data.name == templateName){
                 template = fTemplate;
             }

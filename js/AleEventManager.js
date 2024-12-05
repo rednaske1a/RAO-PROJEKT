@@ -1,5 +1,5 @@
 class AleEvent{
-    constructor({type, trigger, context, eName, eTrigger, eTarget, eContexts}, sManager, eParent){
+    constructor({type, trigger, context, eName, eTrigger, eTarget, eContexts, eData}, sManager, eParent){
         this.type = type;       //COLLISION, KEYBOARD, MOUSE, AI
         this.trigger = trigger; //Player, W, A, S, D, RMB, LMB, AI
         this.context = context; //EnterBody, LeaveBody, Pressed, Release, Down, Up, AI
@@ -20,7 +20,8 @@ class AleEvent{
             eName: eName,
             eTrigger: eTrigger,
             eTarget: eTarget,
-            eContexts: Entity.copy(eContexts)
+            eContexts: Entity.copy(eContexts),
+            eData: eData
         }
     }
 }
@@ -155,22 +156,17 @@ class AleEventManager{
                 console.log("NORMAL EVENT")
                 console.log(newEvent);
                 entity.eventC.events[index] = newEvent;
-                this.events.push(newEvent);
             })
         }
-
-        if(entity.timedEventC != null){
-
-            entity.timedEventC.events.forEach((event, index) =>{
+        if(entity.enemyAIC != null){
+            entity.enemyAIC.events.forEach((event, index) =>{
 
                 let newEvent = new AleEvent(event, sManager, entity);
-                console.log("TIMEDEVEMT")
+                console.log("AI EVENT")
                 console.log(newEvent);
-                entity.timedEventC.events[index] = newEvent;
-                this.events.push(newEvent);
+                entity.enemyAIC.events[index] = newEvent;
             })
         }
-
     }
 
     updateMouseXY(event){
@@ -178,85 +174,89 @@ class AleEventManager{
         this.screenMouseXY.y = event.clientY - this.canvas.offsetTop;
     }
 
-    getNewEvents(){
-        this.events.forEach(event =>{
-           // console.log("Checking Event" + event.data.eName);
-            if(this.tStates.has(event.type)){
-                if(this.tStates.get(event.type).has(event.trigger)){
-                   //console.log(event)
-                    if(this.tStates.get(event.type).get(event.trigger)[event.context] == true){
-                        //console.log("type: " + event.type)
-                        //console.log("trigger: " + event.trigger)
-                        //console.log("context: " + event.context)
-                        this.validateEvent(event.data);
+    getNewEvents(eList) {
+        eList.forEach(entity => {
+            if (entity.eventC != null) {
+                entity.eventC.events.forEach((event, index) => {
+                    if (event.type == "KEYBOARD" || event.type == "MOUSE") {
+                        if (this.tStates.has(event.type)) {
+                            if (this.tStates.get(event.type).has(event.trigger)) {
+                                // console.log(event)
+                                if (this.tStates.get(event.type).get(event.trigger)[event.context] == true) {
+                                    // console.log("type: " + event.type)
+                                    // console.log("trigger: " + event.trigger)
+                                    // console.log("context: " + event.context)
+                                    this.validateEvent(event.data);
+                                }
+                            }
+                        }   
                     }
-                }
+    
+                    if (event.type == "TIME") {
+                        let now = Date.now();
+                        if (event.data.eData.start == null) {
+                            event.data.eData.start = Date.now();
+                        }
+                        if (event.context == "TIMEOUT") {
+                            //console.log(event.data.eData.start);
+                            //console.log(event.data.eData.timeout);
+                            //console.log(now);
+                            if (event.data.eData.start + event.data.eData.timeout < now) {
+                                let newEvent = Entity.copy(event);
+                                newEvent.data.eData.start = null;
+                                this.validateEvent(newEvent.data);
+                            }
+                        }
+                        if (event.context == "LOOP") {
+                            let now = Date.now();
+                            //console.log(event.data.eData.start);
+                            //console.log(event.data.eData.timeout);
+                            //console.log(now);
+                            if (event.data.eData.start + event.data.eData.timeout < now) {
+                               // let newEvent = Entity.copy(event);
+                                event.data.eData.start = Date.now();
+                                this.validateEvent(event.data);
+                            }
+                        }
+                    }
+    
+                    if (event.type == "COLLISION") {
+                        eList.forEach(entity2 => {
+                            if (entity.fizikaC != null && entity2.fizikaC != null) {
+                                for (let index = 0; index < entity.fizikaC.collLayer.length; index++) {
+                                    if (entity.fizikaC.collMask[index] == 1 &&
+                                        entity2.fizikaC.collLayer[index] == 1) {
+                                        if (AleFizika.AABB(entity, entity2) == true) {
+                                            let newEvent = Entity.copy(event);
+                                            newEvent.trigger = entity.name;
+                                            newEvent.data.eTarget = entity2;
+                                            newEvent.data.eTrigger = entity;
+                                            this.validateEvent(newEvent.data);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
             }
         });
     }
 
-    getEvents(entityList, fManager){
+    getAIEvents(eList){
+        let AIEvents = AleAIManager.think(eList);
+        AIEvents.forEach(event =>{
+            this.validateEvent(event.data);
+        })
+    }
+    
+
+    getEvents(eList, fManager){
         this.eventList = [];
-        this.getNewEvents();
-
-
-        //let aiEvents = AleAIManager.think(entityList);
+        this.getNewEvents(eList);
+        this.getAIEvents(eList);
         //console.log(aiEvents);
-        /*
-        aiEvents.forEach(event =>{
-            //console.log("AI EVENT");           
-            //console.log(entityList);
-            //console.log(event);
-            this.validateEvent(event);
-        })
-        */
-
-        entityList.forEach(entity =>{
-            if(entity.timedEventC != null){
-                let now = Date.now();
-                //console.log(now);
-                if(now >= entity.timedEventC.start + entity.timedEventC.delay){
-                    entity.timedEventC.events.forEach(event =>{
-                        //console.log("EVENTASDDA")
-                        //console.log(event);
-                        this.validateEvent(event.data);
-                        
-                    })
-                }
-            }
-        })
-        entityList.forEach(entity =>{
-            if(entity.eventC != null){
-                        entityList.forEach(entity2 =>{
-                            if(entity.fizikaC != null && entity2.fizikaC != null){
-                                for (let index = 0; index < entity.fizikaC.collLayer.length; index++) {
-                                    if (entity.fizikaC.collMask[index] == 1 &&
-                                         entity2.fizikaC.collLayer[index] == 1) {
-                                        if (AleFizika.AABB(entity, entity2) == true) {
-                                            entity.eventC.events.forEach(event =>{
-                                                if (event.type == "COLLISION"){
-                                                    //console.log("COLLISIONI HDNAS");
-                                                   // console.log(entity);
-                                                    //console.log("--------");
-                                                    //console.log(entity2);
-                                                    
-                                                    //console.log(event);
-                                                    let newEvent = Entity.copy(event);
-                                                    newEvent.trigger = entity.name;
-                                                    newEvent.data.eTarget = entity2;
-                                                    newEvent.data.eTrigger = entity;
-                                                    this.validateEvent(newEvent.data);
-                                                }
-                                            })
-                                            
-                                        }
-                                    }
-                                }
-                            }    
-                        })
-                    }
-                })
-
+        
 
         if (this.tStates.get("MOUSE").get("LMB").PRESSED == true){
             console.log("Pressed LMB");
@@ -422,7 +422,7 @@ class AleEventManager{
         newEntity.relPos.y = 0;
         newEntity.size.w = 200
         newEntity.size.h = 50;
-        newEntity.timedEventC.delay = 100;
+       // newEntity.timedEventC.delay = 100;
     }
 
     useSkill2(sManager, event){
@@ -445,7 +445,7 @@ class AleEventManager{
         newEntity.relPos.y = newEntity.parent.size.h/2;
         newEntity.size.w = newEntity.parent.size.w * 3
         newEntity.size.h = newEntity.parent.size.h;
-        newEntity.timedEventC.delay = 1000;
+        //newEntity.timedEventC.delay = 1000;
     }
 
     useSkill3(sManager, event){
@@ -464,7 +464,7 @@ class AleEventManager{
         newEntity.relPos.y = -400;
         newEntity.size.w = 500
         newEntity.size.h = 500;
-        newEntity.timedEventC.delay = 250;
+        //newEntity.timedEventC.delay = 250;
         
     }
 }

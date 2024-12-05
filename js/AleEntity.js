@@ -23,7 +23,6 @@ class Entity {
         this.combatC = null;
         this.guiC = null;
         this.enemyAIC = null;
-        this.timedEventC = null;
         
         //console.log(sManager);
         this.addComponents(components, sManager);
@@ -40,8 +39,7 @@ class Entity {
                 case "AleGUIC": this.guiC = new AleGUIC(component.data); break;
                 case "AlePlayerC": this.playerC = new AlePlayerC(component.data); break;
                 case "AleCombatC": this.combatC = new AleCombatC(component.data); break;
-                case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC({actions:component.data, entity:this, sManager:sManager}); break;
-                case "AleTimedEventC": this.timedEventC = new AleTimedEventC(component.data); break;
+                case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC(component.data); break;
             }
         });
     }
@@ -106,9 +104,9 @@ class Entity {
 
     //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     static copy(object) {
-        return Entity.copyObjectNoRefRecursive({}, object);
+        return structuredClone(object);
     }
-
+/* JAZ SEM RETARDIRAN VES TA ČAS SEM IMEL ŽE VGRAJENO FUNKCIJO structuredClone
         //UPAM DA UNI KI SI JE ZMISLIL JS UMRE
     static copyObjectNoRefRecursive(newObject, object) {
         if (Array.isArray(object)) {
@@ -124,16 +122,17 @@ class Entity {
         } else {
             for (let key in object) {
                 const value = object[key];
-                if (typeof value === 'object' && value !== null) {
-                    newObject[key] = Entity.copyObjectNoRefRecursive({}, value);
-                } else {
-                    newObject[key] = value;
-                }
+                    if (typeof value === 'object' && value !== null) {
+                        newObject[key] = Entity.copyObjectNoRefRecursive({}, value);
+                    } else {
+                        newObject[key] = value;
+                    }
+                
             }
         }
         return newObject;
     }    
-    
+    */
     
     updatePos(){
         if(this.parent == null || this.followC != null){

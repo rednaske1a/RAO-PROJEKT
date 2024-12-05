@@ -14,7 +14,8 @@ class AleEventC {
     constructor(data){
         this.events = [];
         data.events.forEach(event =>{
-            this.events.push(event);
+            let newEvent = Entity.copy(event);
+            this.events.push(newEvent);
         });
     }
 }
@@ -79,8 +80,8 @@ class AleGUIC{
 }
 
 class AleEnemyAIC {
-    constructor({actions,entity,sManager}){
-        this.actions = Entity.copy(actions.actions);
+    constructor(data){
+        this.events = Entity.copy(data.events);
         //console.log("ACTIONS");
         //console.log(this.actions);
         /*
@@ -88,13 +89,13 @@ class AleEnemyAIC {
             this.actions[action].trigger = entity;
             this.actions[action].target = entity;
             this.actions[action].triggerKey = "ai";
-        }*/
+        }*//*
         this.actions.forEach((action, index) => {
             this.actions[index] = AleEventManager.formatEvent(action, entity, "ai", null, sManager);
         });
         //console.log("ACTIONS2");
         //console.log(this.actions);
-        
+       */ 
     }
 }
 
@@ -108,18 +109,5 @@ class AleHPC {
 class AleHitC {
     constructor(data){
        this.damage = data.damage;
-    }
-}
-
-class AleTimedEventC{
-    constructor(data){
-        this.start = Date.now();
-
-        this.delay = data.delay;
-
-        this.events = [];
-        data.events.forEach(event =>{
-            this.events.push(event);
-        });
     }
 }

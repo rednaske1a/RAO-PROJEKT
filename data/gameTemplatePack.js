@@ -6,7 +6,13 @@ const gameTemplatePack = [{
     "relPos": {"x": 0, "y": 0 },
     "size": { "w": 0, "h": 0 },
     
-    "components": []
+    "components": [,{
+        "name": "AleEventC",
+        "data": {
+            "events":[
+                {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 1000}},]
+            }
+        }]
     },{
         "name": "HPBarRed",
         "type": "Image",

@@ -4,6 +4,7 @@ class AleRenderer {
         this.canvas.width = 1024;
         this.canvas.height = 576;
         this.c = this.canvas.getContext('2d');
+        this.c.font = "20px serif";
     }
 
     render(entityList) {
@@ -41,19 +42,31 @@ class AleRenderer {
             this.c.fillStyle = entity.renderC.color;
 
             if(entity.type == "GUI") {
+                let x = entity.pos.x + camera.cameraC.sPos.x;
+                let y = entity.pos.y + camera.cameraC.sPos.y;
                 this.c.fillRect(
-                    entity.pos.x + camera.cameraC.sPos.x,
-                    entity.pos.y + camera.cameraC.sPos.y,
+                    x,
+                    y,
                     entity.size.w,
                     entity.size.h,
                 );
+
+                this.c.fillStyle = 'white';
+                this.c.fillText(entity.name, entity.pos.x + camera.cameraC.sPos.x, entity.pos.y + camera.cameraC.sPos.y, entity.size.w)
+            
             } else {
+
+                let x = (entity.pos.x + (-camera.pos.x )) * (camera.cameraC.sSize.w / camera.size.w) + camera.cameraC.sPos.x;
+                let y = (entity.pos.y + (-camera.pos.y )) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y;
                 this.c.fillRect(
-                    (entity.pos.x + (-camera.pos.x )) * (camera.cameraC.sSize.w / camera.size.w) + camera.cameraC.sPos.x, 
-                    (entity.pos.y + (-camera.pos.y )) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y , 
+                    x, 
+                    y, 
                     entity.size.w * (camera.cameraC.sSize.w / camera.size.w), 
                     entity.size.h * (camera.cameraC.sSize.h / camera.size.h)
                  );
+
+                 this.c.fillStyle = 'white';
+                 this.c.fillText(entity.name, x, y, entity.size.w)
             }
             
         });

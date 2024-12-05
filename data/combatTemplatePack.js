@@ -11,7 +11,8 @@ const combatTemplatePack = [{
         "data": {
             "events":[
                 {"type":"COLLISION","trigger":"COLLISION","context":"BODYENTER","eName":"DealDamage","eTrigger":"NONE","eTarget":"NONE","eContexts":["INGAME"]},
-                {"type":"COLLISION","trigger":"COLLISION","context":"BODYENTER","eName":"KillTrigger","eTrigger":"NONE","eTarget":"NONE","eContexts":["INGAME"]}
+                {"type":"COLLISION","trigger":"COLLISION","context":"BODYENTER","eName":"KillTrigger","eTrigger":"NONE","eTarget":"NONE","eContexts":["INGAME"]},
+                {"type":"TIME","trigger":"TIME","context":"TIMEOUT","eName":"KillTrigger","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 1000}}
                 ]
             }
         },{
@@ -36,15 +37,6 @@ const combatTemplatePack = [{
     "data": {
         "dmg": 30
         }
-    },{
-    "name": "AleTimedEventC",
-    "data": {
-        "delay": 250,
-        "events": [
-            {"type":"OTHER","trigger":"OTHER","context":"OTHER","eName":"KillTrigger","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]}
-        ]
-        }
-    }
-]
+    }]
     }
 ];

@@ -18,27 +18,27 @@ const monsterTemplatePack = [
             "collide": true
         }
         },{
-        "name": "AlePlayerC",
-        "data": {
-            "jumpSpeed": 30,
-            "moveSpeed": 10,
-            "isGrounded": false,
-            "isDucking": false
-        }
-        }/*,{
+            "name": "AlePlayerC",
+            "data": {
+                "jumpSpeed": 30,
+                "moveSpeed": 10,
+            }
+        },{
             "name": "AleEnemyAIC",
             "data": {
                 "events":[
-                    {"type":"KEYBOARD","trigger":"W","context":"DOWN","eName":"Jump","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
-                    {"type":"KEYBOARD","trigger":"A","context":"DOWN","eName":"GoLeft","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
-                    {"type":"KEYBOARD","trigger":"S","context":"DOWN","eName":"Duck","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
-                    {"type":"KEYBOARD","trigger":"D","context":"DOWN","eName":"GoRight","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
-                    {"type":"KEYBOARD","trigger":"1","context":"PRESSED","eName":"UseSkill1","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
-                    {"type":"KEYBOARD","trigger":"2","context":"PRESSED","eName":"UseSkill2","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"},
-                    {"type":"KEYBOARD","trigger":"3","context":"PRESSED","eName":"UseSkill3","eTrigger":"SELF","eTarget":"SELF","eContexts":"INGAME"}
-                ]
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Jump","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"GoLeft","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"GoRight","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                   ]
                 }
-            }*/]
+            }]
     },
 
     {
