@@ -50,6 +50,14 @@ class AleCameraC {
     }
 }
 
+class AleTextC {
+    constructor({text, value, font_size}){
+        this.text = text;
+        this.value = value;
+        this.font_size = font_size
+    }
+}
+
 class AleFollowC {
     constructor({follow, followStrength, followOffset}, sManager, entity){
         if(follow == "PARENT"){
@@ -66,6 +74,26 @@ class AleFollowC {
     }
 }
 
+class AleLevelC {
+    constructor(data){
+        this.exp = 0;
+        this.level = 1;
+        this.expPerLevel = 100;
+    }
+}
+
+class AleCoinC {
+    constructor({coins}){
+        this.coins = coins;
+    }
+}
+
+class AleStatsC {
+    constructor(data){
+        this.hp = 100;
+        this.def = 10;
+    }
+}
 
 class AlePlayerC {
     constructor({jumpSpeed, moveSpeed}){

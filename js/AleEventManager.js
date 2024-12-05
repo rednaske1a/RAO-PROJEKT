@@ -153,8 +153,8 @@ class AleEventManager{
             entity.eventC.events.forEach((event, index) =>{
 
                 let newEvent = new AleEvent(event, sManager, entity);
-                console.log("NORMAL EVENT")
-                console.log(newEvent);
+                //console.log("NORMAL EVENT")
+                //console.log(newEvent);
                 entity.eventC.events[index] = newEvent;
             })
         }
@@ -162,8 +162,8 @@ class AleEventManager{
             entity.enemyAIC.events.forEach((event, index) =>{
 
                 let newEvent = new AleEvent(event, sManager, entity);
-                console.log("AI EVENT")
-                console.log(newEvent);
+                //console.log("AI EVENT")
+                //console.log(newEvent);
                 entity.enemyAIC.events[index] = newEvent;
             })
         }
@@ -178,7 +178,7 @@ class AleEventManager{
         eList.forEach(entity => {
             if (entity.eventC != null) {
                 entity.eventC.events.forEach((event, index) => {
-                    if (event.type == "KEYBOARD" || event.type == "MOUSE") {
+                    if (event.type == "KEYBOARD") {
                         if (this.tStates.has(event.type)) {
                             if (this.tStates.get(event.type).has(event.trigger)) {
                                 // console.log(event)
@@ -187,6 +187,24 @@ class AleEventManager{
                                     // console.log("trigger: " + event.trigger)
                                     // console.log("context: " + event.context)
                                     this.validateEvent(event.data);
+                                }
+                            }
+                        }   
+                    }
+
+                    if (event.type == "MOUSE") {
+                        if (this.tStates.has(event.type)) {
+                            if (this.tStates.get(event.type).has(event.trigger)) {
+                                // console.log(event)
+                                if (this.tStates.get(event.type).get(event.trigger)[event.context] == true) {
+                                    // console.log("type: " + event.type)
+                                    // console.log("trigger: " + event.trigger)
+                                    // console.log("context: " + event.context)
+                                    if(this.AABBPoint(event.data.eTarget, this.screenMouseXY)){
+                                        console.log("Click")
+                                        this.validateEvent(event.data);
+                                    }
+                                    
                                 }
                             }
                         }   
@@ -258,20 +276,20 @@ class AleEventManager{
         
 
         if (this.tStates.get("MOUSE").get("LMB").PRESSED == true){
-            console.log("Pressed LMB");
+            //console.log("Pressed LMB");
         }
         if (this.tStates.get("MOUSE").get("LMB").RELEASED == true){
-            console.log("Released LMB");
+           // console.log("Released LMB");
         }
 
         if(this.tStates.get("KEYBOARD").has("a")){
             if(this.tStates.get("KEYBOARD").get("a").RELEASED == true){
-                console.log("RELEASED a");
+               // console.log("RELEASED a");
             }
         }
         if(this.tStates.get("KEYBOARD").has("a")){
             if(this.tStates.get("KEYBOARD").get("a").PRESSED == true){
-                console.log("PRESSED a");
+                //console.log("PRESSED a");
             }
         }
         
@@ -286,7 +304,7 @@ class AleEventManager{
     }
 
     validateEvent(event){
-        //console.log(event)
+        console.log(event)
         let valid = 0;
         
         event.eContexts.forEach(context =>{
@@ -330,9 +348,9 @@ class AleEventManager{
                 case "DealDamage": this.eDealDamage(event, sManager); break;
                 case "eSlimeAttack": this.eSlimeAttack(sManager, event); break;
 
-                case "eUpgradeSkill1": this.eUpgradeSkill1(sManager, event); break;
-                case "eUpgradeSkill2": this.eUpgradeSkill2(sManager, event); break;
-                case "eUpgradeSkill3": this.eUpgradeSkill3(sManager, event); break;
+                case "eUpgradeSword": this.eUpgradeSword(sManager, event); break;
+                case "eUpgradeBow": this.eUpgradeBow(sManager, event); break;
+                case "eHeal": this.eHeal(sManager, event); break;
             }
         });
     }
@@ -387,6 +405,10 @@ class AleEventManager{
             event.eTarget.playerC.hp -= event.eTrigger.combatC.dmg;
 
             if(event.eTarget.playerC.hp <= 0){
+                if(event.eTarget.templateName == "Slime"){
+                    event.eTrigger.parent.coinC.coins += 1;
+                    sManager.getEntityByName("CoinsText_0").textC.value = event.eTrigger.parent.coinC.coins;
+                }
                 Entity.removeEntity(event.eTarget, sManager);
             } else {
                 let redHP = event.eTarget.getChildByTemplate("HPBarRed");
@@ -486,6 +508,46 @@ class AleEventManager{
         newEntity.size.h = event.eTrigger.size.h + 100;
         //newEntity.timedEventC.delay = 250;
         
+    }
+
+    eUpgradeSword(sManager, event){
+        let player = sManager.getEntityByTemplate("Player");
+        let coins = player.coinC.coins;
+
+        let USBPrice = sManager.getEntityByName("USBPrice_0");
+        let COINS = sManager.getEntityByName("CoinsText_0");
+        let SDMG = sManager.getEntityByName("SDMGText_0");
+        console.log("hehe")
+        console.log(coins + " " + USBPrice.textC.value)
+        if(coins >= USBPrice.textC.value){
+            console.log("hehe")
+            player.coinC.coins -= USBPrice.textC.value;
+            SDMG.textC.value += 5;
+            COINS.textC.value = player.coinC.coins;
+            USBPrice.textC.value = Math.floor(USBPrice.textC.value * 1.3);
+        }
+    }
+
+    eUpgradeBow(sManager, event){
+        let player = sManager.getEntityByTemplate("Player");
+        let coins = player.coinC.coins;
+
+        let UBBPrice = sManager.getEntityByName("UBBPrice_0");
+        let COINS = sManager.getEntityByName("CoinsText_0");
+        let BDMG = sManager.getEntityByName("BDMGText_0");
+        console.log("hehe2")
+        console.log(coins + " " + UBBPrice.textC.value)
+        if(coins >= UBBPrice.textC.value){
+            console.log("hehe2")
+            player.coinC.coins -= UBBPrice.textC.value;
+            BDMG.textC.value += 5;
+            COINS.textC.value = player.coinC.coins;
+            UBBPrice.textC.value = Math.floor(UBBPrice.textC.value * 1.3);
+        }
+    }
+
+    eHeal(sManager, event){
+
     }
 }
 

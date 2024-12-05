@@ -68,6 +68,18 @@ class AleRenderer {
                  this.c.fillStyle = 'white';
                  this.c.fillText(entity.name, x, y, entity.size.w)
             }
+
+            if(entity.textC != null){
+                this.c.fillStyle = 'white';
+                this.c.font = entity.textC.font_size + "px serif";
+
+                let newText = entity.textC.text  + entity.textC.value
+                if(entity.textC.value == null){
+                    newText = entity.textC.text
+                }
+                this.c.fillText(newText, entity.pos.x + camera.cameraC.sPos.x, entity.pos.y + camera.cameraC.sPos.y + entity.size.h, entity.size.w)
+                this.c.font = "20px serif";
+            }
             
         });
         this.c.restore();

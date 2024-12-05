@@ -9,9 +9,9 @@ const gameTemplatePack = [{
     "components": [,{
         "name": "AleEventC",
         "data": {
-            "events":[
-                {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 10000, "triggered": false, "int1": 500, "int2": 1000}},
-                {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 5000, "triggered": false, "int1": 2000, "int2": 5000}},
+            "events":[/*
+                {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 10000, "triggered": false, "int1": 500, "int2": 5000}},
+                {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 5000, "triggered": false, "int1": 2000, "int2": 20000}},*/
             ]
             }
         }]

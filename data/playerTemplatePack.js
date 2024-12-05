@@ -42,7 +42,12 @@ const playerTemplatePack = [
                 {"type":"KEYBOARD","trigger":"6","context":"PRESSED","eName":"BuyHeal","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
             ]
             }
-        }]
+        },{
+            "name": "AleCoinC",
+            "data": {
+                "coins": 100
+                }
+            }]
     },
 
     {

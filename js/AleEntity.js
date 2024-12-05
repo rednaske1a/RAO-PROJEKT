@@ -23,6 +23,8 @@ class Entity {
         this.combatC = null;
         this.guiC = null;
         this.enemyAIC = null;
+        this.textC = null;
+        this.coinC = null;
         
         //console.log(sManager);
         this.addComponents(components, sManager);
@@ -40,6 +42,8 @@ class Entity {
                 case "AlePlayerC": this.playerC = new AlePlayerC(component.data); break;
                 case "AleCombatC": this.combatC = new AleCombatC(component.data); break;
                 case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC(component.data); break;
+                case "AleTextC": this.textC = new AleTextC(component.data); break;
+                case "AleCoinC": this.coinC = new AleCoinC(component.data); break;
             }
         });
     }
@@ -79,11 +83,11 @@ class Entity {
     }
 
     static removeEntity(entity, sManager){
-        console.log("REMOVING: " + entity.name);
+        //console.log("REMOVING: " + entity.name);
         let removeEntities = Entity.getDescendants(entity, []);
         let removeN = 0;
         removeEntities.forEach(rEntity =>{
-            console.log("--removing: " + rEntity.name);
+            //console.log("--removing: " + rEntity.name);
             sManager.eLoaded.forEach((fEntity,index) =>{
                 if(rEntity.name == fEntity.name){
                     sManager.eLoaded.splice(index,1);
