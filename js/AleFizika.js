@@ -3,7 +3,7 @@ class AleFizika {
     constructor() {
         this.solveColl = [];
         this.collStorage = [];
-        this.colEvents = [];
+        this.collEvents = [];
     }
 
     static AABB(entity1, entity2) {

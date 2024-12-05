@@ -36,8 +36,16 @@ class AleCameraC {
 }
 
 class AleFollowC {
-    constructor({follow, followStrength, followOffset}, sManager){
-        this.follow = sManager.getEntityByTemplate(follow);
+    constructor({follow, followStrength, followOffset}, sManager, entity){
+        if(follow == "PARENT"){
+            this.follow = entity;
+        } else {
+            this.follow = sManager.getEntityByTemplate(follow);
+        }
+        console.log("FOLLWO");
+        console.log(follow);
+        console.log(this.follow);
+        
         this.followStrength = followStrength;
         this.followOffset = followOffset;
     }
@@ -45,11 +53,21 @@ class AleFollowC {
 
 
 class AlePlayerC {
-    constructor({jumpSpeed, moveSpeed, isGrounded, isDucking}){
+    constructor({jumpSpeed, moveSpeed}){
         this.jumpSpeed = jumpSpeed;
         this.moveSpeed = moveSpeed;
-        this.isGrounded = isGrounded;
-        this.isDucking = isDucking;
+        this.isGrounded = false;
+        this.isDucking = false;
+        this.lookingLeft = false;
+        this.lookingRight = true;
+        this.hp = 100;
+        this.maxhp = 100;
+    }
+}
+
+class AleCombatC {
+    constructor({dmg}){
+        this.dmg = dmg;
     }
 }
 

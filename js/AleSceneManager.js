@@ -30,7 +30,7 @@ class AleSceneManager {
         //console.log(eManager)
         let template = this.getTemplate(templateName);
         //console.log(template);
-        let entity = new Entity(template.data, this);
+        let entity = new Entity(template.data, this, parent);
         //console.log(template);
         //console.log(entity.children);
         entity.name = template.data.name + "_" +template.count;
@@ -70,7 +70,7 @@ class AleSceneManager {
         eManager.bindEvents(entity, this);
 
         console.log("Finish Creating " + templateName);
-        console.log(entity);
+        //console.log(entity);
         //this.createTree();
         return entity;
     }
@@ -133,6 +133,7 @@ class AleSceneManager {
     getTemplate(templateName){
         let template = null;
         this.templates.forEach(fTemplate =>{
+            console.log(templateName + " == " + fTemplate.data.name)
             if(fTemplate.data.name == templateName){
                 template = fTemplate;
             }

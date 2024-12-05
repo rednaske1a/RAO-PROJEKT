@@ -2,10 +2,10 @@ const monsterTemplatePack = [
     {
     "name": "Slime",
     "type": "Body",
-    "children": ["SlimeImage","SlimeHPBar"],
+    "children": ["SlimeImage", "HPBarRed", "HPBarGreen","MoveIndicator"],
 
     "relPos": {"x": 1000, "y": -1000 },
-    "size": { "w": 25, "h": 25 },
+    "size": { "w": 100, "h": 100 },
     
     "components": [{
         "name": "AleFizikaC",
@@ -47,7 +47,7 @@ const monsterTemplatePack = [
     "children": [],
 
     "relPos": {"x": 0, "y": 0 },
-    "size": { "w": 25, "h": 25 },
+    "size": { "w": 100, "h": 100 },
     
     "components": [{
         "name": "AleRenderC",
@@ -57,30 +57,5 @@ const monsterTemplatePack = [
             "zLayer": 5
         }
         }]
-    },
-
-    {
-        "name": "SlimeHPBar",
-        "type": "Image",
-        "children": [],
-    
-        "relPos": {"x": 0, "y": 10 },
-        "size": { "w": 25, "h": 5 },
-        
-        "components": [{
-            "name": "AleRenderC",
-            "data": {
-                "color": "red",
-                "visible": true,
-                "zLayer": 10
-            }
-            },{
-            "name": "AleFollowC",
-            "data": {
-                "follow": "Slime",
-                "followStrength": 2,
-                "followOffset": {"x": 0, "y": -10 }
-                }
-            }]
-        }
+    }
 ];

@@ -10,8 +10,8 @@ const combatTemplatePack = [{
         "name": "AleEventC",
         "data": {
             "events":[
-                {"type":"COLLISION","trigger":"COLLISION","context":"BODYENTER","eName":"Deal10Damage","eTrigger":"SELF","eTarget":"Enemy","eContexts":["INGAME"]},
-                {"type":"COLLISION","trigger":"COLLISION","context":"BODYENTER","eName":"KYS","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]}
+                {"type":"COLLISION","trigger":"COLLISION","context":"BODYENTER","eName":"DealDamage","eTrigger":"NONE","eTarget":"NONE","eContexts":["INGAME"]},
+                {"type":"COLLISION","trigger":"COLLISION","context":"BODYENTER","eName":"KillTrigger","eTrigger":"NONE","eTarget":"NONE","eContexts":["INGAME"]}
                 ]
             }
         },{
@@ -32,16 +32,16 @@ const combatTemplatePack = [{
         "collide": false
     }
     },{
-    "name": "AleHitC",
+    "name": "AleCombatC",
     "data": {
-        "damage": 30
+        "dmg": 30
         }
     },{
     "name": "AleTimedEventC",
     "data": {
         "delay": 250,
         "events": [
-            {"type":"OTHER","trigger":"OTHER","context":"OTHER","eName":"KYS","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]}
+            {"type":"OTHER","trigger":"OTHER","context":"OTHER","eName":"KillTrigger","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]}
         ]
         }
     }

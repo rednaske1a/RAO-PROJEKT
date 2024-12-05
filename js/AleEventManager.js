@@ -195,7 +195,7 @@ class AleEventManager{
         });
     }
 
-    getEvents(entityList){
+    getEvents(entityList, fManager){
         this.eventList = [];
         this.getNewEvents();
 
@@ -214,63 +214,48 @@ class AleEventManager{
         entityList.forEach(entity =>{
             if(entity.timedEventC != null){
                 let now = Date.now();
-                console.log(now);
+                //console.log(now);
                 if(now >= entity.timedEventC.start + entity.timedEventC.delay){
                     entity.timedEventC.events.forEach(event =>{
-                        console.log("EVENTASDDA")
-                        console.log(event);
+                        //console.log("EVENTASDDA")
+                        //console.log(event);
                         this.validateEvent(event.data);
                         
                     })
                 }
             }
         })
-/*PREPOČASI
         entityList.forEach(entity =>{
             if(entity.eventC != null){
-                entity.eventC.events.forEach(event =>{
-                    if (event.type == "COLLISION"){
                         entityList.forEach(entity2 =>{
-                            if(entity2.fizikaC != null){
-                                entity.fizikaC.collLayer.forEach((bit,index) =>{
-                                    console.log("COLLISIONI HDNAS")
-                                        console.log(entity);
-                                        console.log("--------")
-                                        console.log(entity2);
-                                    if(entity.fizikaC.collMask[index] == 1 && entity2.fizikaC.collLayer[index] == 1){
-                                        
-                                        if(AleFizika.AABB(entity, entity2) == true){
+                            if(entity.fizikaC != null && entity2.fizikaC != null){
+                                for (let index = 0; index < entity.fizikaC.collLayer.length; index++) {
+                                    if (entity.fizikaC.collMask[index] == 1 &&
+                                         entity2.fizikaC.collLayer[index] == 1) {
+                                        if (AleFizika.AABB(entity, entity2) == true) {
                                             entity.eventC.events.forEach(event =>{
-                                            
-                                                event.trigger = entity.name;
-                                                event.data.eTarget = entity2;
-                                                event.data.eTrigger = entity;
-                                                this.validateEvent(event.data);
+                                                if (event.type == "COLLISION"){
+                                                    //console.log("COLLISIONI HDNAS");
+                                                   // console.log(entity);
+                                                    //console.log("--------");
+                                                    //console.log(entity2);
+                                                    
+                                                    //console.log(event);
+                                                    let newEvent = Entity.copy(event);
+                                                    newEvent.trigger = entity.name;
+                                                    newEvent.data.eTarget = entity2;
+                                                    newEvent.data.eTrigger = entity;
+                                                    this.validateEvent(newEvent.data);
+                                                }
                                             })
+                                            
                                         }
-                                        
                                     }
-                                })
+                                }
                             }    
                         })
                     }
                 })
-                
-            }
-        })
-        
-*/
-
-        fManager.collEvents.forEach(collEvent =>{
-            collEvent.entity1.eventC.events.forEach(event =>{
-                if(event.type == "COLLISION"){
-                    event.trigger = entity.name;
-                    event.data.eTarget = entity2;
-                    event.data.eTrigger = entity;
-                    this.validateEvent(event.data);
-                }
-            })
-        })
 
 
         if (this.tStates.get("MOUSE").get("LMB").PRESSED == true){
@@ -330,17 +315,20 @@ class AleEventManager{
         this.getEvents(sManager.eLoaded, fManager);
         this.eventList.forEach(event => {
             switch(event.eName){
-                case "Jump": event.eTarget.fizikaC.vel.y += -event.eTarget.playerC.jumpSpeed; break;
-                case "Duck": event.eTarget.fizikaC.vel.y += event.eTarget.playerC.jumpSpeed; break;
-                case "GoLeft": {event.eTarget.fizikaC.vel.x = -event.eTarget.playerC.moveSpeed; console.log("GOLEFT")}; break;
-                case "GoRight": event.eTarget.fizikaC.vel.x = event.eTarget.playerC.moveSpeed; break;
+                case "Jump": this.eJump(event); break;
+                case "Duck": this.eDuck(event); break;
+                case "GoLeft": this.eGoLeft(event); break;
+                case "GoRight": this.eGoRight(event); break;
+
                 case "ToggleGUI": this.toggleGUI(event); break;
                 case "CloseGUI": this.closeGUI(event); break;
                 case "CreateSlime": this.createSlime(sManager, event); break;
                 case "UseSkill1": this.useSkill1(sManager, event); break;
                 case "UseSkill2": this.useSkill2(sManager, event); break;
                 case "UseSkill3": this.useSkill3(sManager, event); break;
-                case "KYS": Entity.removeEntity(event.eTarget, sManager); break;
+                case "KillTrigger": Entity.removeEntity(event.eTrigger, sManager); break;
+                case "KillTarget": Entity.removeEntity(event.eTarget, sManager); break;
+                case "DealDamage": this.eDealDamage(event, sManager); break;
             }
         });
     }
@@ -368,6 +356,44 @@ class AleEventManager{
         }
     }
 
+    eJump(event) {
+        event.eTarget.fizikaC.vel.y += -event.eTarget.playerC.jumpSpeed;
+    }
+
+    eDuck(event) {
+        event.eTarget.fizikaC.vel.y += event.eTarget.playerC.jumpSpeed;
+    }
+
+    eGoLeft(event) {
+        event.eTarget.getChildByTemplate("MoveIndicator").relPos.x = -100;
+        event.eTarget.playerC.lookingLeft = true;
+        event.eTarget.playerC.lookingRight= false;
+        event.eTarget.fizikaC.vel.x = -event.eTarget.playerC.moveSpeed;
+    }
+
+    eGoRight(event) {
+        event.eTarget.getChildByTemplate("MoveIndicator").relPos.x = 50;
+        event.eTarget.playerC.lookingLeft = false;
+        event.eTarget.playerC.lookingRight= true;
+        event.eTarget.fizikaC.vel.x = event.eTarget.playerC.moveSpeed;
+    }
+
+    eDealDamage(event, sManager){
+        if(event.eTarget.playerC != null){
+            event.eTarget.playerC.hp -= event.eTrigger.combatC.dmg;
+
+            if(event.eTarget.playerC.hp <= 0){
+                Entity.removeEntity(event.eTarget, sManager);
+            } else {
+                let redHP = event.eTarget.getChildByTemplate("HPBarRed");
+                let greenHP = event.eTarget.getChildByTemplate("HPBarGreen");
+                greenHP.size.w = (event.eTarget.playerC.hp / event.eTarget.playerC.maxhp) * redHP.size.w;
+            }
+
+        }
+        
+    }
+
     closeGUI(event){
         this.recursiveSetGUI(event.target, false);
     }
@@ -384,6 +410,15 @@ class AleEventManager{
     useSkill1(sManager, event){
         let newEntity = sManager.createEntity("DamageBox", sManager.getEntityByTemplate("Player"), this);
         newEntity.relPos.x = newEntity.parent.size.w;
+
+        if(newEntity.parent.playerC.lookingRight){
+            newEntity.relPos.x = 50;
+        }
+        if(newEntity.parent.playerC.lookingLeft){
+            newEntity.relPos.x = -200;
+        }
+
+        newEntity.combatC.dmg = 30;
         newEntity.relPos.y = 0;
         newEntity.size.w = 200
         newEntity.size.h = 50;
@@ -392,24 +427,45 @@ class AleEventManager{
 
     useSkill2(sManager, event){
         let player = sManager.getEntityByTemplate("Player");
-        player.fizikaC.vel.x = 20;
-        player.fizikaC.vel.y = -20;
         let newEntity = sManager.createEntity("DamageBox", player, this);
+            
+
+        if(player.playerC.lookingRight && player.playerC){
+            player.fizikaC.vel.x = 10;
+            player.fizikaC.vel.y = -30;
+        }
+
+        if(player.playerC.lookingLeft && player.playerC){
+            player.fizikaC.vel.x = -10;
+            player.fizikaC.vel.y = -30;
+        }
+        
+        newEntity.combatC.dmg = 50;
         newEntity.relPos.x = -newEntity.parent.size.w;
         newEntity.relPos.y = newEntity.parent.size.h/2;
         newEntity.size.w = newEntity.parent.size.w * 3
-        newEntity.size.h = newEntity.parent.size.h/2;
+        newEntity.size.h = newEntity.parent.size.h;
         newEntity.timedEventC.delay = 1000;
     }
 
     useSkill3(sManager, event){
         let newEntity = sManager.createEntity("DamageBox", sManager.getEntityByTemplate("Player"), this);
-        newEntity.relPos.x = newEntity.parent.size.w;
+
+        if(newEntity.parent.playerC.lookingRight){
+            newEntity.relPos.x = newEntity.parent.size.w;
+            newEntity.fizikaC.vel.x = 30;
+        }
+        if(newEntity.parent.playerC.lookingLeft){
+            newEntity.relPos.x = -500;
+            newEntity.fizikaC.vel.x = -30;
+        }
+
+        newEntity.combatC.dmg = 5;
         newEntity.relPos.y = -400;
         newEntity.size.w = 500
         newEntity.size.h = 500;
-        newEntity.timedEventC.delay = 200;
-        newEntity.fizikaC.vel.x = 100;
+        newEntity.timedEventC.delay = 250;
+        
     }
 }
 

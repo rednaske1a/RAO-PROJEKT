@@ -1,12 +1,12 @@
 class Entity {
-    constructor({name, type, children, relPos, size, components}, sManager){
+    constructor({name, type, children, relPos, size, components}, sManager, parent){
        
         this.id = null;
         this.name = name;
         this.templateName = name;
         this.type = type;
 
-        this.parent = null;
+        this.parent = parent || null;
         this.children = Entity.copy(children);
 
         this.pos = {x: null, y:null};
@@ -20,10 +20,9 @@ class Entity {
         this.cameraC = null;
         this.followC = null;
         this.playerC = null;
+        this.combatC = null;
         this.guiC = null;
         this.enemyAIC = null;
-        this.HPC = null;
-        this.HitC = null
         this.timedEventC = null;
         
         //console.log(sManager);
@@ -37,12 +36,11 @@ class Entity {
                 case "AleEventC": this.eventC = new AleEventC(component.data); break;
                 case "AleRenderC": this.renderC = new AleRenderC(component.data); break;
                 case "AleCameraC": this.cameraC = new AleCameraC(component.data); break;
-                case "AleFollowC": this.followC = new AleFollowC(component.data, sManager); break;
+                case "AleFollowC": this.followC = new AleFollowC(component.data, sManager, this.parent); break;
                 case "AleGUIC": this.guiC = new AleGUIC(component.data); break;
                 case "AlePlayerC": this.playerC = new AlePlayerC(component.data); break;
+                case "AleCombatC": this.combatC = new AleCombatC(component.data); break;
                 case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC({actions:component.data, entity:this, sManager:sManager}); break;
-                case "AleHPC": this.HPC = new AleHPC(component.data); break;
-                case "AleHitC": this.HitC = new AleHitC(component.data); break;
                 case "AleTimedEventC": this.timedEventC = new AleTimedEventC(component.data); break;
             }
         });
@@ -66,16 +64,28 @@ class Entity {
         return descList;
     }
 
+    getChildByTemplate(cName) {
+        //console.log("HEHE");
+        for (let child of this.children) {
+            //console.log(cName + "==" + child.templateName);
+            if (child.templateName === cName) {
+                return child;
+            }
+        }
+        //console.log("Not Found "+cName);
+        return cName;
+    }
+
     static addEntity(entityList, entity){
         entityList.push(new Entity(entity));
     }
 
     static removeEntity(entity, sManager){
-        console.log("removing");
-        console.log(entity)
+        console.log("REMOVING: " + entity.name);
         let removeEntities = Entity.getDescendants(entity, []);
         let removeN = 0;
         removeEntities.forEach(rEntity =>{
+            console.log("--removing: " + rEntity.name);
             sManager.eLoaded.forEach((fEntity,index) =>{
                 if(rEntity.name == fEntity.name){
                     sManager.eLoaded.splice(index,1);
