@@ -18,6 +18,20 @@ class AleEventC {
             this.events.push(newEvent);
         });
     }
+
+    getEventByName(eName){ //PRVI FIND (RECOMMENDAL AI)
+        let event = this.events.find(event => event.data.eName == eName);
+        //console.log(eName);
+        //console.log(event);
+        return event;
+    }
+
+    getEventByType(eType){ //PRVI FIND (RECOMMENDAL AI)
+        let event = this.events.find(event => event.type == eType);
+        //console.log(eName);
+        //console.log(event);
+        return event;
+    }
 }
 
 class AleRenderC {
@@ -63,6 +77,10 @@ class AlePlayerC {
         this.lookingRight = true;
         this.hp = 100;
         this.maxhp = 100;
+
+        this.skill1 = true;
+        this.skill2 = true;
+        this.skill3 = true;
     }
 }
 

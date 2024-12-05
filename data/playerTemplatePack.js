@@ -13,8 +13,8 @@ const playerTemplatePack = [
             "vel" : {"x": 0, "y": 0},
             "acc" : {"x": 0, "y": 1},
             "trenje": 0.8,
-            "collLayer" : [0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            "collMask" : [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            "collLayer" : [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            "collMask" : [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
             "collide": true
         }
         },{
@@ -31,9 +31,15 @@ const playerTemplatePack = [
                 {"type":"KEYBOARD","trigger":"a","context":"DOWN","eName":"GoLeft","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
                 {"type":"KEYBOARD","trigger":"s","context":"DOWN","eName":"Duck","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
                 {"type":"KEYBOARD","trigger":"d","context":"DOWN","eName":"GoRight","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                {"type":"KEYBOARD","trigger":"e","context":"PRESSED","eName":"UseSkill1","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                {"type":"KEYBOARD","trigger":"r","context":"PRESSED","eName":"UseSkill2","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                {"type":"KEYBOARD","trigger":"f","context":"PRESSED","eName":"UseSkill3","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]}
+                {"type":"KEYBOARD","trigger":"r","context":"PRESSED","eName":"UseSkill1","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                {"type":"KEYBOARD","trigger":"f","context":"PRESSED","eName":"UseSkill2","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                {"type":"KEYBOARD","trigger":"c","context":"PRESSED","eName":"UseSkill3","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                {"type":"KEYBOARD","trigger":"1","context":"PRESSED","eName":"UpgradeSkill1","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                {"type":"KEYBOARD","trigger":"2","context":"PRESSED","eName":"UpgradeSkill2","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                {"type":"KEYBOARD","trigger":"3","context":"PRESSED","eName":"UpgradeSkill3","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                {"type":"KEYBOARD","trigger":"4","context":"PRESSED","eName":"UpgradeHP","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                {"type":"KEYBOARD","trigger":"5","context":"PRESSED","eName":"UpgradeDEF","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                {"type":"KEYBOARD","trigger":"6","context":"PRESSED","eName":"BuyHeal","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
             ]
             }
         }]

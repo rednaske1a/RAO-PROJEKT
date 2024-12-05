@@ -198,13 +198,12 @@ class AleEventManager{
                             event.data.eData.start = Date.now();
                         }
                         if (event.context == "TIMEOUT") {
-                            //console.log(event.data.eData.start);
-                            //console.log(event.data.eData.timeout);
-                            //console.log(now);
-                            if (event.data.eData.start + event.data.eData.timeout < now) {
-                                let newEvent = Entity.copy(event);
-                                newEvent.data.eData.start = null;
-                                this.validateEvent(newEvent.data);
+                            //console.log(event.data.eData.triggered); BRUHH
+                            if (event.data.eData.triggered == false) {
+                                if (event.data.eData.start + event.data.eData.timeout < now) {
+                                    event.data.eData.triggered = true;
+                                    this.validateEvent(event.data);
+                                }
                             }
                         }
                         if (event.context == "LOOP") {
@@ -329,6 +328,11 @@ class AleEventManager{
                 case "KillTrigger": Entity.removeEntity(event.eTrigger, sManager); break;
                 case "KillTarget": Entity.removeEntity(event.eTarget, sManager); break;
                 case "DealDamage": this.eDealDamage(event, sManager); break;
+                case "eSlimeAttack": this.eSlimeAttack(sManager, event); break;
+
+                case "eUpgradeSkill1": this.eUpgradeSkill1(sManager, event); break;
+                case "eUpgradeSkill2": this.eUpgradeSkill2(sManager, event); break;
+                case "eUpgradeSkill3": this.eUpgradeSkill3(sManager, event); break;
             }
         });
     }
@@ -403,12 +407,14 @@ class AleEventManager{
     }
 
     createSlime(sManager, event){
+        let min = event.eData.int1;
+        let max = event.eData.int2;
         let newEntity = sManager.createEntity("Slime", sManager.getEntityByTemplate("Game"), this);
-        newEntity.relPos.x += Math.floor(Math.random() * (200 + 200 + 1) - 200);
+        newEntity.relPos.x += Math.floor(Math.random() * (max - min) + min);
     }
 
     useSkill1(sManager, event){
-        let newEntity = sManager.createEntity("DamageBox", sManager.getEntityByTemplate("Player"), this);
+        let newEntity = sManager.createEntity("DamageBox", event.eTrigger, this);
         newEntity.relPos.x = newEntity.parent.size.w;
 
         if(newEntity.parent.playerC.lookingRight){
@@ -421,7 +427,7 @@ class AleEventManager{
         newEntity.combatC.dmg = 30;
         newEntity.relPos.y = 0;
         newEntity.size.w = 200
-        newEntity.size.h = 50;
+        newEntity.size.h = 100;
        // newEntity.timedEventC.delay = 100;
     }
 
@@ -464,6 +470,20 @@ class AleEventManager{
         newEntity.relPos.y = -400;
         newEntity.size.w = 500
         newEntity.size.h = 500;
+        //newEntity.timedEventC.delay = 250;
+        
+    }
+
+    eSlimeAttack(sManager, event){
+        let newEntity = sManager.createEntity("DamageBox", event.eTrigger, this);
+        newEntity.fizikaC.collMask = [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+        newEntity.eventC.getEventByType("TIME").data.eData.timeout = 250;
+
+        newEntity.combatC.dmg = 5;
+        newEntity.relPos.y = -50;
+        newEntity.relPos.x = -50;
+        newEntity.size.w = event.eTrigger.size.w + 100
+        newEntity.size.h = event.eTrigger.size.h + 100;
         //newEntity.timedEventC.delay = 250;
         
     }

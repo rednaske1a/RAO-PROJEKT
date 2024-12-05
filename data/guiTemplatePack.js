@@ -136,7 +136,7 @@ const guiTemplatePack = [
     "components": [{
         "name": "AleRenderC",
         "data": {
-            "color": "#005f73",
+            "color": "#40ddd0",
             "visible": true,
             "zLayer": 10
         }
@@ -144,7 +144,7 @@ const guiTemplatePack = [
         "name": "AleEventC",
         "data": {
             "events":[
-                {"type":"MOUSE","trigger":"LMB","context":"PRESSED","eName":"CreateSlime","eTrigger":"SELF","eTarget":"Slime","eContexts":["INGAME"]}
+                //{"type":"MOUSE","trigger":"LMB","context":"PRESSED","eName":"CreateSlime","eTrigger":"SELF","eTarget":"Slime","eContexts":["INGAME"]}
                 ]
             }
         }]
@@ -159,7 +159,7 @@ const guiTemplatePack = [
     "components": [{
         "name": "AleRenderC",
         "data": {
-            "color": "#005f73",
+            "color": "#40ddd0",
             "visible": true,
             "zLayer": 10
         }
@@ -175,7 +175,7 @@ const guiTemplatePack = [
     "components": [{
         "name": "AleRenderC",
         "data": {
-            "color": "#005f73",
+            "color": "#40ddd0",
             "visible": true,
             "zLayer": 10
         }
@@ -191,7 +191,7 @@ const guiTemplatePack = [
     "components": [{
         "name": "AleRenderC",
         "data": {
-            "color": "#005f73",
+            "color": "red",
             "visible": true,
             "zLayer": 10
         }
@@ -207,7 +207,7 @@ const guiTemplatePack = [
     "components":[{ 
         "name":"AleRenderC", 
         "data":{
-            "color":"#005f73", 
+            "color":"gray", 
             "visible":"true", 
             "zLayer":"10"
         }
@@ -223,7 +223,7 @@ const guiTemplatePack = [
     "components":[{ 
         "name":"AleRenderC", 
         "data":{
-            "color":"#005f73", 
+            "color":"lime", 
             "visible":"true", 
             "zLayer":"10"
         }

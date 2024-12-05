@@ -12,7 +12,7 @@ const combatTemplatePack = [{
             "events":[
                 {"type":"COLLISION","trigger":"COLLISION","context":"BODYENTER","eName":"DealDamage","eTrigger":"NONE","eTarget":"NONE","eContexts":["INGAME"]},
                 {"type":"COLLISION","trigger":"COLLISION","context":"BODYENTER","eName":"KillTrigger","eTrigger":"NONE","eTarget":"NONE","eContexts":["INGAME"]},
-                {"type":"TIME","trigger":"TIME","context":"TIMEOUT","eName":"KillTrigger","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 1000}}
+                {"type":"TIME","trigger":"TIME","context":"TIMEOUT","eName":"KillTrigger","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 1000, "triggered": false}}
                 ]
             }
         },{
