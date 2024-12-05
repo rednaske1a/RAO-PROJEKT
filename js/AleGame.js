@@ -3,7 +3,7 @@ class AleGame {
         this.sManager = {};
         this.eManager = new AleEventManager();
         this.renderer = new AleRenderer();
-        this.fizika = new AleFizika();
+        this.fManager = new AleFizika();
         this.deltaTime = 0;
         this.prevTime = 1000;
     }
@@ -17,8 +17,8 @@ class AleGame {
     }
 
     run(time) {
-        game.deltaTime = Number((time - game.prevTime) / 1000);
-        game.prevTime = time;
+        //game.deltaTime = Number((time - game.prevTime) / 1000);
+        //game.prevTime = time;
         //console.log(game.deltaTime);
         game.render();
         game.update();
@@ -31,7 +31,7 @@ class AleGame {
     }
 
     update() {
-        this.eManager.solveEvents(this.sManager);
-        this.fizika.update(this.sManager.eLoaded, this.deltaTime);
+        this.eManager.solveEvents(this.sManager, this.fManager);
+        this.fManager.update(this.sManager.eLoaded, this.deltaTime);
     }
 }

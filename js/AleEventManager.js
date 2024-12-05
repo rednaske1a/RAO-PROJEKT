@@ -225,36 +225,52 @@ class AleEventManager{
                 }
             }
         })
-
+/*PREPOČASI
         entityList.forEach(entity =>{
             if(entity.eventC != null){
-                if(entity.eventC.type == "COLLISION"){
-                    entityList.forEach(entity2 =>{
-                        if(entity2.fizikaC != null){
-                            entity.fizikaC.collLayer.forEach((bit,index) =>{
-                                console.log("COLLISIONI HDNAS")
-                                    console.log(entity);
-                                    console.log("--------")
-                                    console.log(entity2);
-                                if(entity.collMask[index] == 1 && entity2.collLayer[index] == 1){
-                                    
-                                    
-                                    entity.eventC.events.forEach(event =>{
+                entity.eventC.events.forEach(event =>{
+                    if (event.type == "COLLISION"){
+                        entityList.forEach(entity2 =>{
+                            if(entity2.fizikaC != null){
+                                entity.fizikaC.collLayer.forEach((bit,index) =>{
+                                    console.log("COLLISIONI HDNAS")
+                                        console.log(entity);
+                                        console.log("--------")
+                                        console.log(entity2);
+                                    if(entity.fizikaC.collMask[index] == 1 && entity2.fizikaC.collLayer[index] == 1){
                                         
-                                        event.trigger = entity.name;
-                                        event.data.eTarget = entity2;
-                                        event.data.eTrigger = entity;
-                                        this.validateEvent(event.data);
-                                    })
-                                }
-                            })
-                        }    
-                    })
-                }
+                                        if(AleFizika.AABB(entity, entity2) == true){
+                                            entity.eventC.events.forEach(event =>{
+                                            
+                                                event.trigger = entity.name;
+                                                event.data.eTarget = entity2;
+                                                event.data.eTrigger = entity;
+                                                this.validateEvent(event.data);
+                                            })
+                                        }
+                                        
+                                    }
+                                })
+                            }    
+                        })
+                    }
+                })
+                
             }
         })
         
+*/
 
+        fManager.collEvents.forEach(collEvent =>{
+            collEvent.entity1.eventC.events.forEach(event =>{
+                if(event.type == "COLLISION"){
+                    event.trigger = entity.name;
+                    event.data.eTarget = entity2;
+                    event.data.eTrigger = entity;
+                    this.validateEvent(event.data);
+                }
+            })
+        })
 
 
         if (this.tStates.get("MOUSE").get("LMB").PRESSED == true){
@@ -310,8 +326,8 @@ class AleEventManager{
         }
     }
 
-    solveEvents(sManager){
-        this.getEvents(sManager.eLoaded);
+    solveEvents(sManager, fManager){
+        this.getEvents(sManager.eLoaded, fManager);
         this.eventList.forEach(event => {
             switch(event.eName){
                 case "Jump": event.eTarget.fizikaC.vel.y += -event.eTarget.playerC.jumpSpeed; break;
