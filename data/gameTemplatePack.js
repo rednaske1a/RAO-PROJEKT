@@ -9,9 +9,11 @@ const gameTemplatePack = [{
     "components": [,{
         "name": "AleEventC",
         "data": {
-            "events":[/*
-                {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 10000, "triggered": false, "int1": 500, "int2": 5000}},
-                {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 5000, "triggered": false, "int1": 2000, "int2": 20000}},*/
+            "events":[
+                {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 5000, "triggered": false, "int1": 500, "int2": 10000, "string1": "L1Slime"}},
+                {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 15000, "triggered": false, "int1": 10000, "int2": 20000, "string1": "L2Slime"}},
+                {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 30000, "triggered": false, "int1": 20000, "int2": 30000, "string1": "L3Slime"}},
+                {"type":"TIME","trigger":"TIME","context":"TIMEOUT","eName":"setBestLVL","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 0, "triggered": false}},
             ]
             }
         }]

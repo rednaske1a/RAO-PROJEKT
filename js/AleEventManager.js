@@ -304,7 +304,7 @@ class AleEventManager{
     }
 
     validateEvent(event){
-        console.log(event)
+        //console.log(event)
         let valid = 0;
         
         event.eContexts.forEach(context =>{
@@ -340,9 +340,8 @@ class AleEventManager{
                 case "ToggleGUI": this.toggleGUI(event); break;
                 case "CloseGUI": this.closeGUI(event); break;
                 case "CreateSlime": this.createSlime(sManager, event); break;
-                case "UseSkill1": this.useSkill1(sManager, event); break;
-                case "UseSkill2": this.useSkill2(sManager, event); break;
-                case "UseSkill3": this.useSkill3(sManager, event); break;
+                case "eAttackSword": this.eAttackSword(sManager, event); break;
+                case "eAttackBow": this.eAttackBow(sManager, event); break;
                 case "KillTrigger": Entity.removeEntity(event.eTrigger, sManager); break;
                 case "KillTarget": Entity.removeEntity(event.eTarget, sManager); break;
                 case "DealDamage": this.eDealDamage(event, sManager); break;
@@ -387,14 +386,20 @@ class AleEventManager{
     }
 
     eGoLeft(event) {
-        event.eTarget.getChildByTemplate("MoveIndicator").relPos.x = -100;
+        let move = event.eTarget.getChildByTemplate("MoveIndicator")
+        if(move.relPos != undefined){
+            move.relPos.x = -100;
+        }
         event.eTarget.playerC.lookingLeft = true;
         event.eTarget.playerC.lookingRight= false;
         event.eTarget.fizikaC.vel.x = -event.eTarget.playerC.moveSpeed;
     }
 
     eGoRight(event) {
-        event.eTarget.getChildByTemplate("MoveIndicator").relPos.x = 50;
+        let move = event.eTarget.getChildByTemplate("MoveIndicator")
+        if(move.relPos != undefined){
+            move.relPos.x = 50;
+        }
         event.eTarget.playerC.lookingLeft = false;
         event.eTarget.playerC.lookingRight= true;
         event.eTarget.fizikaC.vel.x = event.eTarget.playerC.moveSpeed;
@@ -403,21 +408,54 @@ class AleEventManager{
     eDealDamage(event, sManager){
         if(event.eTarget.playerC != null){
             event.eTarget.playerC.hp -= event.eTrigger.combatC.dmg;
+            if(event.eTarget.templateName == "Player"){
+                
+            }
 
             if(event.eTarget.playerC.hp <= 0){
                 if(event.eTarget.templateName == "Slime"){
                     event.eTrigger.parent.coinC.coins += 1;
+                    let LVL = sManager.getEntityByName("LVLText_0");
+                    let EXPUP = sManager.getEntityByName("EXPUPText_0");
+                    let EXP = sManager.getEntityByName("EXPText_0");
+                    let player = sManager.getEntityByTemplate("Player");
+
+                    EXP.textC.value += 100;
+                    if(EXP.textC.value >= EXPUP.textC.value){
+                        EXP.textC.value -= EXPUP.textC.value;
+                        LVL.textC.value++;
+                        let bestlvl = localStorage.getItem("BESTLVL") || 0;
+                        if(LVL.textC.value > bestlvl){
+                            localStorage.setItem("BESTLVL", LVL.textC.value);
+                        }
+                        setBestLVL();
+                        localStorage.setItem("BESTLVL", LVL.textC.value);
+                        player.playerC.maxhp += 10;
+                        player.playerC.hp = player.playerC.maxhp;
+                        this.updateHPBAR(player, sManager);
+                    }
+
                     sManager.getEntityByName("CoinsText_0").textC.value = event.eTrigger.parent.coinC.coins;
                 }
                 Entity.removeEntity(event.eTarget, sManager);
             } else {
-                let redHP = event.eTarget.getChildByTemplate("HPBarRed");
-                let greenHP = event.eTarget.getChildByTemplate("HPBarGreen");
-                greenHP.size.w = (event.eTarget.playerC.hp / event.eTarget.playerC.maxhp) * redHP.size.w;
+               this.updateHPBAR(event.eTarget, sManager);
             }
 
         }
         
+    }
+
+    updateHPBAR(entity, sManager){
+        if(entity.templateName == "Player"){
+            let HP = sManager.getEntityByName("HPText_0");
+            let MAXHP = sManager.getEntityByName("MAXHPText_0");
+            HP.textC.value = entity.playerC.hp;
+            MAXHP.textC.value = entity.playerC.maxhp;
+        }
+        let redHP = entity.getChildByTemplate("HPBarRed");
+        let greenHP = entity.getChildByTemplate("HPBarGreen");
+        greenHP.size.w = (entity.playerC.hp / entity.playerC.maxhp) * redHP.size.w;
     }
 
     closeGUI(event){
@@ -429,13 +467,33 @@ class AleEventManager{
     }
 
     createSlime(sManager, event){
+        let newEntity = {};
+        switch(event.eData.string1){
+            case "L1Slime": newEntity = sManager.createEntity("L1Slime", sManager.getEntityByTemplate("Game"), this); break;
+            case "L2Slime": newEntity = sManager.createEntity("L2Slime", sManager.getEntityByTemplate("Game"), this);break;
+            case "L3Slime": newEntity = sManager.createEntity("L3Slime", sManager.getEntityByTemplate("Game"), this);break;
+        }
         let min = event.eData.int1;
         let max = event.eData.int2;
-        let newEntity = sManager.createEntity("Slime", sManager.getEntityByTemplate("Game"), this);
+        
         newEntity.relPos.x += Math.floor(Math.random() * (max - min) + min);
+
+        let redHP = newEntity.getChildByTemplate("HPBarRed");
+        let greenHP = newEntity.getChildByTemplate("HPBarGreen");
+
+        redHP.pos.x = newEntity.pos.x;
+        redHP.pos.y = newEntity.pos.y;
+
+        greenHP.pos.x = newEntity.pos.x;
+        greenHP.pos.y = newEntity.pos.y;
     }
 
-    useSkill1(sManager, event){
+    setBestLVL(){
+        let BESTLVL = sManager.getEntityByName("BESTLVLText_0");
+        BESTLVL.textC.value = localStorage.getItem("BESTLVL") || 1;
+    }
+
+    eAttackSword(sManager, event){
         let newEntity = sManager.createEntity("DamageBox", event.eTrigger, this);
         newEntity.relPos.x = newEntity.parent.size.w;
 
@@ -446,37 +504,15 @@ class AleEventManager{
             newEntity.relPos.x = -200;
         }
 
-        newEntity.combatC.dmg = 30;
+        let SDMG = sManager.getEntityByName("SDMGText_0");
+        newEntity.combatC.dmg = SDMG.textC.value;
         newEntity.relPos.y = 0;
         newEntity.size.w = 200
         newEntity.size.h = 100;
        // newEntity.timedEventC.delay = 100;
     }
 
-    useSkill2(sManager, event){
-        let player = sManager.getEntityByTemplate("Player");
-        let newEntity = sManager.createEntity("DamageBox", player, this);
-            
-
-        if(player.playerC.lookingRight && player.playerC){
-            player.fizikaC.vel.x = 10;
-            player.fizikaC.vel.y = -30;
-        }
-
-        if(player.playerC.lookingLeft && player.playerC){
-            player.fizikaC.vel.x = -10;
-            player.fizikaC.vel.y = -30;
-        }
-        
-        newEntity.combatC.dmg = 50;
-        newEntity.relPos.x = -newEntity.parent.size.w;
-        newEntity.relPos.y = newEntity.parent.size.h/2;
-        newEntity.size.w = newEntity.parent.size.w * 3
-        newEntity.size.h = newEntity.parent.size.h;
-        //newEntity.timedEventC.delay = 1000;
-    }
-
-    useSkill3(sManager, event){
+    eAttackBow(sManager, event){
         let newEntity = sManager.createEntity("DamageBox", sManager.getEntityByTemplate("Player"), this);
 
         if(newEntity.parent.playerC.lookingRight){
@@ -488,10 +524,11 @@ class AleEventManager{
             newEntity.fizikaC.vel.x = -30;
         }
 
-        newEntity.combatC.dmg = 5;
-        newEntity.relPos.y = -400;
-        newEntity.size.w = 500
-        newEntity.size.h = 500;
+        let BDMG = sManager.getEntityByName("BDMGText_0");
+        newEntity.combatC.dmg = BDMG.textC.value;
+        newEntity.relPos.y = 50;
+        newEntity.size.w = 20
+        newEntity.size.h = 10;
         //newEntity.timedEventC.delay = 250;
         
     }
@@ -547,7 +584,26 @@ class AleEventManager{
     }
 
     eHeal(sManager, event){
+        let player = sManager.getEntityByTemplate("Player");
+        let coins = player.coinC.coins;
 
+        let HBPrice = sManager.getEntityByName("HBPrice_0");
+        let COINS = sManager.getEntityByName("CoinsText_0");
+        let HP = sManager.getEntityByName("HPText_0");
+        console.log("hehe3");
+        console.log(coins + " " + HBPrice.textC.value)
+        if(coins >= HBPrice.textC.value){
+            console.log("hehe3")
+            player.coinC.coins -= HBPrice.textC.value;
+            player.playerC.hp += 30;
+            if(player.playerC.hp > player.playerC.maxhp){
+                player.playerC.hp = player.playerC.maxhp;
+            }
+            HP.textC.value = player.playerC.hp;
+            COINS.textC.value = player.coinC.coins;
+
+            this.updateHPBAR(player, sManager);
+        }
     }
 }
 

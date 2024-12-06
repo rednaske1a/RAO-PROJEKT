@@ -11,7 +11,7 @@ const guiTemplatePack = [
     },{
         "name": "Info",
         "type": "GUI",
-        "children": ["CoinsText","EXPText","LVLText","HPText","SDMGText","BDMGText"],
+        "children": ["CoinsText","EXPText","LVLText","HPText","SDMGText","BDMGText","EXPUPText","MAXHPText","BESTLVLText"],
         
         "relPos": {"x": 10, "y": 10 },
         "size": { "w": 0, "h": 0 },
@@ -73,6 +73,29 @@ const guiTemplatePack = [
             }
         }]
     },{
+        "name": "EXPUPText",
+        "type": "GUI",
+        "children": [],
+        
+        "relPos": {"x": 200, "y": 50 },
+        "size": { "w": 200, "h": 50 },
+            
+        "components": [{
+            "name": "AleRenderC",
+            "data": {
+                "color": "royalblue",
+                "visible": true,
+                "zLayer": 300
+            }
+        },{
+            "name": "AleTextC",
+            "data": {
+                "text": "EXPUP: ",
+                "font_size": 50,
+                "value": 1000
+            }
+        }]
+    },{
         "name": "LVLText",
         "type": "GUI",
         "children": [],
@@ -96,6 +119,29 @@ const guiTemplatePack = [
             }
         }]
     },{
+        "name": "BESTLVLText",
+        "type": "GUI",
+        "children": [],
+        
+        "relPos": {"x": 200, "y": 100 },
+        "size": { "w": 200, "h": 50 },
+            
+        "components": [{
+            "name": "AleRenderC",
+            "data": {
+                "color": "black",
+                "visible": true,
+                "zLayer": 300
+            }
+        },{
+            "name": "AleTextC",
+            "data": {
+                "text": "BESTLVL: ",
+                "font_size": 50,
+                "value": 1
+            }
+        }]
+    },{
         "name": "HPText",
         "type": "GUI",
         "children": [],
@@ -114,6 +160,29 @@ const guiTemplatePack = [
             "name": "AleTextC",
             "data": {
                 "text": "HP: ",
+                "font_size": 50,
+                "value": 100
+            }
+        }]
+    },{
+        "name": "MAXHPText",
+        "type": "GUI",
+        "children": [],
+        
+        "relPos": {"x": 200, "y": 150 },
+        "size": { "w": 200, "h": 50 },
+            
+        "components": [{
+            "name": "AleRenderC",
+            "data": {
+                "color": "Lime",
+                "visible": true,
+                "zLayer": 300
+            }
+        },{
+            "name": "AleTextC",
+            "data": {
+                "text": "MAXHP: ",
                 "font_size": 50,
                 "value": 100
             }
@@ -146,7 +215,7 @@ const guiTemplatePack = [
         "type": "GUI",
         "children": [],
         
-        "relPos": {"x": 0, "y": 250 },
+        "relPos": {"x": 200, "y": 200 },
         "size": { "w": 200, "h": 50 },
             
         "components": [{
