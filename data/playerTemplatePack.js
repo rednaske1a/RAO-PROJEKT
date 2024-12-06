@@ -54,8 +54,8 @@ const playerTemplatePack = [
     "type": "Image",
     "children": [],
 
-    "relPos": {"x": 0, "y": 0 },
-    "size": { "w": 50, "h": 100 },
+    "relPos": {"x": 0, "y": -100 },
+    "size": { "w": 100, "h": 200 },
     
     "components": [{
         "name": "AleRenderC",
@@ -69,8 +69,31 @@ const playerTemplatePack = [
         "data": {
             "animations":{
                 "idle": {
-                    "frames": ["pIdle00.png", "pIdle01.png", "pIdle02.png", "pIdle03.png", "pIdle04.png", "pIdle05.png"],
-                    "duration": 200
+                    "spritesheet": "../anims/P1/Idle.png",
+                    "spritesheetSize": 32,
+                    "spritesheetRows": 1,
+                    "spritesheetCols": 1,
+                    "frames": [0,1,2,3],
+                    "duration": 250,
+                    "type": "LOOP"
+                },
+                "jump": {
+                    "spritesheet": "../anims/P1/Jump.png",
+                    "spritesheetSize": 32,
+                    "spritesheetRows": 1,
+                    "spritesheetCols": 1,
+                    "frames": [2,3,4,5,6,7],
+                    "duration": 100,
+                    "type": "ONCE"
+                },
+                "run": {
+                    "spritesheet": "../anims/P1/Run.png",
+                    "spritesheetSize": 32,
+                    "spritesheetRows": 1,
+                    "spritesheetCols": 1,
+                    "frames": [0,1,2,3,4,5],
+                    "duration": 500,
+                    "type": "LOOP"
                 }
             }
         }   

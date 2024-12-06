@@ -172,10 +172,10 @@ class AleEventManager{
     updateEventKey(sManager, entityName, eName, newTrigger){
         let entity = sManager.getEntityByName(entityName);
         localStorage.setItem(entityName+eName, newTrigger)
-        console.log(entity.name)
-        console.log(newTrigger)
+        //console.log(entity.name)
+        //console.log(newTrigger)
         entity.eventC.events.forEach(event =>{
-            console.log(event.data.eName + "==" + eName)
+            //console.log(event.data.eName + "==" + eName)
             if(event.data.eName == eName){
                 event.trigger = newTrigger;
             }
@@ -392,6 +392,11 @@ class AleEventManager{
 
     eJump(event) {
         event.eTarget.fizikaC.vel.y += -event.eTarget.playerC.jumpSpeed;
+        let tmp = event.eTarget.getChildByTemplate("PlayerImage");
+        if(tmp.templateName == "PlayerImage"){
+            tmp.animationC.forceAnimation("jump");
+            tmp.animationC.queueAnimation("idle");
+        }
     }
 
     eDuck(event) {
@@ -403,6 +408,13 @@ class AleEventManager{
         if(move.relPos != undefined){
             move.relPos.x = -100;
         }
+
+        let tmp = event.eTarget.getChildByTemplate("PlayerImage");
+        if(tmp.templateName == "PlayerImage"){
+            console.log(tmp)
+            tmp.animationC.queueAnimation("idle");
+        }
+
         event.eTarget.playerC.lookingLeft = true;
         event.eTarget.playerC.lookingRight= false;
         event.eTarget.fizikaC.vel.x = -event.eTarget.playerC.moveSpeed;
@@ -412,6 +424,10 @@ class AleEventManager{
         let move = event.eTarget.getChildByTemplate("MoveIndicator")
         if(move.relPos != undefined){
             move.relPos.x = 50;
+        }
+        let tmp = event.eTarget.getChildByTemplate("PlayerImage");
+        if(tmp.templateName == "PlayerImage"){
+            tmp.animationC.queueAnimation("idle");
         }
         event.eTarget.playerC.lookingLeft = false;
         event.eTarget.playerC.lookingRight= true;

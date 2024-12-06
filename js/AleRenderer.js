@@ -38,13 +38,13 @@ class AleRenderer {
             this.c.fillStyle = entity.renderC.color;
 
             let x, y;
-            if (entity.type === "GUI" && entity.renderC.color !== "NONE") {
+            if (entity.type === "GUI" && entity.renderC.color != "NONE") {
                 x = entity.pos.x + camera.cameraC.sPos.x;
                 y = entity.pos.y + camera.cameraC.sPos.y;
 
                 this.c.fillRect(x, y, entity.size.w, entity.size.h);
 
-            } else if (entity.renderC.color !== "NONE") {
+            } else if (entity.renderC.color != "NONE") {
                 x = (entity.pos.x + (-camera.pos.x)) * (camera.cameraC.sSize.w / camera.size.w) + camera.cameraC.sPos.x;
                 y = (entity.pos.y + (-camera.pos.y)) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y;
 
@@ -52,27 +52,25 @@ class AleRenderer {
             }
 
             if (entity.textC != null) {
+                x = entity.pos.x + camera.cameraC.sPos.x;
+                y = entity.pos.y + camera.cameraC.sPos.y;
                 this.c.fillStyle = 'white';
                 this.c.font = `${entity.textC.font_size}px serif`;
 
                 let newText = entity.textC.text + (entity.textC.value || '');
-                this.c.fillText(newText, x, y + entity.size.h);
+                this.c.fillText(newText, x, y + entity.size.h, entity.size.w);
                 this.c.font = "20px serif";
             }
 
             if (entity.animationC != null) {
-                let currFrame = entity.animationC.getCurrFrame();
-
-                if (currFrame) {
-                    let img = new Image();
-                    img.src = "/../anim/" + currFrame;
-
-                    img.onload = () => {
-                        this.c.drawImage(img, x, y, 
-                            entity.size.w * (camera.cameraC.sSize.w / camera.size.w), 
-                            entity.size.h * (camera.cameraC.sSize.h / camera.size.h));
-                    };
-                }
+                let frame = entity.animationC.getCurrentFrame();
+                    if (frame) {
+                        x = (entity.pos.x + (-camera.pos.x)) * (camera.cameraC.sSize.w / camera.size.w) + camera.cameraC.sPos.x;
+                        y = (entity.pos.y + (-camera.pos.y)) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y;
+                        let w = entity.size.w * (camera.cameraC.sSize.w / camera.size.w);
+                        let h = entity.size.h * (camera.cameraC.sSize.h / camera.size.h);
+                        this.c.drawImage(frame, x, y, w, h);
+                    }
             }
         });
 

@@ -36,7 +36,7 @@ class AleGame {
         let player2Img = player2.getChildByTemplate("PlayerImage");
 
         player2.relPos.x = 400;
-        player2Img.renderC.color = "yellow";
+        //player2Img.renderC.color = "yellow";
 
         let test2 = localStorage.getItem("Player_1Jump");
         if(test2 == null){
@@ -55,6 +55,8 @@ class AleGame {
             this.eManager.updateEventKey(this.sManager, 'Player_1', 'eAttackBow', localStorage.getItem("Player_1eAttackBow"))
         }
 
+
+        //player2Img.animationC.startAnimation("idle");
         this.sManager.createEntity("Gui", game, this.eManager);
     }
 

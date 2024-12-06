@@ -159,18 +159,95 @@ class AleHitC {
 }
 
 class AleAnimationC {
-    constructor({animations}) {
-        this.animations = Entity.copy(animations);
+    constructor({ animations }) {
+        this.animations = animations;
         this.currAnimation = null;
+        this.animationDirection = true;
         this.isPlaying = false;
         this.start = 0;
+        this.frames = {};
+        this.aQueue = [];
+
+        this.loadSpritesheets();
     }
 
-    startAnimation(aName) {
-        if (this.animations[aName]) {
-            this.currAnimation = aName;
-            this.isPlaying = true;
-            this.start = Date.now();
+    async loadSpritesheets() { //NEBOM NITI KOMENTIRAL
+        const loadPromises = Object.keys(this.animations).map(async (animationName) => {
+            const animationData = this.animations[animationName];
+            const image = new Image();
+            image.src = animationData.spritesheet;
+
+            // Wait for the image to load before cropping frames
+            await new Promise((resolve) => {
+                image.onload = () => {
+                    this.cropFrames(animationName, image, animationData);
+                    resolve();
+                };
+                image.onerror = () => console.error(`Failed to load spritesheet: ${animationData.spritesheet}`);
+            });
+        });
+
+        await Promise.all(loadPromises); // Wait for all images to load
+    }
+
+    cropFrames(aName, image, animation) {
+        let frameWidth = animation.spritesheetSize;
+        let frameHeight = animation.spritesheetSize;
+
+        this.frames[aName] = [];
+
+        for (let index of animation.frames) {
+            let row = Math.floor(index / animation.spritesheetCols);
+            let col = index % animation.spritesheetCols;
+
+            let croppedFrameCanvas = new OffscreenCanvas(frameWidth, frameHeight);
+            let c = croppedFrameCanvas.getContext('2d');
+            c.drawImage(image,
+                frameWidth * row,
+                frameHeight * col,
+                frameWidth,
+                frameHeight,
+                0,
+                0,
+                frameWidth,
+                frameHeight
+            );
+
+            this.frames[aName].push(croppedFrameCanvas);
+
+            //DEBUG
+            /*
+            croppedFrameCanvas.convertToBlob().then(blob => {
+                const url = URL.createObjectURL(blob);
+                const imgElement = document.createElement('img');
+                imgElement.src = url;
+                imgElement.style.width = `${frameWidth}px`;
+                imgElement.style.height = `${frameHeight}px`;
+                document.body.appendChild(imgElement); //
+            });*/
+
+        }
+        if (!this.currAnimation) {
+            this.queueAnimation(Object.keys(this.animations)[0]);
+        }
+    }
+
+    playAnimation(aName) {
+        this.aQueue.splice(0,1);
+        if(this.currAnimation != aName){
+            if (this.animations[aName]) {
+                this.currAnimation = aName;
+                this.isPlaying = true;
+                this.start = Date.now();
+            }
+        }
+        
+    }
+//HAHAHAHAHHAHH VSE TO SE MI JE NEKAKO USRALO IZ PRVE JE DELALO 
+    queueAnimation(aName){
+        if(this.aQueue[this.aQueue.length-1] != aName){ //PREPREČI PONAVLJANJE
+            console.log("queue anim " + aName)
+            this.aQueue.push(aName);
         }
     }
 
@@ -179,19 +256,46 @@ class AleAnimationC {
         this.currAnimation = null;
     }
 
-    getCurrFrame() {
+    skipAnimation(){
+        this.playAnimation(this.aQueue[0]);
+    }
+
+    forceAnimation(aName){
+        this.aQueue.unshift(aName);
+        this.playAnimation(aName);
+    }
+
+    getCurrentFrame() {
         if (!this.isPlaying || !this.currAnimation) {
+            if(this.aQueue.length != 0){
+                this.playAnimation(this.aQueue[0]);
+            }
             return null;
         }
-
+        
+        
         let elapsedTime = Date.now() - this.start;
         let animation = this.animations[this.currAnimation];
+        //console.log("e1: " + elapsedTime)
+        if(this.aQueue.length != 0 && animation.type == "ONCE" && elapsedTime > animation.duration * animation.frames.length){
+            console.log("e2: " + elapsedTime)
+            console.log("ENDONCE")
+            this.playAnimation(this.aQueue[0]);
+            elapsedTime = Date.now() - this.start;
+            animation = this.animations[this.currAnimation];
+        } else if(animation.type == "ONCE" && elapsedTime > animation.duration * animation.frames.length){
+            this.stopAnimation();
+        }
 
         let totalFrames = animation.frames.length;
-        let totalDuration = totalFrames * this.frameDuration;
 
-        let currentFrameIndex = Math.floor((elapsedTime % totalDuration) / this.frameDuration);
+        if (totalFrames === 0 || animation.duration <= 0) {
+            console.warn(`Invalid duration or frames for animation "${this.currAnimation}".`);
+            return null;
+        }
+        let totalTime = animation.duration * totalFrames;
+        let index = Math.floor((elapsedTime % totalTime) / animation.duration);
 
-        return animation.frames[currentFrameIndex];
+        return this.frames[this.currAnimation][index];
     }
 }
