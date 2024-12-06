@@ -8,81 +8,74 @@ class AleRenderer {
     }
 
     render(entityList) {
-
-        entityList.forEach(cEntity =>{
-            if(cEntity.cameraC != null //&& cEntity.active == 1
-
-            ){
+        entityList.forEach(cEntity => {
+            if (cEntity.cameraC != null) {
                 this.draw(cEntity, entityList);
             }
-        })
+        });
     }
 
-    draw(camera, entityList){
-        //console.log(camera)
+    draw(camera, entityList) {
         this.c.save();
         this.c.beginPath();
-        this.c.rect(camera.cameraC.sPos.x, camera.cameraC.sPos.y, camera.cameraC.sPos.x + camera.cameraC.sSize.w, camera.cameraC.sPos.y + camera.cameraC.sSize.h);
+        this.c.rect(camera.cameraC.sPos.x, camera.cameraC.sPos.y, camera.cameraC.sSize.w, camera.cameraC.sSize.h);
         
         this.c.clip();
 
         this.c.fillStyle = 'blue';
-        this.c.fillRect(camera.cameraC.sPos.x, camera.cameraC.sPos.y, camera.cameraC.sPos.x + camera.cameraC.sSize.w, camera.cameraC.sPos.y + camera.cameraC.sSize.h);
+        this.c.fillRect(camera.cameraC.sPos.x, camera.cameraC.sPos.y, camera.cameraC.sSize.w, camera.cameraC.sSize.h);
 
         let renderList = [];
-        entityList.forEach(entity =>{
-            if(entity.renderC != null){
+        entityList.forEach(entity => {
+            if (entity.renderC != null) {
                 renderList.push(entity);
             }
-        })
+        });
 
-        renderList.sort(function(a, b){return a.renderC.z_layer - b.renderC.z_layer});
+        renderList.sort(function(a, b) { return a.renderC.zLayer - b.renderC.zLayer; });
 
         renderList.forEach(entity => {
             this.c.fillStyle = entity.renderC.color;
 
-            if(entity.type == "GUI" && entity.renderC.color != "NONE") {
-                let x = entity.pos.x + camera.cameraC.sPos.x;
-                let y = entity.pos.y + camera.cameraC.sPos.y;
-                
-                this.c.fillRect(
-                    x,
-                    y,
-                    entity.size.w,
-                    entity.size.h,
-                );
+            let x, y;
+            if (entity.type === "GUI" && entity.renderC.color !== "NONE") {
+                x = entity.pos.x + camera.cameraC.sPos.x;
+                y = entity.pos.y + camera.cameraC.sPos.y;
 
-                //this.c.fillStyle = 'white';
-                //this.c.fillText(entity.name, entity.pos.x + camera.cameraC.sPos.x, entity.pos.y + camera.cameraC.sPos.y, entity.size.w)
-            
-            } else if (entity.renderC.color != "NONE") {
+                this.c.fillRect(x, y, entity.size.w, entity.size.h);
 
-                let x = (entity.pos.x + (-camera.pos.x )) * (camera.cameraC.sSize.w / camera.size.w) + camera.cameraC.sPos.x;
-                let y = (entity.pos.y + (-camera.pos.y )) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y;
-                this.c.fillRect(
-                    x, 
-                    y, 
-                    entity.size.w * (camera.cameraC.sSize.w / camera.size.w), 
-                    entity.size.h * (camera.cameraC.sSize.h / camera.size.h)
-                 );
+            } else if (entity.renderC.color !== "NONE") {
+                x = (entity.pos.x + (-camera.pos.x)) * (camera.cameraC.sSize.w / camera.size.w) + camera.cameraC.sPos.x;
+                y = (entity.pos.y + (-camera.pos.y)) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y;
 
-                 //this.c.fillStyle = 'white';
-                 //this.c.fillText(entity.name, x, y, entity.size.w)
+                this.c.fillRect(x, y, entity.size.w * (camera.cameraC.sSize.w / camera.size.w), entity.size.h * (camera.cameraC.sSize.h / camera.size.h));
             }
 
-            if(entity.textC != null){
+            if (entity.textC != null) {
                 this.c.fillStyle = 'white';
-                this.c.font = entity.textC.font_size + "px serif";
+                this.c.font = `${entity.textC.font_size}px serif`;
 
-                let newText = entity.textC.text  + entity.textC.value
-                if(entity.textC.value == null){
-                    newText = entity.textC.text
-                }
-                this.c.fillText(newText, entity.pos.x + camera.cameraC.sPos.x, entity.pos.y + camera.cameraC.sPos.y + entity.size.h, entity.size.w)
+                let newText = entity.textC.text + (entity.textC.value || '');
+                this.c.fillText(newText, x, y + entity.size.h);
                 this.c.font = "20px serif";
             }
-            
+
+            if (entity.animationC != null) {
+                let currFrame = entity.animationC.getCurrFrame();
+
+                if (currFrame) {
+                    let img = new Image();
+                    img.src = "/../anim/" + currFrame;
+
+                    img.onload = () => {
+                        this.c.drawImage(img, x, y, 
+                            entity.size.w * (camera.cameraC.sSize.w / camera.size.w), 
+                            entity.size.h * (camera.cameraC.sSize.h / camera.size.h));
+                    };
+                }
+            }
         });
+
         this.c.restore();
     }
 }

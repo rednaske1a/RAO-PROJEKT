@@ -25,6 +25,7 @@ class Entity {
         this.enemyAIC = null;
         this.textC = null;
         this.coinC = null;
+        this.animationC = null;
         
         //console.log(sManager);
         this.addComponents(components, sManager);
@@ -44,6 +45,7 @@ class Entity {
                 case "AleEnemyAIC": this.enemyAIC = new AleEnemyAIC(component.data); break;
                 case "AleTextC": this.textC = new AleTextC(component.data); break;
                 case "AleCoinC": this.coinC = new AleCoinC(component.data); break;
+                case "AleAnimationC": this.animationC = new AleAnimationC(component.data); break;
             }
         });
     }

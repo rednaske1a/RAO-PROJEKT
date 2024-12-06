@@ -60,10 +60,20 @@ const playerTemplatePack = [
     "components": [{
         "name": "AleRenderC",
         "data": {
-            "color": "Red",
+            "color": "NONE",
             "visible": true,
             "zLayer": 10
         }
+        },{
+        "name": "AleAnimationC",
+        "data": {
+            "animations":{
+                "idle": {
+                    "frames": ["pIdle00.png", "pIdle01.png", "pIdle02.png", "pIdle03.png", "pIdle04.png", "pIdle05.png"],
+                    "duration": 200
+                }
+            }
+        }   
         }]
     },{
         "name": "MoveIndicator",

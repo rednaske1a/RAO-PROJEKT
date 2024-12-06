@@ -157,3 +157,41 @@ class AleHitC {
        this.damage = data.damage;
     }
 }
+
+class AleAnimationC {
+    constructor({animations}) {
+        this.animations = Entity.copy(animations);
+        this.currAnimation = null;
+        this.isPlaying = false;
+        this.start = 0;
+    }
+
+    startAnimation(aName) {
+        if (this.animations[aName]) {
+            this.currAnimation = aName;
+            this.isPlaying = true;
+            this.start = Date.now();
+        }
+    }
+
+    stopAnimation() {
+        this.isPlaying = false;
+        this.currAnimation = null;
+    }
+
+    getCurrFrame() {
+        if (!this.isPlaying || !this.currAnimation) {
+            return null;
+        }
+
+        let elapsedTime = Date.now() - this.start;
+        let animation = this.animations[this.currAnimation];
+
+        let totalFrames = animation.frames.length;
+        let totalDuration = totalFrames * this.frameDuration;
+
+        let currentFrameIndex = Math.floor((elapsedTime % totalDuration) / this.frameDuration);
+
+        return animation.frames[currentFrameIndex];
+    }
+}
