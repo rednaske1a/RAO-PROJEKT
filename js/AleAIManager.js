@@ -11,14 +11,14 @@ class AleAIManager{
 
 
                 /* 10 IQ
+                */
                 let eventIndex = Math.floor(Math.random() * entity.enemyAIC.events.length);
                 events.push(entity.enemyAIC.events[eventIndex]);
 
-                */
 
                 // 50IQ
 
-                
+
 
 
 
