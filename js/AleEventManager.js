@@ -615,7 +615,6 @@ class AleEventManager{
             console.log("hehe2")
             COINS.textC.value -= UBBPrice.textC.value;
             BDMG.textC.value += 5;
-            COINS.textC.value = player.coinC.coins;
             UBBPrice.textC.value = Math.floor(UBBPrice.textC.value * 1.3);
         }
     }
