@@ -2,27 +2,36 @@ const guiTemplatePack = [
     {
     "name": "Gui",
     "type": "Node",
-    "children": ["Info","Shop"],
+    "children": ["CoinsText","Shop","LVLInfo","HPInfo"],
 
     "relPos": {"x": 0, "y": 0 },
     "size": { "w": 0, "h": 0 },
     
     "components": []
     },{
-        "name": "Info",
+        "name": "Shop",
         "type": "GUI",
-        "children": ["CoinsText","EXPText","LVLText","HPText","SDMGText","BDMGText","EXPUPText","MAXHPText","BESTLVLText"],
+        "children": ["SDMGText", "BDMGText", "UpgradeSwordButton", "UpgradeBowButton", "HealButton"],
         
-        "relPos": {"x": 10, "y": 10 },
+        "relPos": {"x": 10, "y": 410 },
         "size": { "w": 0, "h": 0 },
             
         "components": []
     },{
-        "name": "Shop",
+        "name": "LVLInfo",
         "type": "GUI",
-        "children": ["UpgradeSwordButton", "UpgradeBowButton", "HealButton"],
+        "children": ["EXPText","LVLText","EXPUPText","BESTLVLText"],
         
-        "relPos": {"x": 10, "y": 410 },
+        "relPos": {"x": 400, "y": 400 },
+        "size": { "w": 0, "h": 0 },
+            
+        "components": []
+    },{
+        "name": "HPInfo",
+        "type": "GUI",
+        "children": ["P1HPText","P2HPText","MAXHPText"],
+        
+        "relPos": {"x": 10, "y": 10 },
         "size": { "w": 0, "h": 0 },
             
         "components": []
@@ -30,14 +39,14 @@ const guiTemplatePack = [
         "name": "CoinsText",
         "type": "GUI",
         "children": [],
-        
-        "relPos": {"x": 0, "y": 0 },
+
+        "relPos": {"x": 10, "y": 70 },
         "size": { "w": 200, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "tomato",
+                "color": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -60,7 +69,7 @@ const guiTemplatePack = [
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "royalblue",
+                "color": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -78,19 +87,19 @@ const guiTemplatePack = [
         "children": [],
         
         "relPos": {"x": 200, "y": 50 },
-        "size": { "w": 200, "h": 50 },
+        "size": { "w": 400, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "royalblue",
+                "color": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
         },{
             "name": "AleTextC",
             "data": {
-                "text": "EXPUP: ",
+                "text": "EXP to LVLup: ",
                 "font_size": 50,
                 "value": 1000
             }
@@ -106,7 +115,7 @@ const guiTemplatePack = [
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "black",
+                "color": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -129,7 +138,7 @@ const guiTemplatePack = [
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "black",
+                "color": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -142,24 +151,47 @@ const guiTemplatePack = [
             }
         }]
     },{
-        "name": "HPText",
+        "name": "P1HPText",
         "type": "GUI",
         "children": [],
         
-        "relPos": {"x": 0, "y": 150 },
-        "size": { "w": 200, "h": 50 },
+        "relPos": {"x": 0, "y": 0 },
+        "size": { "w": 350, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "Lime",
+                "color": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
         },{
             "name": "AleTextC",
             "data": {
-                "text": "HP: ",
+                "text": "Player1 HP: ",
+                "font_size": 50,
+                "value": 100
+            }
+        }]
+    },{
+        "name": "P2HPText",
+        "type": "GUI",
+        "children": [],
+        
+        "relPos": {"x": 350, "y": 0 },
+        "size": { "w": 350, "h": 50 },
+            
+        "components": [{
+            "name": "AleRenderC",
+            "data": {
+                "color": "NONE",
+                "visible": true,
+                "zLayer": 300
+            }
+        },{
+            "name": "AleTextC",
+            "data": {
+                "text": "Player2 HP: ",
                 "font_size": 50,
                 "value": 100
             }
@@ -169,13 +201,13 @@ const guiTemplatePack = [
         "type": "GUI",
         "children": [],
         
-        "relPos": {"x": 200, "y": 150 },
-        "size": { "w": 200, "h": 50 },
+        "relPos": {"x": 700, "y": 0 },
+        "size": { "w": 350, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "Lime",
+                "color": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -192,13 +224,13 @@ const guiTemplatePack = [
         "type": "GUI",
         "children": [],
         
-        "relPos": {"x": 0, "y": 200 },
+        "relPos": {"x": 0, "y": -110 },
         "size": { "w": 200, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "Lime",
+                "color": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -215,13 +247,13 @@ const guiTemplatePack = [
         "type": "GUI",
         "children": [],
         
-        "relPos": {"x": 200, "y": 200 },
+        "relPos": {"x": 0, "y": -60 },
         "size": { "w": 200, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "Lime",
+                "color": "NONE",
                 "visible": true,
                 "zLayer": 300
             }

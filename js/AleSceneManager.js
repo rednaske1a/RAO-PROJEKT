@@ -69,7 +69,7 @@ class AleSceneManager {
 
         eManager.bindEvents(entity, this);
 
-        console.log("Finish Creating " + templateName);
+        //console.log("Finish Creating " + templateName);
         //console.log(entity);
         //this.createTree();
         return entity;
@@ -153,6 +153,20 @@ class AleSceneManager {
             }
         })
         return entity;
+    }
+
+    getEntitiesByTemplate(templateName){
+        //console.log("Searching for: " + templateName)
+        let entities = [];
+        this.eStorage.forEach(fEntity =>{
+            //console.log("Search " + fEntity.templateName)
+            if(fEntity.templateName == templateName){
+                entities.push(fEntity);
+                //console.log("Found");
+                //console.log(entity);
+            }
+        })
+        return entities;
     }
 
     getEntityByName(entityName){

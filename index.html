@@ -14,6 +14,31 @@
 			<div id="tree" style="font-size: 13px;">
 				
 			</div>
+			<div id="keybinds" style="display: flex;">
+				<div id="keybindsP1">
+					Player 1
+					<div>Jump: <input type="text" value="w" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_0', 'Jump', this.value)"></div>
+					<div>Left: <input type="text" value="a" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_0', 'GoLeft', this.value)"></div>
+					<div>Duck: <input type="text" value="s" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_0', 'Duck', this.value)"></div>
+					<div>Right: <input type="text" value="d" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_0', 'GoRight', this.value)"></div>
+					<div>Sword: <input type="text" value="r" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_0', 'eAttackSword', this.value)"></div>
+					<div>Bow: <input type="text" value="f" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_0', 'eAttackBow', this.value)"></div>
+				</div>
+				
+				<div id="keybindsP2">
+					Player 2
+					<div>Jump: <input type="text" value="i" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_1', 'Jump', this.value)"></div>
+					<div>Left: <input type="text" value="j" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_1', 'GoLeft', this.value)"></div>
+					<div>Duck: <input type="text" value="k" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_1', 'Duck', this.value)"></div>
+					<div>Right: <input type="text" value="l" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_1', 'GoRight', this.value)"></div>
+					<div>Sword: <input type="text" value="o" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_1', 'eAttackSword', this.value)"></div>
+					<div>Bow: <input type="text" value="p" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_1', 'eAttackBow', this.value)"></div>
+				</div>
+				
+			</div>
+			
+			
+
 		</div>
 		
 		

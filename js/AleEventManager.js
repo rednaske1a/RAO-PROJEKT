@@ -169,6 +169,19 @@ class AleEventManager{
         }
     }
 
+    updateEventKey(sManager, entityName, eName, newTrigger){
+        let entity = sManager.getEntityByName(entityName);
+        localStorage.setItem(entityName+eName, newTrigger)
+        console.log(entity.name)
+        console.log(newTrigger)
+        entity.eventC.events.forEach(event =>{
+            console.log(event.data.eName + "==" + eName)
+            if(event.data.eName == eName){
+                event.trigger = newTrigger;
+            }
+        })
+    }
+
     updateMouseXY(event){
         this.screenMouseXY.x = event.clientX - this.canvas.offsetLeft;
         this.screenMouseXY.y = event.clientY - this.canvas.offsetTop;
@@ -346,7 +359,7 @@ class AleEventManager{
                 case "KillTarget": Entity.removeEntity(event.eTarget, sManager); break;
                 case "DealDamage": this.eDealDamage(event, sManager); break;
                 case "eSlimeAttack": this.eSlimeAttack(sManager, event); break;
-
+                case "eSetBestLVL": this.setBestLVL(sManager); break;
                 case "eUpgradeSword": this.eUpgradeSword(sManager, event); break;
                 case "eUpgradeBow": this.eUpgradeBow(sManager, event); break;
                 case "eHeal": this.eHeal(sManager, event); break;
@@ -413,26 +426,26 @@ class AleEventManager{
             }
 
             if(event.eTarget.playerC.hp <= 0){
-                if(event.eTarget.templateName == "Slime"){
+                if(event.eTarget.templateName.includes("Slime")){
+                    console.log("kill")
                     event.eTrigger.parent.coinC.coins += 1;
                     let LVL = sManager.getEntityByName("LVLText_0");
                     let EXPUP = sManager.getEntityByName("EXPUPText_0");
                     let EXP = sManager.getEntityByName("EXPText_0");
-                    let player = sManager.getEntityByTemplate("Player");
+                   let player = event.eTrigger.parent;
 
                     EXP.textC.value += 100;
                     if(EXP.textC.value >= EXPUP.textC.value){
                         EXP.textC.value -= EXPUP.textC.value;
                         LVL.textC.value++;
-                        let bestlvl = localStorage.getItem("BESTLVL") || 0;
-                        if(LVL.textC.value > bestlvl){
-                            localStorage.setItem("BESTLVL", LVL.textC.value);
-                        }
-                        setBestLVL();
+                        this.setBestLVL(sManager);
                         localStorage.setItem("BESTLVL", LVL.textC.value);
-                        player.playerC.maxhp += 10;
-                        player.playerC.hp = player.playerC.maxhp;
-                        this.updateHPBAR(player, sManager);
+                        sManager.getEntitiesByTemplate("Player").forEach(player => {
+                            player.playerC.maxhp += 10;
+                            player.playerC.hp = player.playerC.maxhp;
+                            this.updateHPBAR(player, sManager);
+                        });
+                        
                     }
 
                     sManager.getEntityByName("CoinsText_0").textC.value = event.eTrigger.parent.coinC.coins;
@@ -447,11 +460,18 @@ class AleEventManager{
     }
 
     updateHPBAR(entity, sManager){
+        let MAXHP = sManager.getEntityByName("MAXHPText_0");
+        
+
         if(entity.templateName == "Player"){
-            let HP = sManager.getEntityByName("HPText_0");
-            let MAXHP = sManager.getEntityByName("MAXHPText_0");
-            HP.textC.value = entity.playerC.hp;
             MAXHP.textC.value = entity.playerC.maxhp;
+            if(entity.name == "Player_0"){
+                let HP1 = sManager.getEntityByName("P1HPText_0");
+                HP1.textC.value = entity.playerC.hp;
+            } else if(entity.name == "Player_1"){
+                let HP2 = sManager.getEntityByName("P2HPText_0");
+                HP2.textC.value = entity.playerC.hp;
+            }
         }
         let redHP = entity.getChildByTemplate("HPBarRed");
         let greenHP = entity.getChildByTemplate("HPBarGreen");
@@ -488,10 +508,28 @@ class AleEventManager{
         greenHP.pos.y = newEntity.pos.y;
     }
 
-    setBestLVL(){
+    setBestLVL(sManager) {
+        let LVL = sManager.getEntityByName("LVLText_0");
+        let bestlvl = localStorage.getItem("BESTLVL");
+    
+        if (bestlvl == null) {
+            bestlvl = 1;
+            console.log("Set to 1")
+            localStorage.setItem("BESTLVL", bestlvl);
+        } else {
+            bestlvl = Number(bestlvl);
+        }
+
+        if (Number(LVL.textC.value) > bestlvl) {
+            console.log("Set to " +  LVL.textC.value)
+            localStorage.setItem("BESTLVL", LVL.textC.value);
+            bestlvl = Number(LVL.textC.value);
+        }
+    
         let BESTLVL = sManager.getEntityByName("BESTLVLText_0");
-        BESTLVL.textC.value = localStorage.getItem("BESTLVL") || 1;
+        BESTLVL.textC.value = String(bestlvl);
     }
+    
 
     eAttackSword(sManager, event){
         let newEntity = sManager.createEntity("DamageBox", event.eTrigger, this);
@@ -513,7 +551,7 @@ class AleEventManager{
     }
 
     eAttackBow(sManager, event){
-        let newEntity = sManager.createEntity("DamageBox", sManager.getEntityByTemplate("Player"), this);
+        let newEntity = sManager.createEntity("DamageBox", event.eTrigger, this);
 
         if(newEntity.parent.playerC.lookingRight){
             newEntity.relPos.x = newEntity.parent.size.w;
@@ -548,35 +586,34 @@ class AleEventManager{
     }
 
     eUpgradeSword(sManager, event){
-        let player = sManager.getEntityByTemplate("Player");
-        let coins = player.coinC.coins;
+            let USBPrice = sManager.getEntityByName("USBPrice_0");
+            let COINS = sManager.getEntityByName("CoinsText_0");
+            let SDMG = sManager.getEntityByName("SDMGText_0");
 
-        let USBPrice = sManager.getEntityByName("USBPrice_0");
-        let COINS = sManager.getEntityByName("CoinsText_0");
-        let SDMG = sManager.getEntityByName("SDMGText_0");
-        console.log("hehe")
-        console.log(coins + " " + USBPrice.textC.value)
-        if(coins >= USBPrice.textC.value){
+            let coins = COINS.textC.value;
             console.log("hehe")
-            player.coinC.coins -= USBPrice.textC.value;
-            SDMG.textC.value += 5;
-            COINS.textC.value = player.coinC.coins;
-            USBPrice.textC.value = Math.floor(USBPrice.textC.value * 1.3);
-        }
+            console.log(coins + " " + USBPrice.textC.value)
+            if(coins >= USBPrice.textC.value){
+                console.log("hehe")
+                COINS.textC.value -= USBPrice.textC.value;
+                SDMG.textC.value += 5;
+                USBPrice.textC.value = Math.floor(USBPrice.textC.value * 1.3);
+            }
     }
 
     eUpgradeBow(sManager, event){
         let player = sManager.getEntityByTemplate("Player");
-        let coins = player.coinC.coins;
 
         let UBBPrice = sManager.getEntityByName("UBBPrice_0");
         let COINS = sManager.getEntityByName("CoinsText_0");
         let BDMG = sManager.getEntityByName("BDMGText_0");
+
+        let coins = COINS.textC.value;
         console.log("hehe2")
         console.log(coins + " " + UBBPrice.textC.value)
         if(coins >= UBBPrice.textC.value){
             console.log("hehe2")
-            player.coinC.coins -= UBBPrice.textC.value;
+            COINS.textC.value -= UBBPrice.textC.value;
             BDMG.textC.value += 5;
             COINS.textC.value = player.coinC.coins;
             UBBPrice.textC.value = Math.floor(UBBPrice.textC.value * 1.3);
@@ -584,25 +621,25 @@ class AleEventManager{
     }
 
     eHeal(sManager, event){
-        let player = sManager.getEntityByTemplate("Player");
-        let coins = player.coinC.coins;
+        let players = sManager.getEntitiesByTemplate("Player");
 
         let HBPrice = sManager.getEntityByName("HBPrice_0");
         let COINS = sManager.getEntityByName("CoinsText_0");
-        let HP = sManager.getEntityByName("HPText_0");
+        let coins = COINS.textC.value;
+
         console.log("hehe3");
         console.log(coins + " " + HBPrice.textC.value)
         if(coins >= HBPrice.textC.value){
             console.log("hehe3")
-            player.coinC.coins -= HBPrice.textC.value;
-            player.playerC.hp += 30;
-            if(player.playerC.hp > player.playerC.maxhp){
-                player.playerC.hp = player.playerC.maxhp;
-            }
-            HP.textC.value = player.playerC.hp;
-            COINS.textC.value = player.coinC.coins;
-
-            this.updateHPBAR(player, sManager);
+            COINS.textC.value -= HBPrice.textC.value;
+            players.forEach(player =>{
+                player.playerC.hp += 30;
+                if(player.playerC.hp > player.playerC.maxhp){
+                    player.playerC.hp = player.playerC.maxhp;
+                }
+                this.updateHPBAR(player, sManager);
+            })
+            
         }
     }
 }

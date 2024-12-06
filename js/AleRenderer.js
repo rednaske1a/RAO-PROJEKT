@@ -41,9 +41,10 @@ class AleRenderer {
         renderList.forEach(entity => {
             this.c.fillStyle = entity.renderC.color;
 
-            if(entity.type == "GUI") {
+            if(entity.type == "GUI" && entity.renderC.color != "NONE") {
                 let x = entity.pos.x + camera.cameraC.sPos.x;
                 let y = entity.pos.y + camera.cameraC.sPos.y;
+                
                 this.c.fillRect(
                     x,
                     y,
@@ -51,10 +52,10 @@ class AleRenderer {
                     entity.size.h,
                 );
 
-                this.c.fillStyle = 'white';
-                this.c.fillText(entity.name, entity.pos.x + camera.cameraC.sPos.x, entity.pos.y + camera.cameraC.sPos.y, entity.size.w)
+                //this.c.fillStyle = 'white';
+                //this.c.fillText(entity.name, entity.pos.x + camera.cameraC.sPos.x, entity.pos.y + camera.cameraC.sPos.y, entity.size.w)
             
-            } else {
+            } else if (entity.renderC.color != "NONE") {
 
                 let x = (entity.pos.x + (-camera.pos.x )) * (camera.cameraC.sSize.w / camera.size.w) + camera.cameraC.sPos.x;
                 let y = (entity.pos.y + (-camera.pos.y )) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y;
@@ -65,8 +66,8 @@ class AleRenderer {
                     entity.size.h * (camera.cameraC.sSize.h / camera.size.h)
                  );
 
-                 this.c.fillStyle = 'white';
-                 this.c.fillText(entity.name, x, y, entity.size.w)
+                 //this.c.fillStyle = 'white';
+                 //this.c.fillText(entity.name, x, y, entity.size.w)
             }
 
             if(entity.textC != null){
