@@ -15,14 +15,14 @@ const combatTemplatePack = [{
                 {"type":"TIME","trigger":"TIME","context":"TIMEOUT","eName":"KillTrigger","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 1000, "triggered": false}}
                 ]
             }
-        },/*{
+        },{
         "name": "AleRenderC",
         "data": {
             "color": "purple",
             "visible": true,
             "zLayer": 10
         }
-    },*/{
+    },{
     "name": "AleFizikaC",
     "data": {
         "vel" : {"x": 0, "y": 0},
