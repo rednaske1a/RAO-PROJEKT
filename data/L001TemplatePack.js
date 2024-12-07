@@ -53,7 +53,6 @@ const L001TemplatePack = [
             }]
     
         },{
-
     "name": "L001WallLeftImg",
     "type": "Image",
     "children": [],
@@ -67,7 +66,7 @@ const L001TemplatePack = [
             "color": "NONE",
             "image": "../img/WallLeft.png",
             "visible": true,
-            "zLayer": 200
+            "zLayer": 99
         }
         }]
 

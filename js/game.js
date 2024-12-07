@@ -14,6 +14,13 @@ templatePacks.push(combatTemplatePack);
 templatePacks.push(BGTemplatePack);
 templatePacks.push(GroudTemplatePack);
 
+
+let audio = new Audio("/assets/menuTheme.mp3");
+
+if(audio.isPaused)
+    audio.play()
+
+
 console.log(templatePacks);
 game.init(templatePacks);
 game.run();
