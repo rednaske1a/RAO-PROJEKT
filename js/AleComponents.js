@@ -200,8 +200,10 @@ class AleParalaxC{
     move(){
         let moveX = this.parentStartPos.x + (this.pTarget.pos.x - this.pTargetStartPos.x) * this.pStrength / 100;
         let moveY = this.parentStartPos.y + (this.pTarget.pos.y - this.pTargetStartPos.y) * this.pStrength / 100;
-        console.log(moveX);
+        console.log("X" + moveX);
+        console.log("Y" + moveY);
         this.parent.relPos.x = moveX;
+        this.parent.relPos.y = moveY;
 
     }
 }

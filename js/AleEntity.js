@@ -29,7 +29,9 @@ class Entity {
         this.paralaxC = null;
         
         //console.log(sManager);
+        this.updatePos();
         this.addComponents(components, sManager);
+
     }
 
     addComponents(components, sManager){

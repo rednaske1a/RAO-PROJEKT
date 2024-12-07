@@ -65,7 +65,7 @@ const playerTemplatePack = [
             "color": "NONE",
             "image": "NONE",
             "visible": true,
-            "zLayer": 10
+            "zLayer": 300
         }
         },{
         "name": "AleAnimationC",
@@ -124,7 +124,7 @@ const playerTemplatePack = [
     "type": "Node",
     "children": [],
 
-    "relPos": {"x": 0, "y": 0 },
+    "relPos": {"x": -1024, "y": -576 },
     "size": { "w": 2048, "h": 1152 },
         
     "components": [{
