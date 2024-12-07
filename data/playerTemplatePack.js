@@ -2,7 +2,7 @@ const playerTemplatePack = [
     {
     "name": "Player",
     "type": "Body",
-    "children": ["PlayerImage","Camera", "HPBarRed", "HPBarGreen","MoveIndicator"],
+    "children": ["PlayerImage","Camera", "HPBarRed", "HPBarGreen"],
 
     "relPos": {"x": 200, "y": -100 },
     "size": { "w": 50, "h": 100 },
@@ -31,6 +31,8 @@ const playerTemplatePack = [
                 {"type":"KEYBOARD","trigger":"a","context":"DOWN","eName":"GoLeft","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
                 {"type":"KEYBOARD","trigger":"s","context":"DOWN","eName":"Duck","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
                 {"type":"KEYBOARD","trigger":"d","context":"DOWN","eName":"GoRight","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                {"type":"KEYBOARD","trigger":"a","context":"RELEASED","eName":"eForceAnimation","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData":{"string1":"idle", "string2": "PlayerImage"}},
+                {"type":"KEYBOARD","trigger":"d","context":"RELEASED","eName":"eForceAnimation","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData":{"string1":"idle", "string2": "PlayerImage"}},
                 {"type":"KEYBOARD","trigger":"r","context":"PRESSED","eName":"eAttackBow","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
                 {"type":"KEYBOARD","trigger":"f","context":"PRESSED","eName":"eAttackSword","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
                 {"type":"KEYBOARD","trigger":"1","context":"PRESSED","eName":"UpgradeSkill1","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
@@ -61,6 +63,7 @@ const playerTemplatePack = [
         "name": "AleRenderC",
         "data": {
             "color": "NONE",
+            "image": "NONE",
             "visible": true,
             "zLayer": 10
         }
@@ -92,8 +95,8 @@ const playerTemplatePack = [
                     "spritesheetRows": 1,
                     "spritesheetCols": 1,
                     "frames": [0,1,2,3,4,5],
-                    "duration": 500,
-                    "type": "LOOP"
+                    "duration": 100,
+                    "type": "ONCE"
                 }
             }
         }   
@@ -110,6 +113,7 @@ const playerTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "Lime",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 100
             }

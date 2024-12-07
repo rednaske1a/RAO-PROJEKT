@@ -29,6 +29,7 @@ const gameTemplatePack = [{
             "name": "AleRenderC",
             "data": {
                 "color": "red",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 10
             }
@@ -37,7 +38,7 @@ const gameTemplatePack = [{
             "data": {
                 "follow": "PARENT",
                 "followStrength": 5,
-                "followOffset": {"x": -25, "y": -70 }
+                "followOffset": {"x": 0, "y": -90 }
                 }
             }]
     },{
@@ -51,6 +52,7 @@ const gameTemplatePack = [{
             "name": "AleRenderC",
             "data": {
                 "color": "lime",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 50
             }
@@ -59,7 +61,7 @@ const gameTemplatePack = [{
             "data": {
                 "follow": "PARENT",
                 "followStrength": 5,
-                "followOffset": {"x": -25, "y": -70 }
+                "followOffset": {"x": 0, "y": -90 }
                 }
             }]
         }

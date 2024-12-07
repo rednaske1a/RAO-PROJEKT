@@ -49,6 +49,13 @@ class AleRenderer {
                 y = (entity.pos.y + (-camera.pos.y)) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y;
 
                 this.c.fillRect(x, y, entity.size.w * (camera.cameraC.sSize.w / camera.size.w), entity.size.h * (camera.cameraC.sSize.h / camera.size.h));
+                
+            }
+
+            if(entity.renderC.imageurl != "NONE"){
+                x = (entity.pos.x + (-camera.pos.x)) * (camera.cameraC.sSize.w / camera.size.w) + camera.cameraC.sPos.x;
+                y = (entity.pos.y + (-camera.pos.y)) * (camera.cameraC.sSize.h / camera.size.h) + camera.cameraC.sPos.y;
+                this.c.drawImage(entity.renderC.image, x, y, entity.size.w * (camera.cameraC.sSize.w / camera.size.w), entity.size.h * (camera.cameraC.sSize.h / camera.size.h));
             }
 
             if (entity.textC != null) {

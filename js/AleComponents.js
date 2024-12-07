@@ -35,10 +35,32 @@ class AleEventC {
 }
 
 class AleRenderC {
-    constructor({color, visible, zLayer}){
+    constructor({color, image, visible, zLayer}){
         this.color = color;
+        this.imageurl = image;
+        this.image = null;
         this.visible = visible;
         this.zLayer = zLayer;
+
+        if(this.imageurl != "NONE"){
+            this.setImage();
+        }
+    }
+
+    setImage() {
+        return new Promise((resolve, reject) => {
+            this.image = new Image();
+            this.image.onload = () => {
+                resolve(this.image);
+            };
+
+            this.image.onerror = (error) => {
+                console.error("Error loading image:", error);
+                reject(new Error("Failed to load image at " + this.imageurl));
+            };
+
+            this.image.src = this.imageurl;
+        });
     }
 }
 
@@ -65,9 +87,9 @@ class AleFollowC {
         } else {
             this.follow = sManager.getEntityByTemplate(follow);
         }
-        console.log("FOLLWO");
-        console.log(follow);
-        console.log(this.follow);
+        //console.log("FOLLWO");
+        //console.log(follow);
+        //console.log(this.follow);
         
         this.followStrength = followStrength;
         this.followOffset = followOffset;
@@ -166,6 +188,7 @@ class AleAnimationC {
         this.isPlaying = false;
         this.start = 0;
         this.frames = {};
+        this.framesR = {};
         this.aQueue = [];
 
         this.loadSpritesheets();
@@ -195,8 +218,10 @@ class AleAnimationC {
         let frameHeight = animation.spritesheetSize;
 
         this.frames[aName] = [];
+        this.framesR[aName] = [];
 
         for (let index of animation.frames) {
+            console.log(index)
             let row = Math.floor(index / animation.spritesheetCols);
             let col = index % animation.spritesheetCols;
 
@@ -213,7 +238,28 @@ class AleAnimationC {
                 frameHeight
             );
 
+
+            let croppedFrameCanvas2 = new OffscreenCanvas(frameWidth, frameHeight);
+            let c2 = croppedFrameCanvas2.getContext('2d');
+            c2.save();
+
+            c2.translate(frameWidth, 0);
+            c2.scale(-1, 1);
+            c2.drawImage(image,
+                frameWidth * row,
+                frameHeight * col,
+                frameWidth,
+                frameHeight,
+                0,
+                0,
+                frameWidth,
+                frameHeight
+            );
+
+            c2.restore();
+
             this.frames[aName].push(croppedFrameCanvas);
+            this.framesR[aName].push(croppedFrameCanvas2);
 
             //DEBUG
             /*
@@ -296,6 +342,12 @@ class AleAnimationC {
         let totalTime = animation.duration * totalFrames;
         let index = Math.floor((elapsedTime % totalTime) / animation.duration);
 
-        return this.frames[this.currAnimation][index];
+        console.log(this.animationDirection)
+        if(this.animationDirection == true){
+            return this.frames[this.currAnimation][index];
+        } else {
+            return this.framesR[this.currAnimation][index];
+        }
+        
     }
 }

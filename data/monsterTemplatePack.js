@@ -2,7 +2,7 @@ const monsterTemplatePack = [
     {
     "name": "L1Slime",
     "type": "Body",
-    "children": ["L1SlimeImage", "HPBarRed", "HPBarGreen","MoveIndicator"],
+    "children": ["L1SlimeImage", "HPBarRed", "HPBarGreen"],
 
     "relPos": {"x": 1000, "y": -100 },
     "size": { "w": 100, "h": 100 },
@@ -44,17 +44,51 @@ const monsterTemplatePack = [
     "type": "Image",
     "children": [],
 
-    "relPos": {"x": 0, "y": 0 },
-    "size": { "w": 100, "h": 100 },
+    "relPos": {"x": -100, "y": -100 },
+    "size": { "w": 200, "h": 200 },
     
     "components": [{
         "name": "AleRenderC",
         "data": {
-            "color": "#26C6DA",
+            "color": "NONE",
+            "image": "NONE",
             "visible": true,
             "zLayer": 5
         }
-        }]
+        },{
+            "name": "AleAnimationC",
+            "data": {
+                "animations":{
+                    "idle": {
+                        "spritesheet": "../anims/Slime/Slime.png",
+                        "spritesheetSize": 24,
+                        "spritesheetRows": 3,
+                        "spritesheetCols": 3,
+                        "frames": [7,8],
+                        "duration": 500,
+                        "type": "LOOP"
+                    },
+                    "jump": {
+                        "spritesheet": "../anims/Slime/Slime.png",
+                        "spritesheetSize": 24,
+                        "spritesheetRows": 3,
+                        "spritesheetCols": 3,
+                        "frames": [7,8,9,8,7],
+                        "duration": 200,
+                        "type": "ONCE"
+                    },
+                    "run": {
+                        "spritesheet": "../anims/Slime/Slime.png",
+                        "spritesheetSize": 24,
+                        "spritesheetRows": 3,
+                        "spritesheetCols": 3,
+                        "frames": [4,5,6,5],
+                        "duration": 100,
+                        "type": "ONCE"
+                    }
+                }
+            }   
+            }]
     },{
         "name": "L2Slime",
         "type": "Body",
@@ -107,6 +141,7 @@ const monsterTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "#1a4902",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 5
             }
@@ -163,6 +198,7 @@ const monsterTemplatePack = [
                 "name": "AleRenderC",
                 "data": {
                     "color": "#d64022",
+                    "image": "NONE",
                     "visible": true,
                     "zLayer": 5
                 }

@@ -169,18 +169,20 @@ class AleEventManager{
         }
     }
 
-    updateEventKey(sManager, entityName, eName, newTrigger){
-        let entity = sManager.getEntityByName(entityName);
-        localStorage.setItem(entityName+eName, newTrigger)
-        //console.log(entity.name)
-        //console.log(newTrigger)
-        entity.eventC.events.forEach(event =>{
-            //console.log(event.data.eName + "==" + eName)
-            if(event.data.eName == eName){
+    updateEventKey(sManager, eName, prevTrigger, newTrigger, templateTrigger) {
+        console.log("update from: " + prevTrigger + " --> " + newTrigger);
+        let entity = sManager.getEntityByName(eName);
+        
+        localStorage.setItem(eName+templateTrigger, newTrigger);
+        console.log(eName+prevTrigger)
+        console.log(localStorage.getItem(eName+prevTrigger));
+        entity.eventC.events.forEach(event => {
+            if (event.trigger == prevTrigger) {
                 event.trigger = newTrigger;
             }
-        })
+        });
     }
+    
 
     updateMouseXY(event){
         this.screenMouseXY.x = event.clientX - this.canvas.offsetLeft;
@@ -363,8 +365,13 @@ class AleEventManager{
                 case "eUpgradeSword": this.eUpgradeSword(sManager, event); break;
                 case "eUpgradeBow": this.eUpgradeBow(sManager, event); break;
                 case "eHeal": this.eHeal(sManager, event); break;
+                case "eForceAnimation": this.eForceAnimation(sManager,event); break;
             }
         });
+    }
+
+    eForceAnimation(sManager, event){
+        event.eTrigger.getChildByTemplate(event.eData.string2).animationC.forceAnimation(event.eData.string1);
     }
 
     AABBPoint(target, point){
@@ -412,7 +419,9 @@ class AleEventManager{
         let tmp = event.eTarget.getChildByTemplate("PlayerImage");
         if(tmp.templateName == "PlayerImage"){
             console.log(tmp)
+            tmp.animationC.forceAnimation("run");
             tmp.animationC.queueAnimation("idle");
+            tmp.animationC.animationDirection = false;
         }
 
         event.eTarget.playerC.lookingLeft = true;
@@ -427,7 +436,9 @@ class AleEventManager{
         }
         let tmp = event.eTarget.getChildByTemplate("PlayerImage");
         if(tmp.templateName == "PlayerImage"){
+            tmp.animationC.forceAnimation("run");
             tmp.animationC.queueAnimation("idle");
+            tmp.animationC.animationDirection = true;
         }
         event.eTarget.playerC.lookingLeft = false;
         event.eTarget.playerC.lookingRight= true;

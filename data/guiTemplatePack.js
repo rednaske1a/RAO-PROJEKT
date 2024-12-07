@@ -47,6 +47,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -70,6 +71,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -93,6 +95,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -116,6 +119,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -139,6 +143,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -162,6 +167,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -185,6 +191,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -208,6 +215,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -231,6 +239,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -254,6 +263,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -277,6 +287,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "tomato",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -307,6 +318,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "tomato",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -330,6 +342,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "tomato",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -360,6 +373,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "tomato",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -383,6 +397,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "tomato",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }
@@ -413,6 +428,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "tomato",
+                "image": "NONE",
                 "visible": true,
                 "zLayer": 300
             }

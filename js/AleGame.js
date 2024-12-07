@@ -15,21 +15,23 @@ class AleGame {
 
         let player1 = this.sManager.createEntity("Player", game, this.eManager);
 
-        let test = localStorage.getItem("Player_0Jump");
+        let test = localStorage.getItem("Player_0w");
         if(test == null){
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'Jump', "w")
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'GoLeft', "a")
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'Duck', "s")
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'GoRight', "d")
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'eAttackSword', "f")
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'eAttackBow', "r")
+            console.log("set normal0")
+            this.eManager.updateEventKey(this.sManager, 'Player_0', "w", "w", "w")
+            this.eManager.updateEventKey(this.sManager, 'Player_0', "a", "a", "a")
+            this.eManager.updateEventKey(this.sManager, 'Player_0', "s", "s", "s")
+            this.eManager.updateEventKey(this.sManager, 'Player_0', "d", "d", "d")
+            this.eManager.updateEventKey(this.sManager, 'Player_0', "f", "f", "f")
+            this.eManager.updateEventKey(this.sManager, 'Player_0', "r", "r", "r")
         } else {
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'Jump', localStorage.getItem("Player_0Jump"))
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'GoLeft', localStorage.getItem("Player_0GoLeft"))
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'Duck', localStorage.getItem("Player_0Duck"))
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'GoRight', localStorage.getItem("Player_0GoRight"))
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'eAttackSword', localStorage.getItem("Player_0eAttackSword"))
-            this.eManager.updateEventKey(this.sManager, 'Player_0', 'eAttackBow', localStorage.getItem("Player_0eAttackBow"))
+            console.log("set already0")
+            this.eManager.updateEventKey(this.sManager, 'Player_0',"w", localStorage.getItem("Player_0w"), "w");
+            this.eManager.updateEventKey(this.sManager, 'Player_0',"a", localStorage.getItem("Player_0a"), "a");
+            this.eManager.updateEventKey(this.sManager, 'Player_0',"s", localStorage.getItem("Player_0s"), "s");
+            this.eManager.updateEventKey(this.sManager, 'Player_0',"d", localStorage.getItem("Player_0d"), "d");
+            this.eManager.updateEventKey(this.sManager, 'Player_0',"f", localStorage.getItem("Player_0f"), "f");
+            this.eManager.updateEventKey(this.sManager, 'Player_0',"r", localStorage.getItem("Player_0r"), "r");
         }
 
         let player2 = this.sManager.createEntity("Player", game, this.eManager);
@@ -38,21 +40,23 @@ class AleGame {
         player2.relPos.x = 400;
         //player2Img.renderC.color = "yellow";
 
-        let test2 = localStorage.getItem("Player_1Jump");
+        let test2 = localStorage.getItem("Player_1w");
         if(test2 == null){
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'Jump', "i")
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'GoLeft', "j")
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'Duck', "k")
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'GoRight', "l")
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'eAttackSword', "o")
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'eAttackBow', "p")
+            console.log("set normal1")
+            this.eManager.updateEventKey(this.sManager, 'Player_1', "w", "i", "w")
+            this.eManager.updateEventKey(this.sManager, 'Player_1', "a", "j", "a")
+            this.eManager.updateEventKey(this.sManager, 'Player_1', "s", "k", "s")
+            this.eManager.updateEventKey(this.sManager, 'Player_1', "d", "l", "d")
+            this.eManager.updateEventKey(this.sManager, 'Player_1', "f", "o", "f")
+            this.eManager.updateEventKey(this.sManager, 'Player_1', "r", "p", "r")
         } else {
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'Jump', localStorage.getItem("Player_1Jump"))
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'GoLeft', localStorage.getItem("Player_1GoLeft"))
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'Duck', localStorage.getItem("Player_1Duck"))
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'GoRight', localStorage.getItem("Player_1GoRight"))
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'eAttackSword', localStorage.getItem("Player_1eAttackSword"))
-            this.eManager.updateEventKey(this.sManager, 'Player_1', 'eAttackBow', localStorage.getItem("Player_1eAttackBow"))
+            console.log("set already1")
+            this.eManager.updateEventKey(this.sManager, 'Player_1',"w", localStorage.getItem("Player_1w"), "w");
+            this.eManager.updateEventKey(this.sManager, 'Player_1',"a", localStorage.getItem("Player_1a"), "a");
+            this.eManager.updateEventKey(this.sManager, 'Player_1',"s", localStorage.getItem("Player_1s"), "s");
+            this.eManager.updateEventKey(this.sManager, 'Player_1',"d", localStorage.getItem("Player_1d"), "d");
+            this.eManager.updateEventKey(this.sManager, 'Player_1',"f", localStorage.getItem("Player_1f"), "f");
+            this.eManager.updateEventKey(this.sManager, 'Player_1',"r", localStorage.getItem("Player_1r"), "r");
         }
 
 
