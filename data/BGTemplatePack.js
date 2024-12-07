@@ -132,7 +132,7 @@ const BGTemplatePack = [
                                 "name": "AleParalaxC",
                                 "data": {
                                     "pTarget": "Camera_1",
-                                    "pStrength": 13,
+                                    "pStrength": 12,
                                 }
                                 }]
                     
