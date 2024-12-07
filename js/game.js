@@ -11,6 +11,7 @@ templatePacks.push(L001TemplatePack);
 templatePacks.push(monsterTemplatePack);
 templatePacks.push(playerTemplatePack);
 templatePacks.push(combatTemplatePack);
+templatePacks.push(BGTemplatePack);
 
 console.log(templatePacks);
 game.init(templatePacks);

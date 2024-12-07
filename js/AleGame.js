@@ -11,7 +11,7 @@ class AleGame {
     init(scenes){
         this.sManager = new AleSceneManager(scenes);
         let game = this.sManager.createEntity("Game", null, this.eManager);
-        this.sManager.createEntity("L001", game, this.eManager);
+        
 
         let player1 = this.sManager.createEntity("Player", game, this.eManager);
 
@@ -61,6 +61,7 @@ class AleGame {
 
 
         //player2Img.animationC.startAnimation("idle");
+        this.sManager.createEntity("L001", game, this.eManager);
         this.sManager.createEntity("Gui", game, this.eManager);
     }
 

@@ -3,7 +3,7 @@ const L001TemplatePack = [
 
     "name": "L001",
     "type": "Node",
-    "children": ["L001Ground","L001Ground2", "L001WallLeft","L002Ground","L003Ground","L001BG","L001BG2", "L001WallLeft2"],
+    "children": ["L001Ground","L001Ground2", "L001WallLeft","L002Ground","L003Ground","L001BG", "L001WallLeft2"],
 
     "relPos": {"x": 0, "y": 0 },
     "size": { "w": 0, "h": 0 },
@@ -11,44 +11,6 @@ const L001TemplatePack = [
     "components": []
 
     },{
-
-        "name": "L001BG",
-        "type": "Image",
-        "children": [],
-    
-        "relPos": {"x": 0, "y": -900 },
-        "size": { "w": 3000, "h": 1000 },
-        
-        "components": [{
-            "name": "AleRenderC",
-            "data": {
-                "color": "Green",
-                "image": "../img/BG2.png",
-                "visible": true,
-                "zLayer": -50
-            }
-            }]
-    
-        },{
-
-            "name": "L001BG2",
-            "type": "Image",
-            "children": [],
-        
-            "relPos": {"x": 3000, "y": -900 },
-            "size": { "w": 3000, "h": 1000 },
-            
-            "components": [{
-                "name": "AleRenderC",
-                "data": {
-                    "color": "Green",
-                    "image": "../img/BG2.png",
-                    "visible": true,
-                    "zLayer": -50
-                }
-                }]
-        
-            },{
 
     "name": "L001Ground",
     "type": "Body",

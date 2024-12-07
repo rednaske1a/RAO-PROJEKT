@@ -26,6 +26,7 @@ class Entity {
         this.textC = null;
         this.coinC = null;
         this.animationC = null;
+        this.paralaxC = null;
         
         //console.log(sManager);
         this.addComponents(components, sManager);
@@ -46,6 +47,7 @@ class Entity {
                 case "AleTextC": this.textC = new AleTextC(component.data); break;
                 case "AleCoinC": this.coinC = new AleCoinC(component.data); break;
                 case "AleAnimationC": this.animationC = new AleAnimationC(component.data); break;
+                case "AleParalaxC": this.paralaxC = new AleParalaxC(component.data, sManager, this); break;
             }
         });
     }

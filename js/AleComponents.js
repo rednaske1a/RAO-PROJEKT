@@ -180,6 +180,32 @@ class AleHitC {
     }
 }
 
+class AleParalaxC{
+    constructor(data, sManager, entity){
+        this.pTarget = data.pTarget;
+        this.pTargetStartPos = null;
+
+        this.pStrength = data.pStrength; // v procentih
+
+        this.parent = entity;
+        this.parentStartPos = Entity.copy(this.parent.pos);
+        this.connect(sManager);
+    }
+
+    connect(sManager){
+        this.pTarget = sManager.getEntityByName(this.pTarget)
+        this.pTargetStartPos = Entity.copy(this.pTarget.pos);
+    }
+
+    move(){
+        let moveX = this.parentStartPos.x + (this.pTarget.pos.x - this.pTargetStartPos.x) * this.pStrength / 100;
+        let moveY = this.parentStartPos.y + (this.pTarget.pos.y - this.pTargetStartPos.y) * this.pStrength / 100;
+        console.log(moveX);
+        this.parent.relPos.x = moveX;
+
+    }
+}
+
 class AleAnimationC {
     constructor({ animations }) {
         this.animations = animations;
