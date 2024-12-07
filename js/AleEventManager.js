@@ -562,6 +562,13 @@ class AleEventManager{
         let newEntity = sManager.createEntity("DamageBox", event.eTrigger, this);
         newEntity.relPos.x = newEntity.parent.size.w;
 
+        let tmp = event.eTarget.getChildByTemplate("PlayerImage");
+        if(tmp.templateName == "PlayerImage"){
+            tmp.animationC.forceAnimation("sword");
+            tmp.animationC.queueAnimation("idle");
+        }
+
+
         if(newEntity.parent.playerC.lookingRight){
             newEntity.relPos.x = 50;
         }
@@ -579,6 +586,12 @@ class AleEventManager{
 
     eAttackBow(sManager, event){
         let newEntity = sManager.createEntity("DamageBox", event.eTrigger, this);
+
+        let tmp = event.eTarget.getChildByTemplate("PlayerImage");
+        if(tmp.templateName == "PlayerImage"){
+            tmp.animationC.forceAnimation("bow");
+            tmp.animationC.queueAnimation("idle");
+        }
 
         if(newEntity.parent.playerC.lookingRight){
             newEntity.relPos.x = newEntity.parent.size.w;

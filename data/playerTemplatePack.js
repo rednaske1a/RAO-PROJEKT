@@ -97,7 +97,23 @@ const playerTemplatePack = [
                     "frames": [0,1,2,3,4,5],
                     "duration": 100,
                     "type": "ONCE"
-                }
+                },"sword": {
+                    "spritesheet": "../anims/P1/Sword.png",
+                    "spritesheetSize": 32,
+                    "spritesheetRows": 1,
+                    "spritesheetCols": 1,
+                    "frames": [0,1,2,3,4,5],
+                    "duration": 100,
+                    "type": "ONCE"
+                },"bow": {
+                    "spritesheet": "../anims/P1/Bow.png",
+                    "spritesheetSize": 32,
+                    "spritesheetRows": 1,
+                    "spritesheetCols": 1,
+                    "frames": [0,1,2,3],
+                    "duration": 100,
+                    "type": "ONCE"
+                },
             }
         }   
         }]

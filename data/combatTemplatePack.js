@@ -18,7 +18,7 @@ const combatTemplatePack = [{
         },{
         "name": "AleRenderC",
         "data": {
-            "color": "purple",
+            "color": "NONE",
             "image": "NONE",
             "visible": true,
             "zLayer": 10
