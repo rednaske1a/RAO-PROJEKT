@@ -6,6 +6,28 @@ class AleGame {
         this.fManager = new AleFizika();
         this.deltaTime = 0;
         this.prevTime = 1000;
+        this.restart = false;
+
+        //https://stackoverflow.com/questions/71577271/how-would-i-make-a-volume-slider-in-html
+
+        this.audio = new Audio("../music/main.mp3");
+        this.audio.loop = true;
+
+        let newVolume = localStorage.getItem("BGM")
+        if(newVolume != null){
+            this.audio.volume = newVolume / 100;
+        }
+
+        
+        this.audio.play()
+
+
+        this.volume = document.getElementById('volume-slider');
+        this.volume.addEventListener("change", function(e) {
+        game.audio.volume = e.currentTarget.value / 100;
+        localStorage.setItem("BGM", e.currentTarget.value)
+        });
+
     }
 
     init(scenes){
@@ -65,10 +87,37 @@ class AleGame {
         this.sManager.createEntity("Gui", game, this.eManager);
     }
 
+    restart(){
+        this.restart = true;
+    }
+
+    setDiff(value){
+        let dmg1 = 0;
+        let dmg2 = 0;
+        let dmg3 = 0;
+        switch (value){
+            case "Easy": dmg1 = 1; dmg2 = 5; dmg3=20; break;
+            case "Medium": dmg1 = 2; dmg2 = 10; dmg3=40; break;
+            case "Hard": dmg1 = 4; dmg2 = 20; dmg3=80; break;
+            case "Expert": dmg1 = 8; dmg2 = 40; dmg3=160; break;
+        }
+
+        let s1 = sManager.getTemplate("L1Slime");
+        let s2 = sManager.getTemplate("L2Slime");
+        let s3 = sManager.getTemplate("L3Slime");
+        s1.combatC.dmg = dmg1;
+        s2.combatC.dmg = dmg2;
+        s3.combatC.dmg = dmg3;
+    }
+
     run(time) {
         //game.deltaTime = Number((time - game.prevTime) / 1000);
         //game.prevTime = time;
         //console.log(game.deltaTime);
+        if(game.restart == true){
+            return;
+        }
+
         game.render();
         game.update();
         window.requestAnimationFrame(game.run);

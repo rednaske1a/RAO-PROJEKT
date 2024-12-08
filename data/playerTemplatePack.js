@@ -22,6 +22,7 @@ const playerTemplatePack = [
         "data": {
             "jumpSpeed": 10,
             "moveSpeed": 10,
+            "maxhp": 100
         }
         },{
         "name": "AleEventC",
@@ -103,7 +104,7 @@ const playerTemplatePack = [
                     "spritesheetRows": 1,
                     "spritesheetCols": 1,
                     "frames": [0,1,2,3,4,5],
-                    "duration": 100,
+                    "duration": 75,
                     "type": "ONCE"
                 },"bow": {
                     "spritesheet": "../anims/P1/Bow.png",
@@ -111,7 +112,7 @@ const playerTemplatePack = [
                     "spritesheetRows": 1,
                     "spritesheetCols": 1,
                     "frames": [0,1,2,3],
-                    "duration": 100,
+                    "duration": 50,
                     "type": "ONCE"
                 },
             }

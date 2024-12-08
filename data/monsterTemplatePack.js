@@ -22,7 +22,8 @@ const monsterTemplatePack = [
             "data": {
                 "jumpSpeed": 30,
                 "moveSpeed": 10,
-                "maxhp": 100
+                "maxhp": 100,
+                "coinDrop": 2
             }
         },{
             "name": "AleEnemyAIC",
@@ -31,8 +32,13 @@ const monsterTemplatePack = [
                     {"type":"AI","trigger":"AI","context":"AI","eName":"Jump","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
                     {"type":"AI","trigger":"AI","context":"AI","eName":"GoLeft","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
                     {"type":"AI","trigger":"AI","context":"AI","eName":"GoRight","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},/*
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"eSlimeAttack","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},*/
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                    {"type":"AI","trigger":"AI","context":"AI","eName":"eSlimeAttack","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"],"eData":{"int1": 1}},
                    
                 ]
                 }
@@ -73,7 +79,7 @@ const monsterTemplatePack = [
                         "spritesheetSize": 24,
                         "spritesheetRows": 3,
                         "spritesheetCols": 3,
-                        "frames": [7,8,9,8,7],
+                        "frames": [7,8,8,7],
                         "duration": 200,
                         "type": "ONCE"
                     },
@@ -92,10 +98,10 @@ const monsterTemplatePack = [
     },{
         "name": "L2Slime",
         "type": "Body",
-        "children": ["L2SlimeImage", "HPBarRed", "HPBarGreen","MoveIndicator"],
+        "children": ["L2SlimeImage", "HPBarRed", "HPBarGreen"],
     
-        "relPos": {"x": 1000, "y": -200 },
-        "size": { "w": 200, "h": 200 },
+        "relPos": {"x": 1000, "y": -100 },
+        "size": { "w": 100, "h": 100 },
         
         "components": [{
             "name": "AleFizikaC",
@@ -110,21 +116,27 @@ const monsterTemplatePack = [
             },{
                 "name": "AlePlayerC",
                 "data": {
-                    "jumpSpeed": 30,
+                    "jumpSpeed": 40,
                     "moveSpeed": 10,
-                    "maxhp": 300
+                    "maxhp": 500,
+                    "coinDrop": 20
                 }
             },{
                 "name": "AleEnemyAIC",
                 "data": {
                     "events":[
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"Jump","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"GoLeft","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"GoRight","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},/*
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"eSlimeAttack","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},*/
-                   
-                ]
+                        {"type":"AI","trigger":"AI","context":"AI","eName":"Jump","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                        {"type":"AI","trigger":"AI","context":"AI","eName":"GoLeft","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                        {"type":"AI","trigger":"AI","context":"AI","eName":"GoRight","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                        {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                        {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                        {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                        {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                        {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                        {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                        {"type":"AI","trigger":"AI","context":"AI","eName":"eSlimeAttack","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"],"eData":{"int1": 10}},
+                       
+                    ]
                     }
                 }]
         },
@@ -134,25 +146,58 @@ const monsterTemplatePack = [
         "type": "Image",
         "children": [],
     
-        "relPos": {"x": 0, "y": 0 },
-        "size": { "w": 200, "h": 200 },
+        "relPos": {"x": -100, "y": -100 },
+        "size": { "w": 100, "h": 100 },
         
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "#1a4902",
+                "color": "NONE",
                 "image": "NONE",
                 "visible": true,
                 "zLayer": 5
             }
-            }]
+            },{
+                "name": "AleAnimationC",
+                "data": {
+                    "animations":{
+                        "idle": {
+                            "spritesheet": "../anims/Slime/Slime2.png",
+                            "spritesheetSize": 24,
+                            "spritesheetRows": 3,
+                            "spritesheetCols": 3,
+                            "frames": [7,8],
+                            "duration": 500,
+                            "type": "LOOP"
+                        },
+                        "jump": {
+                            "spritesheet": "../anims/Slime/Slime2.png",
+                            "spritesheetSize": 24,
+                            "spritesheetRows": 3,
+                            "spritesheetCols": 3,
+                            "frames": [7,8,8,7],
+                            "duration": 200,
+                            "type": "ONCE"
+                        },
+                        "run": {
+                            "spritesheet": "../anims/Slime/Slime2.png",
+                            "spritesheetSize": 24,
+                            "spritesheetRows": 3,
+                            "spritesheetCols": 3,
+                            "frames": [4,5,6,5],
+                            "duration": 100,
+                            "type": "ONCE"
+                        }
+                    }
+                }   
+                }]
         },{
             "name": "L3Slime",
             "type": "Body",
-            "children": ["L3SlimeImage", "HPBarRed", "HPBarGreen","MoveIndicator"],
+            "children": ["L1SlimeImage", "HPBarRed", "HPBarGreen"],
         
-            "relPos": {"x": 1000, "y": -300 },
-            "size": { "w": 300, "h": 300 },
+            "relPos": {"x": 1000, "y": -100 },
+            "size": { "w": 100, "h": 100 },
             
             "components": [{
                 "name": "AleFizikaC",
@@ -167,21 +212,27 @@ const monsterTemplatePack = [
                 },{
                     "name": "AlePlayerC",
                     "data": {
-                        "jumpSpeed": 40,
-                        "moveSpeed": 15,
-                        "maxhp": 1000,
+                        "jumpSpeed": 50,
+                        "moveSpeed": 10,
+                        "maxhp": 2000,
+                        "coinDrop": 50
                     }
                 },{
                     "name": "AleEnemyAIC",
                     "data": {
                         "events":[
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"Jump","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"GoLeft","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"GoRight","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},/*
-                    {"type":"AI","trigger":"AI","context":"AI","eName":"eSlimeAttack","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},*/
-                   
-                ]
+                            {"type":"AI","trigger":"AI","context":"AI","eName":"Jump","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                            {"type":"AI","trigger":"AI","context":"AI","eName":"GoLeft","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                            {"type":"AI","trigger":"AI","context":"AI","eName":"GoRight","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                            {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                            {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                            {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                            {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                            {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                            {"type":"AI","trigger":"AI","context":"AI","eName":"Wait","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                            {"type":"AI","trigger":"AI","context":"AI","eName":"eSlimeAttack","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"],"eData":{"int1": 20}},
+                           
+                        ]
                         }
                     }]
             },
@@ -191,17 +242,50 @@ const monsterTemplatePack = [
             "type": "Image",
             "children": [],
         
-            "relPos": {"x": 0, "y": 0 },
-            "size": { "w": 300, "h": 300 },
+            "relPos": {"x": -100, "y": -100 },
+            "size": { "w": 100, "h": 100 },
             
             "components": [{
                 "name": "AleRenderC",
                 "data": {
-                    "color": "#d64022",
+                    "color": "NONE",
                     "image": "NONE",
                     "visible": true,
                     "zLayer": 5
                 }
-                }]
+                },{
+                    "name": "AleAnimationC",
+                    "data": {
+                        "animations":{
+                            "idle": {
+                                "spritesheet": "../anims/Slime/Slime3.png",
+                                "spritesheetSize": 24,
+                                "spritesheetRows": 3,
+                                "spritesheetCols": 3,
+                                "frames": [7,8],
+                                "duration": 500,
+                                "type": "LOOP"
+                            },
+                            "jump": {
+                                "spritesheet": "../anims/Slime/Slime3.png",
+                                "spritesheetSize": 24,
+                                "spritesheetRows": 3,
+                                "spritesheetCols": 3,
+                                "frames": [7,8,8,7],
+                                "duration": 200,
+                                "type": "ONCE"
+                            },
+                            "run": {
+                                "spritesheet": "../anims/Slime/Slime3.png",
+                                "spritesheetSize": 24,
+                                "spritesheetRows": 3,
+                                "spritesheetCols": 3,
+                                "frames": [4,5,6,5],
+                                "duration": 100,
+                                "type": "ONCE"
+                            }
+                        }
+                    }   
+                    }]
             }
 ];

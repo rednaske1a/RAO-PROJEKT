@@ -7,6 +7,7 @@ class AleSceneManager {
         this.nextID = 0;
 
         this.templates = [];
+        this.images = new Map();
         this.unpackTemplates(templatePacks);
     }
 
@@ -16,6 +17,20 @@ class AleSceneManager {
 
         templatePacks.forEach(pack =>{
             pack.forEach(template =>{
+                //ZLOADA VSE SLIKE
+                template.components.forEach(component =>{
+                    if(component.name == "AleRenderC"){
+                        /*
+                        let url = component.image;
+                        let image = new Image();
+                        image.src = component.url;
+
+                        this.images.set(template.name, image);
+
+                        */
+                    }
+                })
+
                 this.templates.push({data: template, count:0});
             })
         })
@@ -58,8 +73,8 @@ class AleSceneManager {
         this.eLoaded.push(entity);
 
         entity.children.forEach((child, index) => {
-            console.log("CHILD");
-            console.log(child);
+            //console.log("CHILD");
+            //console.log(child);
             if (typeof child === 'object') {
                 let newTemplate = Entity.copy(this.getTemplate(child.name).data);
                 
@@ -67,19 +82,17 @@ class AleSceneManager {
                 let newEntity = this.createEntity(newTemplate, entity, eManager);
                 
                 entity.children[index] = newEntity;
-                console.log("Updated Child (Object):", entity.children[index]);
         
             } else if (typeof child === 'string') {
                 let newEntity = this.createEntity(child, entity, eManager);
                 entity.children[index] = newEntity;
-                console.log("Updated Child (String):", entity.children[index]);
             }
         });
         
     
         eManager.bindEvents(entity, this);
-        console.log("CREATEDE ENTITY")
-        console.log(entity);
+        //console.log("CREATEDE ENTITY")
+        //console.log(entity);
         return entity;
     }
     

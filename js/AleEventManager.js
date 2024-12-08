@@ -399,11 +399,13 @@ class AleEventManager{
 
     eJump(event) {
         event.eTarget.fizikaC.vel.y += -event.eTarget.playerC.jumpSpeed;
-        let tmp = event.eTarget.getChildByTemplate("PlayerImage");
-        if(tmp.templateName == "PlayerImage"){
+        let tmp = event.eTarget.getChildByTemplate(event.eTarget.templateName + "Image");
+        if(tmp.animationC != null){
             tmp.animationC.forceAnimation("jump");
             tmp.animationC.queueAnimation("idle");
         }
+        
+
     }
 
     eDuck(event) {
@@ -416,9 +418,8 @@ class AleEventManager{
             move.relPos.x = -100;
         }
 
-        let tmp = event.eTarget.getChildByTemplate("PlayerImage");
-        if(tmp.templateName == "PlayerImage"){
-            console.log(tmp)
+        let tmp = event.eTarget.getChildByTemplate(event.eTarget.templateName + "Image");
+        if(tmp.animationC != null){
             tmp.animationC.forceAnimation("run");
             tmp.animationC.queueAnimation("idle");
             tmp.animationC.animationDirection = false;
@@ -434,8 +435,8 @@ class AleEventManager{
         if(move.relPos != undefined){
             move.relPos.x = 50;
         }
-        let tmp = event.eTarget.getChildByTemplate("PlayerImage");
-        if(tmp.templateName == "PlayerImage"){
+        let tmp = event.eTarget.getChildByTemplate(event.eTarget.templateName + "Image");
+        if(tmp.animationC != null){
             tmp.animationC.forceAnimation("run");
             tmp.animationC.queueAnimation("idle");
             tmp.animationC.animationDirection = true;
@@ -459,6 +460,7 @@ class AleEventManager{
                     let LVL = sManager.getEntityByName("LVLText_0");
                     let EXPUP = sManager.getEntityByName("EXPUPText_0");
                     let EXP = sManager.getEntityByName("EXPText_0");
+                    let COINS = sManager.getEntityByName("CoinsText_0");
                    let player = event.eTrigger.parent;
 
                     EXP.textC.value += 100;
@@ -475,9 +477,14 @@ class AleEventManager{
                         
                     }
 
-                    sManager.getEntityByName("CoinsText_0").textC.value = event.eTrigger.parent.coinC.coins;
+                    COINS.textC.value += event.eTarget.playerC.coinDrop;
                 }
-                Entity.removeEntity(event.eTarget, sManager);
+                //if(event.eTarget.templateName == "Player"){
+                //    game.restart = true;
+                //} else {
+                    Entity.removeEntity(event.eTarget, sManager);
+                //}
+                
             } else {
                this.updateHPBAR(event.eTarget, sManager);
             }
@@ -524,15 +531,16 @@ class AleEventManager{
         let max = event.eData.int2;
         
         newEntity.relPos.x += Math.floor(Math.random() * (max - min) + min);
+        newEntity.relPos.y = -400;
 
         let redHP = newEntity.getChildByTemplate("HPBarRed");
         let greenHP = newEntity.getChildByTemplate("HPBarGreen");
 
-        redHP.pos.x = newEntity.pos.x;
-        redHP.pos.y = newEntity.pos.y;
+        redHP.relPos.x = 0;
+        redHP.relPos.y = 0;
 
-        greenHP.pos.x = newEntity.pos.x;
-        greenHP.pos.y = newEntity.pos.y;
+        greenHP.relPos.x = 0
+        greenHP.relPos.y = 0
     }
 
     setBestLVL(sManager) {
@@ -598,15 +606,16 @@ class AleEventManager{
             newEntity.fizikaC.vel.x = 30;
         }
         if(newEntity.parent.playerC.lookingLeft){
-            newEntity.relPos.x = -500;
+            newEntity.relPos.x = 0;
             newEntity.fizikaC.vel.x = -30;
         }
 
         let BDMG = sManager.getEntityByName("BDMGText_0");
         newEntity.combatC.dmg = BDMG.textC.value;
-        newEntity.relPos.y = 50;
-        newEntity.size.w = 20
-        newEntity.size.h = 10;
+        newEntity.renderC.color = "white"
+        newEntity.relPos.y = 20;
+        newEntity.size.w = 25
+        newEntity.size.h = 25;
         //newEntity.timedEventC.delay = 250;
         
     }
@@ -616,7 +625,8 @@ class AleEventManager{
         newEntity.fizikaC.collMask = [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         newEntity.eventC.getEventByType("TIME").data.eData.timeout = 250;
 
-        newEntity.combatC.dmg = 5;
+        console.log(event.eData.int1);
+        newEntity.combatC.dmg = event.eData.int1;
         newEntity.relPos.y = -50;
         newEntity.relPos.x = -50;
         newEntity.size.w = event.eTrigger.size.w + 100

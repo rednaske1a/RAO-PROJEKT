@@ -118,19 +118,21 @@ class AleStatsC {
 }
 
 class AlePlayerC {
-    constructor({jumpSpeed, moveSpeed}){
+    constructor({jumpSpeed, moveSpeed, maxhp, coinDrop}){
         this.jumpSpeed = jumpSpeed;
         this.moveSpeed = moveSpeed;
         this.isGrounded = false;
         this.isDucking = false;
         this.lookingLeft = false;
         this.lookingRight = true;
-        this.hp = 100;
-        this.maxhp = 100;
+        this.hp = maxhp;
+        this.maxhp = maxhp;
 
         this.skill1 = true;
         this.skill2 = true;
         this.skill3 = true;
+
+        this.coinDrop = coinDrop;
     }
 }
 
@@ -198,7 +200,7 @@ class AleParalaxC{
     }
 
     move(){
-        console.log(this.parent.name + " " + this.parentStartPos.x + " " + this.pTargetStartPos.x);
+       // console.log(this.parent.name + " " + this.parentStartPos.x + " " + this.pTargetStartPos.x);
         let moveX = this.parent.parent.pos.x - this.parentStartPos.x + (this.pTarget.pos.x - this.pTargetStartPos.x) * this.pStrength / 100;
         let moveY = this.parent.parent.pos.y - this.parentStartPos.y + (this.pTarget.pos.y - this.pTargetStartPos.y) * this.pStrength / 100;
         //console.log("X" + moveX);
@@ -352,8 +354,8 @@ class AleAnimationC {
         let animation = this.animations[this.currAnimation];
         //console.log("e1: " + elapsedTime)
         if(this.aQueue.length != 0 && animation.type == "ONCE" && elapsedTime > animation.duration * animation.frames.length){
-            console.log("e2: " + elapsedTime)
-            console.log("ENDONCE")
+            //console.log("e2: " + elapsedTime)
+            //console.log("ENDONCE")
             this.playAnimation(this.aQueue[0]);
             elapsedTime = Date.now() - this.start;
             animation = this.animations[this.currAnimation];
@@ -370,7 +372,7 @@ class AleAnimationC {
         let totalTime = animation.duration * totalFrames;
         let index = Math.floor((elapsedTime % totalTime) / animation.duration);
 
-        console.log(this.animationDirection)
+       // console.log(this.animationDirection)
         if(this.animationDirection == true){
             return this.frames[this.currAnimation][index];
         } else {
