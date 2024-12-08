@@ -64,6 +64,15 @@ class Entity {
         })
     }
 
+    static getTemplateComponent(template, cName){
+        let component = null;
+        template.components.forEach(fComponent=>{
+            if(fComponent.name = cName){
+                component = fComponent;
+            }
+        })
+    }
+
     static getDescendants(entity, descList){
         descList.push(entity);
         entity.children.forEach(child =>{

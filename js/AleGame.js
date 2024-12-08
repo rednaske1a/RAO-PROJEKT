@@ -105,9 +105,9 @@ class AleGame {
         let s1 = sManager.getTemplate("L1Slime");
         let s2 = sManager.getTemplate("L2Slime");
         let s3 = sManager.getTemplate("L3Slime");
-        s1.combatC.dmg = dmg1;
-        s2.combatC.dmg = dmg2;
-        s3.combatC.dmg = dmg3;
+        Entity.getTemplateComponent(s1, "AleCombatC").dmg = dmg1;
+        Entity.getTemplateComponent(s2, "AleCombatC").dmg = dmg2;
+        Entity.getTemplateComponent(s3, "AleCombatC").dmg = dmg3;
     }
 
     run(time) {
