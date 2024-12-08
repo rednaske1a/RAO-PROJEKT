@@ -166,6 +166,7 @@ class AleFizika {
         });
 
         this.solveColl.forEach(entity =>{
+            //console.log(entity)
             let minColTime = this.recursiveMinColTime(entity, {x: 1, y: 1, nx: 0, ny: 0});
 
             entity.relPos.x += entity.fizikaC.vel.x * minColTime.x;

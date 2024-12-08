@@ -24,56 +24,65 @@ class AleSceneManager {
         console.log(this.templates);
     }
 
-    createEntity(templateName, parent, eManager){
-        //console.log("Creating " + templateName);
-        //console.log(parent)
-        //console.log(eManager)
-        let template = this.getTemplate(templateName);
+    createEntity(templateName, parent, eManager) {
+
+        let template = {};
+        let ogTemplate = {};
+        
+        if(typeof templateName === 'string'){
+           template = this.getTemplate(templateName).data;
+           ogTemplate = this.getTemplate(templateName);
+        } else if(typeof templateName === 'object'){
+            template = templateName;
+            ogTemplate = this.getTemplate(templateName.name);
+        }
+
+        template = Entity.copy(template);
+
+        //console.log("Template:");
         //console.log(template);
-        let entity = new Entity(template.data, this, parent);
-        //console.log(template);
-        //console.log(entity.children);
-        entity.name = template.data.name + "_" +template.count;
+        let entity = new Entity(template, this, parent);
+
+        entity.name = template.name + "_" + ogTemplate.count;
         entity.parent = parent;
-        if(parent != null && parent.parent == null){
+    
+        if (parent != null && parent.parent == null) {
             parent.children.push(entity);
         }
-        
-        entity.updatePos();
+
         entity.id = this.nextID;
         this.nextID++;
-        template.count++;
-
+        ogTemplate.count++;
+    
         this.eStorage.push(entity);
         this.eLoaded.push(entity);
 
-        //console.log(entity.children);
-        for(let child in entity.children){
-            //console.log(template.children);
-            entity.children[child] = this.createEntity(
-                entity.children[child], entity, eManager
-            )
-            /*
-            if(entity.children[child].templateName == undefined){ //BRUHHHHHHHHHHHHHHHH
-                entity.children[child] = this.createEntity(
-                    entity.children[child], entity, eManager
-                )
-            } else {
-                entity.children[child] = this.createEntity(
-                    entity.children[child].templateName, entity, eManager
-                )
+        entity.children.forEach((child, index) => {
+            console.log("CHILD");
+            console.log(child);
+            if (typeof child === 'object') {
+                let newTemplate = Entity.copy(this.getTemplate(child.name).data);
+                
+                Object.assign(newTemplate, child.data);
+                let newEntity = this.createEntity(newTemplate, entity, eManager);
+                
+                entity.children[index] = newEntity;
+                console.log("Updated Child (Object):", entity.children[index]);
+        
+            } else if (typeof child === 'string') {
+                let newEntity = this.createEntity(child, entity, eManager);
+                entity.children[index] = newEntity;
+                console.log("Updated Child (String):", entity.children[index]);
             }
-            */
-            //console.log(template.children);
-        }
-
+        });
+        
+    
         eManager.bindEvents(entity, this);
-
-        //console.log("Finish Creating " + templateName);
-        //console.log(entity);
-        //this.createTree();
+        console.log("CREATEDE ENTITY")
+        console.log(entity);
         return entity;
     }
+    
 
 
     createTree(){

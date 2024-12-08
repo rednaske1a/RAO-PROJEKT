@@ -140,7 +140,7 @@ const playerTemplatePack = [
     "type": "Node",
     "children": [],
 
-    "relPos": {"x": -1024, "y": -576 },
+    "relPos": {"x": -1024, "y": -700 },
     "size": { "w": 2048, "h": 1152 },
         
     "components": [{
