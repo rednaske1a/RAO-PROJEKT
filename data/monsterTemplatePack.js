@@ -13,7 +13,7 @@ const monsterTemplatePack = [
             "vel" : {"x": 0, "y": 0},
             "acc" : {"x": 0, "y": 1},
             "trenje": 0.8,
-            "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
             "collMask" : [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
             "collide": true
         }
@@ -23,7 +23,9 @@ const monsterTemplatePack = [
                 "jumpSpeed": 30,
                 "moveSpeed": 10,
                 "maxhp": 100,
-                "coinDrop": 2
+                "coinDrop": 2,
+                "expDrop": 50,
+                "dmg": 1
             }
         },{
             "name": "AleEnemyAIC",
@@ -50,8 +52,8 @@ const monsterTemplatePack = [
     "type": "Image",
     "children": [],
 
-    "relPos": {"x": -100, "y": -100 },
-    "size": { "w": 200, "h": 200 },
+    "relPos": {"x": 0, "y": 0 },
+    "size": { "w": 100, "h": 100 },
     
     "components": [{
         "name": "AleRenderC",
@@ -101,7 +103,7 @@ const monsterTemplatePack = [
         "children": ["L2SlimeImage", "HPBarRed", "HPBarGreen"],
     
         "relPos": {"x": 1000, "y": -100 },
-        "size": { "w": 100, "h": 100 },
+        "size": { "w": 200, "h": 200 },
         
         "components": [{
             "name": "AleFizikaC",
@@ -109,7 +111,7 @@ const monsterTemplatePack = [
                 "vel" : {"x": 0, "y": 0},
                 "acc" : {"x": 0, "y": 1},
                 "trenje": 0.8,
-                "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
                 "collMask" : [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 "collide": true
             }
@@ -118,8 +120,10 @@ const monsterTemplatePack = [
                 "data": {
                     "jumpSpeed": 40,
                     "moveSpeed": 10,
-                    "maxhp": 500,
-                    "coinDrop": 20
+                    "maxhp": 1000,
+                    "coinDrop": 20,
+                    "expDrop": 300,
+                    "dmg": 5
                 }
             },{
                 "name": "AleEnemyAIC",
@@ -146,8 +150,8 @@ const monsterTemplatePack = [
         "type": "Image",
         "children": [],
     
-        "relPos": {"x": -100, "y": -100 },
-        "size": { "w": 100, "h": 100 },
+        "relPos": {"x": 0, "y": 0 },
+        "size": { "w": 200, "h": 200 },
         
         "components": [{
             "name": "AleRenderC",
@@ -194,10 +198,10 @@ const monsterTemplatePack = [
         },{
             "name": "L3Slime",
             "type": "Body",
-            "children": ["L1SlimeImage", "HPBarRed", "HPBarGreen"],
+            "children": ["L3SlimeImage", "HPBarRed", "HPBarGreen"],
         
             "relPos": {"x": 1000, "y": -100 },
-            "size": { "w": 100, "h": 100 },
+            "size": { "w": 300, "h": 300 },
             
             "components": [{
                 "name": "AleFizikaC",
@@ -205,7 +209,7 @@ const monsterTemplatePack = [
                     "vel" : {"x": 0, "y": 0},
                     "acc" : {"x": 0, "y": 1},
                     "trenje": 0.8,
-                    "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                    "collLayer" : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
                     "collMask" : [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                     "collide": true
                 }
@@ -214,8 +218,10 @@ const monsterTemplatePack = [
                     "data": {
                         "jumpSpeed": 50,
                         "moveSpeed": 10,
-                        "maxhp": 2000,
-                        "coinDrop": 50
+                        "maxhp": 10000,
+                        "coinDrop": 50,
+                        "expDrop": 1000,
+                        "dmg": 20
                     }
                 },{
                     "name": "AleEnemyAIC",
@@ -242,8 +248,8 @@ const monsterTemplatePack = [
             "type": "Image",
             "children": [],
         
-            "relPos": {"x": -100, "y": -100 },
-            "size": { "w": 100, "h": 100 },
+            "relPos": {"x": 0, "y": 0 },
+            "size": { "w": 300, "h": 300 },
             
             "components": [{
                 "name": "AleRenderC",

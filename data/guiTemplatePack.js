@@ -47,7 +47,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
-                "image": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -71,7 +71,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
-                "image": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -95,7 +95,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
-                "image": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -119,7 +119,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
-                "image": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -143,7 +143,7 @@ const guiTemplatePack = [
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
-                "image": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -161,13 +161,13 @@ const guiTemplatePack = [
         "children": [],
         
         "relPos": {"x": 0, "y": 0 },
-        "size": { "w": 350, "h": 50 },
+        "size": { "w": 300, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
-                "image": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -185,13 +185,13 @@ const guiTemplatePack = [
         "children": [],
         
         "relPos": {"x": 350, "y": 0 },
-        "size": { "w": 350, "h": 50 },
+        "size": { "w": 300, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
-                "image": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -209,13 +209,13 @@ const guiTemplatePack = [
         "children": [],
         
         "relPos": {"x": 700, "y": 0 },
-        "size": { "w": 350, "h": 50 },
+        "size": { "w": 300, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
-                "image": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -233,20 +233,20 @@ const guiTemplatePack = [
         "children": [],
         
         "relPos": {"x": 0, "y": -110 },
-        "size": { "w": 200, "h": 50 },
+        "size": { "w": 250, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
-                "image": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
         },{
             "name": "AleTextC",
             "data": {
-                "text": "SDMG: ",
+                "text": "Punch DMG: ",
                 "font_size": 50,
                 "value": 10
             }
@@ -257,20 +257,20 @@ const guiTemplatePack = [
         "children": [],
         
         "relPos": {"x": 0, "y": -60 },
-        "size": { "w": 200, "h": 50 },
+        "size": { "w": 250, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
                 "color": "NONE",
-                "image": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
         },{
             "name": "AleTextC",
             "data": {
-                "text": "BDMG: ",
+                "text": "Rock DMG: ",
                 "font_size": 50,
                 "value": 5
             }
@@ -281,13 +281,13 @@ const guiTemplatePack = [
         "children": ["USBPrice"],
         
         "relPos": {"x": 0, "y": 0 },
-        "size": { "w": 200, "h": 50 },
+        "size": { "w": 250, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "tomato",
-                "image": "NONE",
+                "color": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -301,7 +301,7 @@ const guiTemplatePack = [
         },{
             "name": "AleTextC",
             "data": {
-                "text": "Upgrade Sword",
+                "text": "Upgrade Punch",
                 "font_size": 50,
                 "value": null
             }
@@ -311,14 +311,14 @@ const guiTemplatePack = [
         "type": "GUI",
         "children": [],
         
-        "relPos": {"x": 200, "y": 0 },
-        "size": { "w": 50, "h": 50 },
+        "relPos": {"x": 250, "y": 0 },
+        "size": { "w": 75, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "tomato",
-                "image": "NONE",
+                "color": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -336,13 +336,13 @@ const guiTemplatePack = [
         "children": ["UBBPrice"],
         
         "relPos": {"x": 0, "y": 50 },
-        "size": { "w": 200, "h": 50 },
+        "size": { "w": 250, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "tomato",
-                "image": "NONE",
+                "color": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -356,7 +356,7 @@ const guiTemplatePack = [
         },{
             "name": "AleTextC",
             "data": {
-                "text": "Upgrade Bow",
+                "text": "Upgrade Rock",
                 "font_size": 50,
                 "value": null
             }
@@ -366,14 +366,14 @@ const guiTemplatePack = [
         "type": "GUI",
         "children": [],
         
-        "relPos": {"x": 200, "y": 0 },
-        "size": { "w": 50, "h": 50 },
+        "relPos": {"x": 250, "y": 0 },
+        "size": { "w": 75, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "tomato",
-                "image": "NONE",
+                "color": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -391,13 +391,13 @@ const guiTemplatePack = [
         "children": ["HBPrice"],
         
         "relPos": {"x": 0, "y": 100 },
-        "size": { "w": 200, "h": 50 },
+        "size": { "w": 250, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "tomato",
-                "image": "NONE",
+                "color": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }
@@ -421,14 +421,14 @@ const guiTemplatePack = [
         "type": "GUI",
         "children": [],
         
-        "relPos": {"x": 200, "y": 0 },
-        "size": { "w": 50, "h": 50 },
+        "relPos": {"x": 250, "y": 0 },
+        "size": { "w": 75, "h": 50 },
             
         "components": [{
             "name": "AleRenderC",
             "data": {
-                "color": "tomato",
-                "image": "NONE",
+                "color": "NONE",
+                "image": "../img/Holder.png",
                 "visible": true,
                 "zLayer": 300
             }

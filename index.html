@@ -8,14 +8,18 @@
 	</head>
 
 	<body>
-		<canvas></canvas>
-
-		<div class="manuel">
+		<div style="position: absolute;">
+			<canvas></canvas>
+			<div>	
+				ESC => Odpri Nastavitve
+			</div>
+			
+		<div id="manuel" style="top: 0px; left: 0px; position: absolute; display: none;">
 			
 			<div id="tree" style="font-size: 13px;">
 				
 			</div>
-			<div id="keybinds" style="display: flex;">
+			<div id="keybinds" class="settings" style="display: flex;">
 				<div id="keybindsP1">
 					Player 1
 					<div>Jump: <input type="text" value="w" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_0', localStorage.getItem('Player_0w'), this.value, 'w')"></div>
@@ -35,9 +39,8 @@
 					<div>Sword: <input type="text" value="i" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_1', localStorage.getItem('Player_1r'),this.value, 'f')"></div>
 					<div>Bow: <input type="text" value="o" style="max-width: 20px;" oninput="game.eManager.updateEventKey(game.sManager, 'Player_1', localStorage.getItem('Player_1f'),this.value, 'r')"></div>
 				</div>
-				
 			</div>
-			<div>
+			<div class="settings" style="display: flex; flex-direction: column;">
 				BGM Volume
 				<input type="range" min="0" max="100" id="volume-slider">
 
@@ -50,10 +53,12 @@
 				</select>
 			</div>
 			
-			<img src="Idle.png.png">
+			<!--<img src="Idle.png.png">-->
 			
 
 		</div>
+		</div>
+		
 		
 		
 		

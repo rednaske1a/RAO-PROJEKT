@@ -327,6 +327,7 @@ class AleEventManager{
                 valid = 1;
             }
         });
+        //console.log(event);
 
         if(valid == 0) return;
 
@@ -346,6 +347,8 @@ class AleEventManager{
     solveEvents(sManager, fManager){
         this.getEvents(sManager.eLoaded, fManager);
         this.eventList.forEach(event => {
+            //console.log(this.eventContext);
+            //console.log(event);
             switch(event.eName){
                 case "Jump": this.eJump(event); break;
                 case "Duck": this.eDuck(event); break;
@@ -366,9 +369,27 @@ class AleEventManager{
                 case "eUpgradeBow": this.eUpgradeBow(sManager, event); break;
                 case "eHeal": this.eHeal(sManager, event); break;
                 case "eForceAnimation": this.eForceAnimation(sManager,event); break;
+                case "eOpenSettings": this.eOpenSettings(sManager,event); break;
+                case "eCloseSettings": this.eCloseSettings(sManager,event); break;
             }
         });
     }
+
+    eOpenSettings(){
+        console.log("OPEN////////////////////////////")
+        let settings = document.getElementById("manuel");
+        settings.style.display = "flex";
+        this.eventContext = "INSETT";
+        
+    }
+
+    eCloseSettings(){
+        console.log("Close////////////////////////////")
+        let settings = document.getElementById("manuel");
+        settings.style.display = "none";
+        this.eventContext = "INGAME";
+    }
+
 
     eForceAnimation(sManager, event){
         event.eTrigger.getChildByTemplate(event.eData.string2).animationC.forceAnimation(event.eData.string1);
@@ -461,11 +482,16 @@ class AleEventManager{
                     let EXPUP = sManager.getEntityByName("EXPUPText_0");
                     let EXP = sManager.getEntityByName("EXPText_0");
                     let COINS = sManager.getEntityByName("CoinsText_0");
-                   let player = event.eTrigger.parent;
+                    let player = event.eTrigger.parent;
 
-                    EXP.textC.value += 100;
-                    if(EXP.textC.value >= EXPUP.textC.value){
-                        EXP.textC.value -= EXPUP.textC.value;
+                    let EXPNeed = EXPUP.textC.value;
+                    EXP.textC.value += event.eTarget.playerC.expDrop;
+                    EXPNeed -= event.eTarget.playerC.expDrop;
+                    
+                    if(EXPNeed <= 0){
+                        let minus = EXPNeed;
+                        EXPNeed = EXP.textC.value - EXPNeed;
+                        EXP.textC.value -= minus;
                         LVL.textC.value++;
                         this.setBestLVL(sManager);
                         localStorage.setItem("BESTLVL", LVL.textC.value);
@@ -476,14 +502,16 @@ class AleEventManager{
                         });
                         
                     }
-
+                    EXPUP.textC.value = EXPNeed;
                     COINS.textC.value += event.eTarget.playerC.coinDrop;
                 }
-                //if(event.eTarget.templateName == "Player"){
+                if(event.eTarget.templateName == "Player"){
                 //    game.restart = true;
-                //} else {
+                console.log("SADJSHDHASOKD")
+                    sManager.getEntityByName("Died_0").renderC.visible = true;
+                    this.eventContext = "END";
+                }
                     Entity.removeEntity(event.eTarget, sManager);
-                //}
                 
             } else {
                this.updateHPBAR(event.eTarget, sManager);
@@ -523,7 +551,7 @@ class AleEventManager{
     createSlime(sManager, event){
         let newEntity = {};
         switch(event.eData.string1){
-            case "L1Slime": newEntity = sManager.createEntity("L1Slime", sManager.getEntityByTemplate("Game"), this); break;
+            case "L1Slime": newEntity = sManager.createEntity("L1Slime", sManager.getEntityByTemplate("Game"), this);break;
             case "L2Slime": newEntity = sManager.createEntity("L2Slime", sManager.getEntityByTemplate("Game"), this);break;
             case "L3Slime": newEntity = sManager.createEntity("L3Slime", sManager.getEntityByTemplate("Game"), this);break;
         }
@@ -536,11 +564,6 @@ class AleEventManager{
         let redHP = newEntity.getChildByTemplate("HPBarRed");
         let greenHP = newEntity.getChildByTemplate("HPBarGreen");
 
-        redHP.relPos.x = 0;
-        redHP.relPos.y = 0;
-
-        greenHP.relPos.x = 0
-        greenHP.relPos.y = 0
     }
 
     setBestLVL(sManager) {
@@ -626,7 +649,7 @@ class AleEventManager{
         newEntity.eventC.getEventByType("TIME").data.eData.timeout = 250;
 
         console.log(event.eData.int1);
-        newEntity.combatC.dmg = event.eData.int1;
+        newEntity.combatC.dmg = event.eTrigger.playerC.dmg;
         newEntity.relPos.y = -50;
         newEntity.relPos.x = -50;
         newEntity.size.w = event.eTrigger.size.w + 100

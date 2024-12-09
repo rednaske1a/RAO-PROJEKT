@@ -20,14 +20,13 @@ class AleSceneManager {
                 //ZLOADA VSE SLIKE
                 template.components.forEach(component =>{
                     if(component.name == "AleRenderC"){
-                        /*
-                        let url = component.image;
+
+                        let url = component.data.image;
                         let image = new Image();
-                        image.src = component.url;
+                        image.src = url;
 
                         this.images.set(template.name, image);
 
-                        */
                     }
                 })
 

@@ -14,7 +14,7 @@ const playerTemplatePack = [
             "acc" : {"x": 0, "y": 1},
             "trenje": 0.8,
             "collLayer" : [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            "collMask" : [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            "collMask" : [1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0],
             "collide": true
         }
         },{
@@ -35,13 +35,7 @@ const playerTemplatePack = [
                 {"type":"KEYBOARD","trigger":"a","context":"RELEASED","eName":"eForceAnimation","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData":{"string1":"idle", "string2": "PlayerImage"}},
                 {"type":"KEYBOARD","trigger":"d","context":"RELEASED","eName":"eForceAnimation","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData":{"string1":"idle", "string2": "PlayerImage"}},
                 {"type":"KEYBOARD","trigger":"r","context":"PRESSED","eName":"eAttackBow","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                {"type":"KEYBOARD","trigger":"f","context":"PRESSED","eName":"eAttackSword","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                {"type":"KEYBOARD","trigger":"1","context":"PRESSED","eName":"UpgradeSkill1","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                {"type":"KEYBOARD","trigger":"2","context":"PRESSED","eName":"UpgradeSkill2","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                {"type":"KEYBOARD","trigger":"3","context":"PRESSED","eName":"UpgradeSkill3","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                {"type":"KEYBOARD","trigger":"4","context":"PRESSED","eName":"UpgradeHP","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                {"type":"KEYBOARD","trigger":"5","context":"PRESSED","eName":"UpgradeDEF","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
-                {"type":"KEYBOARD","trigger":"6","context":"PRESSED","eName":"BuyHeal","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                {"type":"KEYBOARD","trigger":"f","context":"PRESSED","eName":"eAttackSword","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]}
             ]
             }
         },{
@@ -156,10 +150,28 @@ const playerTemplatePack = [
         },{
         "name": "AleFollowC",
         "data": {
-            "follow": "Player",
+            "follow": "Player_0",
             "followStrength": 20,
             "followOffset": {"x": -1024, "y": -700 }
             }
         }]
-    }
+    },{
+
+        "name": "Died",
+        "type": "GUI",
+        "children": [],
+    
+        "relPos": {"x": 0, "y": 0 },
+        "size": { "w": 1024, "h": 576 },
+            
+        "components": [{
+            "name": "AleRenderC",
+            "data": {
+                "color": "NONE",
+                "image": "../img/Die.png",
+                "visible": false,
+                "zLayer": 999
+            }
+            }]
+        }
 ];

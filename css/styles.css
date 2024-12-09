@@ -14,9 +14,10 @@ body {
 canvas {
     border: 1px solid black;
     box-shadow: 0px 0px 20px 0px black;
+    margin: 20px;
 }
 
-.manuel {
+#manuel {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -54,4 +55,12 @@ li li li li li:hover{
 
 li li li li li li:hover{
     background-color: rgb(214, 106, 205);
+}
+
+.settings{
+    background-color: whitesmoke;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 25px;
+    margin: 20px;
 }

@@ -14,6 +14,8 @@ const gameTemplatePack = [{
                 {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 15000, "triggered": false, "int1": 10000, "int2": 15000, "string1": "L2Slime"}},
                 {"type":"TIME","trigger":"TIME","context":"LOOP","eName":"CreateSlime","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 30000, "triggered": false, "int1": 15000, "int2": 20000, "string1": "L3Slime"}},
                 {"type":"TIME","trigger":"TIME","context":"TIMEOUT","eName":"eSetBestLVL","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"], "eData": {"start": null, "timeout": 0, "triggered": false}},
+                {"type":"KEYBOARD","trigger":"Escape","context":"PRESSED","eName":"eOpenSettings","eTrigger":"SELF","eTarget":"SELF","eContexts":["INGAME"]},
+                {"type":"KEYBOARD","trigger":"Escape","context":"PRESSED","eName":"eCloseSettings","eTrigger":"SELF","eTarget":"SELF","eContexts":["INSETT"]}
             ]
             }
         }]
@@ -22,7 +24,7 @@ const gameTemplatePack = [{
         "type": "Image",
         "children": [],
     
-        "relPos": {"x": 0, "y": 0 },
+        "relPos": {"x": 5000, "y": -10000 },
         "size": { "w": 100, "h": 20 },
         
         "components": [{
@@ -46,7 +48,7 @@ const gameTemplatePack = [{
         "type": "Image",
         "children": [],
     
-        "relPos": {"x": 0, "y": 0 },
+        "relPos": {"x": 5000, "y": -10000 },
         "size": { "w": 100, "h": 20 },
         "components": [{
             "name": "AleRenderC",

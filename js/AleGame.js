@@ -31,6 +31,7 @@ class AleGame {
     }
 
     init(scenes){
+        
         this.sManager = new AleSceneManager(scenes);
         let game = this.sManager.createEntity("Game", null, this.eManager);
         
@@ -85,6 +86,12 @@ class AleGame {
         //player2Img.animationC.startAnimation("idle");
         this.sManager.createEntity("L001", game, this.eManager);
         this.sManager.createEntity("Gui", game, this.eManager);
+        this.sManager.createEntity("Camera", game, this.eManager);
+        this.sManager.createEntity("Died", game, this.eManager);
+
+        if(localStorage.getItem("Diff") != null){
+            this.setDiff(localStorage.getItem("Diff"));
+        }
     }
 
     restart(){
@@ -92,22 +99,28 @@ class AleGame {
     }
 
     setDiff(value){
+        localStorage.setItem("Diff", value);
         let dmg1 = 0;
         let dmg2 = 0;
         let dmg3 = 0;
         switch (value){
-            case "Easy": dmg1 = 1; dmg2 = 5; dmg3=20; break;
-            case "Medium": dmg1 = 2; dmg2 = 10; dmg3=40; break;
-            case "Hard": dmg1 = 4; dmg2 = 20; dmg3=80; break;
-            case "Expert": dmg1 = 8; dmg2 = 40; dmg3=160; break;
+            case "easy": dmg1 = 1; dmg2 = 5; dmg3=20; break;
+            case "medium": dmg1 = 2; dmg2 = 10; dmg3=40; break;
+            case "hard": dmg1 = 4; dmg2 = 20; dmg3=80; break;
+            case "expert": dmg1 = 8; dmg2 = 40; dmg3=160; break;
         }
+        console.log("DMG")
+        console.log(value);
+        console.log(dmg1)
+        console.log(dmg2)
+        console.log(dmg3)
 
-        let s1 = sManager.getTemplate("L1Slime");
-        let s2 = sManager.getTemplate("L2Slime");
-        let s3 = sManager.getTemplate("L3Slime");
-        Entity.getTemplateComponent(s1, "AleCombatC").dmg = dmg1;
-        Entity.getTemplateComponent(s2, "AleCombatC").dmg = dmg2;
-        Entity.getTemplateComponent(s3, "AleCombatC").dmg = dmg3;
+        let s1 = this.sManager.getTemplate("L1Slime");
+        let s2 = this.sManager.getTemplate("L2Slime");
+        let s3 = this.sManager.getTemplate("L3Slime");
+        Entity.getTemplateComponent(s1, "AlePlayerC").data.dmg = dmg1;
+        Entity.getTemplateComponent(s2, "AlePlayerC").data.dmg = dmg2;
+        Entity.getTemplateComponent(s3, "AlePlayerC").data.dmg = dmg3;
     }
 
     run(time) {
@@ -125,7 +138,7 @@ class AleGame {
 
     render() {
         //console.log("render");
-        this.renderer.render(this.sManager.eLoaded);
+        this.renderer.render(this.sManager.eLoaded, this.sManager);
     }
 
     update() {

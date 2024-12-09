@@ -66,11 +66,13 @@ class Entity {
 
     static getTemplateComponent(template, cName){
         let component = null;
-        template.components.forEach(fComponent=>{
-            if(fComponent.name = cName){
+        console.log(template);
+        template.data.components.forEach(fComponent=>{
+            if(fComponent.name == cName){
                 component = fComponent;
             }
         })
+        return component;
     }
 
     static getDescendants(entity, descList){
@@ -100,24 +102,30 @@ class Entity {
     static removeEntity(entity, sManager){
         //console.log("REMOVING: " + entity.name);
         let removeEntities = Entity.getDescendants(entity, []);
-        let removeN = 0;
         removeEntities.forEach(rEntity =>{
             //console.log("--removing: " + rEntity.name);
-            sManager.eLoaded.forEach((fEntity,index) =>{
-                if(rEntity.name == fEntity.name){
-                    sManager.eLoaded.splice(index,1);
-                }
-            })
-            sManager.eStorage.forEach((fEntity,index) =>{
-                if(rEntity.name == fEntity.name){
-                    sManager.eLoaded.splice(index,1);
-                }
-            })
+            let removeN = 0;
             rEntity.parent.children.forEach((rChild, index) =>{
                 if(rChild.name == rEntity.name){
-                    rEntity.parent.children.splice(index,1);
+                    rEntity.parent.children.splice(index-removeN,1);
+                    removeN++;
                 }
             })
+            removeN = 0;
+            sManager.eLoaded.forEach((fEntity,index) =>{
+                if(rEntity.name == fEntity.name){
+                    sManager.eLoaded.splice(index-removeN,1);
+                    removeN++;
+                }
+            })
+            removeN = 0;
+            sManager.eStorage.forEach((fEntity,index) =>{
+                if(rEntity.name == fEntity.name){
+                    sManager.eLoaded.splice(index-removeN,1);
+                    removeN++;
+                }
+            })
+            
         })
     }
 

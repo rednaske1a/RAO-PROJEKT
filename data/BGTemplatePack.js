@@ -4,13 +4,13 @@ const BGTemplatePack = [
         "name": "L001BG",
         "type": "Node",
         "children": ["L001BG1","L001BG2","L001BG3","L001BG4","L001BG5","L001BG6",
-            {"name" :"L001BGGrass1", "data":{"relPos": {"x": -300, "y":470}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":2}},{"name":"AleParalaxC","data":{"pTarget":"Camera_1","pStrength":0}}]}},
-            {"name" :"L001BGGrass1", "data":{"relPos": {"x": -300 + 1000, "y":470}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":2}},{"name":"AleParalaxC","data":{"pTarget":"Camera_1","pStrength":0}}]}},
-            {"name" :"L001BGGrass1", "data":{"relPos": {"x": -300 + 2000, "y":470}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":2}},{"name":"AleParalaxC","data":{"pTarget":"Camera_1","pStrength":0}}]}},
+            {"name" :"L001BGGrass1", "data":{"relPos": {"x": -300, "y":470}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":2}},{"name":"AleParalaxC","data":{"pTarget":"Camera_0","pStrength":0}}]}},
+            {"name" :"L001BGGrass1", "data":{"relPos": {"x": -300 + 1000, "y":470}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":2}},{"name":"AleParalaxC","data":{"pTarget":"Camera_0","pStrength":0}}]}},
+            {"name" :"L001BGGrass1", "data":{"relPos": {"x": -300 + 2000, "y":470}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":2}},{"name":"AleParalaxC","data":{"pTarget":"Camera_0","pStrength":0}}]}},
             
-            {"name" :"L001BGGrass2", "data":{"relPos": {"x": 200 , "y":450}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":-5}},{"name":"AleParalaxC","data":{"pTarget":"Camera_1","pStrength":10}}]}},
-            {"name" :"L001BGGrass2", "data":{"relPos": {"x": 200 + 1000, "y":450}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":-5}},{"name":"AleParalaxC","data":{"pTarget":"Camera_1","pStrength":10}}]}},
-            {"name" :"L001BGGrass2", "data":{"relPos": {"x": 200 + 2000, "y":450}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":-5}},{"name":"AleParalaxC","data":{"pTarget":"Camera_1","pStrength":10}}]}}
+            {"name" :"L001BGGrass2", "data":{"relPos": {"x": 200 , "y":450}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":-5}},{"name":"AleParalaxC","data":{"pTarget":"Camera_0","pStrength":10}}]}},
+            {"name" :"L001BGGrass2", "data":{"relPos": {"x": 200 + 1000, "y":450}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":-5}},{"name":"AleParalaxC","data":{"pTarget":"Camera_0","pStrength":10}}]}},
+            {"name" :"L001BGGrass2", "data":{"relPos": {"x": 200 + 2000, "y":450}, "components": [{"name":"AleRenderC","data":{"color":"NONE","image":"../img/Ground/Grass.png","visible":true,"zLayer":-5}},{"name":"AleParalaxC","data":{"pTarget":"Camera_0","pStrength":10}}]}}
             
         ],
     
@@ -40,7 +40,7 @@ const BGTemplatePack = [
             },{
                 "name": "AleParalaxC",
                 "data": {
-                    "pTarget": "Camera_1",
+                    "pTarget": "Camera_0",
                     "pStrength": 100,
                 }
                 }]
@@ -65,7 +65,7 @@ const BGTemplatePack = [
                 },{
                     "name": "AleParalaxC",
                     "data": {
-                        "pTarget": "Camera_1",
+                        "pTarget": "Camera_0",
                         "pStrength": 90,
                     }
                     }]
@@ -90,7 +90,7 @@ const BGTemplatePack = [
                     },{
                         "name": "AleParalaxC",
                         "data": {
-                            "pTarget": "Camera_1",
+                            "pTarget": "Camera_0",
                             "pStrength": 75,
                         }
                         }]
@@ -115,7 +115,7 @@ const BGTemplatePack = [
                         },{
                             "name": "AleParalaxC",
                             "data": {
-                                "pTarget": "Camera_1",
+                                "pTarget": "Camera_0",
                                 "pStrength": 50,
                             }
                             }]
@@ -140,7 +140,7 @@ const BGTemplatePack = [
                             },{
                                 "name": "AleParalaxC",
                                 "data": {
-                                    "pTarget": "Camera_1",
+                                    "pTarget": "Camera_0",
                                     "pStrength": 20,
                                 }
                                 }]
@@ -183,7 +183,7 @@ const BGTemplatePack = [
                                     },{
                                         "name": "AleParalaxC",
                                         "data": {
-                                            "pTarget": "Camera_1",
+                                            "pTarget": "Camera_0",
                                             "pStrength": 0,
                                         }
                                         }]
@@ -207,7 +207,7 @@ const BGTemplatePack = [
                                         },{
                                             "name": "AleParalaxC",
                                             "data": {
-                                                "pTarget": "Camera_1",
+                                                "pTarget": "Camera_0",
                                                 "pStrength": 10,
                                             }
                                             }]

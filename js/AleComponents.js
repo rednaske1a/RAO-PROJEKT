@@ -37,30 +37,9 @@ class AleEventC {
 class AleRenderC {
     constructor({color, image, visible, zLayer}){
         this.color = color;
-        this.imageurl = image;
-        this.image = null;
+        this.image = image;
         this.visible = visible;
         this.zLayer = zLayer;
-
-        if(this.imageurl != "NONE"){
-            this.setImage();
-        }
-    }
-
-    setImage() {
-        return new Promise((resolve, reject) => {
-            this.image = new Image();
-            this.image.onload = () => {
-                resolve(this.image);
-            };
-
-            this.image.onerror = (error) => {
-                console.error("Error loading image:", error);
-                reject(new Error("Failed to load image at " + this.imageurl));
-            };
-
-            this.image.src = this.imageurl;
-        });
     }
 }
 
@@ -85,7 +64,7 @@ class AleFollowC {
         if(follow == "PARENT"){
             this.follow = entity;
         } else {
-            this.follow = sManager.getEntityByTemplate(follow);
+            this.follow = sManager.getEntityByName(follow);
         }
         //console.log("FOLLWO");
         //console.log(follow);
@@ -118,7 +97,7 @@ class AleStatsC {
 }
 
 class AlePlayerC {
-    constructor({jumpSpeed, moveSpeed, maxhp, coinDrop}){
+    constructor({jumpSpeed, moveSpeed, maxhp, coinDrop, expDrop, dmg}){
         this.jumpSpeed = jumpSpeed;
         this.moveSpeed = moveSpeed;
         this.isGrounded = false;
@@ -133,6 +112,8 @@ class AlePlayerC {
         this.skill3 = true;
 
         this.coinDrop = coinDrop;
+        this.expDrop = expDrop;
+        this.dmg = dmg;
     }
 }
 
@@ -251,7 +232,7 @@ class AleAnimationC {
         this.framesR[aName] = [];
 
         for (let index of animation.frames) {
-            console.log(index)
+            //console.log(index)
             let row = Math.floor(index / animation.spritesheetCols);
             let col = index % animation.spritesheetCols;
 
@@ -374,9 +355,18 @@ class AleAnimationC {
 
        // console.log(this.animationDirection)
         if(this.animationDirection == true){
-            return this.frames[this.currAnimation][index];
+            if(this.frames[this.currAnimation] == undefined){
+                return null;
+            } else {
+                return this.frames[this.currAnimation][index];
+            }
+            
         } else {
-            return this.framesR[this.currAnimation][index];
+            if(this.frames[this.currAnimation] == undefined){
+                return null;
+            } else {
+                return this.framesR[this.currAnimation][index];
+            }
         }
         
     }
